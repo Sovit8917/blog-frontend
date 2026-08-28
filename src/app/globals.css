@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar,
+  *::-webkit-scrollbar {
+    display: none;
+    width: 0 !important;
+    height: 0 !important;
+  }
+  * {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  body {
+    @apply bg-white text-ink-800 antialiased;
+    font-feature-settings: "kern", "liga", "calt";
+  }
+  ::selection { @apply bg-brand-100 text-brand-900; }
+  :focus-visible { @apply outline-2 outline-offset-2 outline-brand-500; }
+}
+
+@layer components {
+  /* Was max-w-6xl (1152px) — on any screen wider than ~1280px that left
+     100px+ of dead space on each side. 1440px still leaves a comfortable
+     reading margin on ultra-wide monitors while actually using the space
+     on common 1366–1920px laptop/desktop widths. Padding steps up with
+     viewport instead of jumping straight to lg:px-8. */
+  .container-page { @apply mx-auto w-full max-w-[1440px] px-4 sm:px-6 md:px-8 xl:px-10; }
+  .container-prose { @apply mx-auto w-full max-w-[72ch] px-4 sm:px-6; }
+  .link-underline { @apply underline decoration-ink-300 underline-offset-4 transition hover:decoration-brand-500; }
+  .skeleton { @apply animate-pulse rounded-md bg-ink-100; }
+}
+
+/* Heading deep-link icon injected by rehype-autolink-headings (see
+   MarkdownContent) — hidden until the heading is hovered/focused so it
+   doesn't clutter the reading view. */
+.prose h2 .anchor-link,
+.prose h3 .anchor-link {
+  display: inline-flex;
+  margin-left: 0.4rem;
+  vertical-align: middle;
+  opacity: 0;
+  color: theme('colors.ink.300');
+  transition: opacity 0.15s ease;
+}
+.prose h2:hover .anchor-link,
+.prose h3:hover .anchor-link,
+.prose h2:focus-within .anchor-link,
+.prose h3:focus-within .anchor-link {
+  opacity: 1;
+}
+
+.reading-progress {
+  position: fixed;
+  top: 0; left: 0; height: 3px;
+  background: linear-gradient(90deg, theme('colors.brand.500'), theme('colors.brand.300'));
+  z-index: 60;
+  transition: width 0.1s linear;
+}

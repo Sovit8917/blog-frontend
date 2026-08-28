@@ -1,0 +1,122 @@
+import type { ListJobsParams } from '@/types';
+import { EMPLOYMENT_TYPE_LABEL, EXPERIENCE_LEVEL_LABEL, REMOTE_TYPE_LABEL } from '@/lib/jobs/format';
+
+const fieldClass =
+  'w-full rounded-lg border border-ink-200 bg-white px-3.5 py-2.5 text-sm text-ink-700 outline-none placeholder:text-ink-400 focus:border-brand-400 focus:ring-2 focus:ring-brand-100';
+const labelClass = 'mb-1.5 block text-xs font-semibold uppercase tracking-wide text-ink-400';
+
+/**
+ * Plain `<form method="GET">` so filtering works without client JS and the
+ * result is a shareable/bookmarkable URL — consistent with how `/search`
+ * handles its query param in this codebase.
+ */
+export function JobFilters({ params }: { params: ListJobsParams }) {
+  return (
+    <form
+      action="/jobs"
+      method="GET"
+      className="rounded-xl border border-ink-100 bg-white p-4 shadow-sm sm:p-5"
+    >
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+        <div className="col-span-2 sm:col-span-3 lg:col-span-2">
+          <label className={labelClass} htmlFor="job-search">
+            Search
+          </label>
+          <input
+            id="job-search"
+            type="search"
+            name="search"
+            defaultValue={params.search}
+            placeholder="Job title, keyword…"
+            className={fieldClass}
+          />
+        </div>
+
+        <div>
+          <label className={labelClass} htmlFor="job-location">
+            Location
+          </label>
+          <input
+            id="job-location"
+            type="text"
+            name="location"
+            defaultValue={params.location}
+            placeholder="City, country…"
+            className={fieldClass}
+          />
+        </div>
+
+        <div>
+          <label className={labelClass} htmlFor="job-remote">
+            Work mode
+          </label>
+          <select id="job-remote" name="remoteType" defaultValue={params.remoteType ?? ''} className={fieldClass}>
+            <option value="">Any</option>
+            {Object.entries(REMOTE_TYPE_LABEL).map(([value, label]) => (
+              <option key={value} value={value}>
+                {label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label className={labelClass} htmlFor="job-employment">
+            Employment
+          </label>
+          <select
+            id="job-employment"
+            name="employmentType"
+            defaultValue={params.employmentType ?? ''}
+            className={fieldClass}
+          >
+            <option value="">Any</option>
+            {Object.entries(EMPLOYMENT_TYPE_LABEL).map(([value, label]) => (
+              <option key={value} value={value}>
+                {label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label className={labelClass} htmlFor="job-experience">
+            Experience
+          </label>
+          <select
+            id="job-experience"
+            name="experienceLevel"
+            defaultValue={params.experienceLevel ?? ''}
+            className={fieldClass}
+          >
+            <option value="">Any</option>
+            {Object.entries(EXPERIENCE_LEVEL_LABEL).map(([value, label]) => (
+              <option key={value} value={value}>
+                {label}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      <div className="mt-4 flex flex-col gap-3 border-t border-ink-100 pt-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="w-full sm:w-56">
+          <label className={labelClass} htmlFor="job-sort">
+            Sort by
+          </label>
+          <select id="job-sort" name="sort" defaultValue={params.sort ?? 'relevance'} className={fieldClass}>
+            <option value="relevance">Most relevant</option>
+            <option value="newest">Newest</option>
+            <option value="salary">Highest salary</option>
+          </select>
+        </div>
+        <button
+          type="submit"
+          className="w-full rounded-lg bg-ink-900 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-ink-800 sm:w-auto"
+        >
+          Apply filters
+        </button>
+      </div>
+    </form>
+  );
+}

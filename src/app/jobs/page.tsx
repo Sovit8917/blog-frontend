@@ -1,0 +1,59 @@
+import type { Metadata } from 'next';
+import { listJobs } from '@/lib/api';
+import { JobFilters } from '@/components/jobs/JobFilters';
+import { JobGrid } from '@/components/jobs/JobGrid';
+import { LoadMoreLink } from '@/components/ui/LoadMoreLink';
+import { buildListMetadata } from '@/lib/seo/metadata';
+import type { ListJobsParams } from '@/types';
+
+interface Props { searchParams: ListJobsParams & Record<string, string | undefined> }
+
+export const metadata: Metadata = buildListMetadata({
+  title: 'Jobs',
+  description: 'Browse open engineering, design, and product roles from companies hiring now.',
+  path: '/jobs',
+});
+
+export const revalidate = 60;
+
+export default async function JobsPage({ searchParams }: Props) {
+  const params: ListJobsParams = {
+    cursor: searchParams.cursor,
+    search: searchParams.search || undefined,
+    location: searchParams.location || undefined,
+    remoteType: (searchParams.remoteType as any) || undefined,
+    employmentType: (searchParams.employmentType as any) || undefined,
+    experienceLevel: (searchParams.experienceLevel as any) || undefined,
+    sort: (searchParams.sort as any) || undefined,
+    limit: 12,
+  };
+
+  const page = await listJobs(params);
+
+  return (
+    <div className="bg-slate-50/50 py-8 lg:py-12">
+      <div className="container-page space-y-8">
+        <header className="rounded-2xl border border-slate-200/70 bg-white p-6 sm:p-8 shadow-sm">
+          <p className="text-xs font-bold uppercase tracking-wider text-brand-600">Job board</p>
+          <h1 className="mt-1 font-serif text-3xl font-extrabold text-ink-950 sm:text-4xl">Find your next role</h1>
+          <p className="mt-2 text-base leading-relaxed text-ink-600">
+            Open positions from companies building interesting things.
+          </p>
+        </header>
+
+        <div className="rounded-2xl border border-slate-200/70 bg-white p-6 sm:p-8 shadow-sm space-y-8">
+          <JobFilters params={params} />
+          <JobGrid jobs={page.items} />
+
+          {page.meta.hasMore && page.meta.nextCursor && (
+            <LoadMoreLink
+              basePath="/jobs"
+              params={params as Record<string, string | number | undefined>}
+              cursor={page.meta.nextCursor}
+            />
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
