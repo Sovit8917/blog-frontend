@@ -18,26 +18,6 @@ export class ApiRequestError extends Error {
   }
 }
 
-// Paths that must never trigger a refresh-and-retry themselves, or a failed
-// login/refresh attempt would recurse into refreshing forever.
-const NO_REFRESH_PATHS = ['/auth/refresh', '/auth/login', '/auth/register', '/auth/logout'];
-
-// Dedupe concurrent refresh attempts — several components can 401 around the
-// same moment (e.g. two client fetches firing together), and they should all
-// await one in-flight /auth/refresh call rather than each firing their own.
-let refreshPromise: Promise<boolean> | null = null;
-
-function refreshSession(): Promise<boolean> {
-  if (!refreshPromise) {
-    refreshPromise = fetch(`${API_BASE}/auth/refresh`, { method: 'POST', credentials: 'include' })
-      .then((res) => res.ok)
-      .catch(() => false)
-      .finally(() => {
-        refreshPromise = null;
-      });
-  }
-  return refreshPromise;
-}
 
 export interface FetchOptions extends RequestInit {
   /** Next.js data-cache revalidation window, in seconds. Omit for `no-store`. */
@@ -60,13 +40,13 @@ export interface FetchOptions extends RequestInit {
  * - a consistent base URL + JSON headers
  * - Next.js fetch-cache config (ISR-style `revalidate`, tag-based invalidation)
  * - normalized error shape matching the Nest `ApiError` contract
- * - on the client, a transparent refresh-and-retry when the short-lived
- *   `access_token` (15min) has expired but the 7-day `refresh_token` cookie
- *   is still good — without this, any interaction more than 15min after
- *   login/last refresh (Apply, Save, etc.) would just fail with a 401 that
- *   looks like the visitor got logged out.
+ *
+ * Auth is a single Better Auth session cookie (see lib/auth/client.ts) that
+ * Better Auth refreshes itself server-side on each use — unlike the old
+ * short-lived-access-token setup, there's nothing to proactively refresh
+ * here; a 401 just means the visitor isn't (or is no longer) signed in.
  */
-export async function apiFetch<T>(path: string, opts: FetchOptions = {}, _isRetry = false): Promise<T> {
+export async function apiFetch<T>(path: string, opts: FetchOptions = {}): Promise<T> {
   const { revalidate, tags, token, cookie, headers, ...rest } = opts;
   const isClient = typeof window !== 'undefined';
 
@@ -89,11 +69,6 @@ export async function apiFetch<T>(path: string, opts: FetchOptions = {}, _isRetr
     },
     cache: revalidate === false ? 'no-store' : undefined,
   });
-
-  if (res.status === 401 && isClient && !_isRetry && !NO_REFRESH_PATHS.includes(path)) {
-    const refreshed = await refreshSession();
-    if (refreshed) return apiFetch<T>(path, opts, true);
-  }
 
   if (!res.ok) {
     let payload: ApiError;

@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/lib/auth/AuthProvider';
-import { ApiRequestError } from '@/lib/api/client';
 import { Button } from '@/components/ui/Button';
+import { GoogleButton } from '@/components/auth/GoogleButton';
 
 type Field = { name: string; label: string; type: string; autoComplete?: string };
 
@@ -49,35 +49,53 @@ export function AuthForm({ mode }: { mode: 'login' | 'register' }) {
       }
       router.push(redirectTo);
     } catch (err) {
-      setError(err instanceof ApiRequestError ? err.message : 'Something went wrong. Please try again.');
+      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
     } finally {
       setSubmitting(false);
     }
   };
 
   return (
-    <form onSubmit={onSubmit} className="w-full max-w-sm">
-      <div className="flex flex-col gap-4">
-        {fields.map((field) => (
-          <label key={field.name} className="flex flex-col gap-1.5">
-            <span className="text-sm font-medium text-ink-700">{field.label}</span>
-            <input
-              required
-              type={field.type}
-              autoComplete={field.autoComplete}
-              value={values[field.name] ?? ''}
-              onChange={(e) => setValues((v) => ({ ...v, [field.name]: e.target.value }))}
-              className="rounded-lg border border-ink-200 px-3.5 py-2.5 text-sm outline-none placeholder:text-ink-400 focus:border-brand-400 focus:ring-2 focus:ring-brand-100"
-            />
-          </label>
-        ))}
+    <div className="w-full max-w-sm">
+      <GoogleButton redirectTo={redirectTo} />
+
+      <div className="my-5 flex items-center gap-3">
+        <div className="h-px flex-1 bg-ink-100" />
+        <span className="text-xs font-medium uppercase tracking-wide text-ink-400">or</span>
+        <div className="h-px flex-1 bg-ink-100" />
       </div>
 
-      {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
+      <form onSubmit={onSubmit}>
+        <div className="flex flex-col gap-4">
+          {fields.map((field) => (
+            <label key={field.name} className="flex flex-col gap-1.5">
+              <span className="text-sm font-medium text-ink-700">{field.label}</span>
+              <input
+                required
+                type={field.type}
+                autoComplete={field.autoComplete}
+                value={values[field.name] ?? ''}
+                onChange={(e) => setValues((v) => ({ ...v, [field.name]: e.target.value }))}
+                className="rounded-lg border border-ink-200 px-3.5 py-2.5 text-sm outline-none placeholder:text-ink-400 focus:border-brand-400 focus:ring-2 focus:ring-brand-100"
+              />
+            </label>
+          ))}
+        </div>
 
-      <Button type="submit" disabled={submitting} className="mt-6 w-full">
-        {submitting ? 'Please wait…' : mode === 'login' ? 'Sign in' : 'Create account'}
-      </Button>
+        {mode === 'login' && (
+          <div className="mt-2 text-right">
+            <Link href="/forgot-password" className="link-underline text-sm font-medium text-ink-500">
+              Forgot password?
+            </Link>
+          </div>
+        )}
+
+        {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
+
+        <Button type="submit" disabled={submitting} className="mt-6 w-full">
+          {submitting ? 'Please wait…' : mode === 'login' ? 'Sign in' : 'Create account'}
+        </Button>
+      </form>
 
       <p className="mt-5 text-center text-sm text-ink-500">
         {mode === 'login' ? (
@@ -96,6 +114,6 @@ export function AuthForm({ mode }: { mode: 'login' | 'register' }) {
           </>
         )}
       </p>
-    </form>
+    </div>
   );
 }

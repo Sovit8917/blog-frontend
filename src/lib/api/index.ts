@@ -5,7 +5,6 @@ export * from './engagement';
 export * from './monetization';
 export * from './newsletter';
 export * from './seo';
-export * from './auth';
 export * from './jobs';
 export * from './companies';
 export * from './skills';
