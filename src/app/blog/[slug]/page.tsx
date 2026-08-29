@@ -206,13 +206,15 @@ export default async function PostPage({ params }: Props) {
                       hideCount
                     />
                   )}
-                  <div className="flex items-center gap-3 rounded-full bg-slate-50 px-4 py-2 border border-slate-200/60">
-                    <LikeBookmarkBar
-                      postId={post.id}
-                      initialLikes={post.likeCount}
-                    />
-                    <div className="h-4 w-px bg-slate-200" />
-                    <ShareBar url={url} title={post.title} />
+                  <div className="w-full sm:w-auto overflow-x-auto py-1 max-w-full no-scrollbar">
+                    <div className="flex items-center gap-2.5 rounded-full bg-slate-50 px-3.5 py-1.5 border border-slate-200/60 w-max">
+                      <LikeBookmarkBar
+                        postId={post.id}
+                        initialLikes={post.likeCount}
+                      />
+                      <div className="h-4 w-px bg-slate-200 shrink-0" />
+                      <ShareBar url={url} title={post.title} />
+                    </div>
                   </div>
                 </div>
 
@@ -241,12 +243,14 @@ export default async function PostPage({ params }: Props) {
                 </div>
 
                 {/* Footer Action Bar */}
-                <div className="flex flex-wrap items-center justify-between gap-4 border-t border-slate-100 pt-6">
-                  <LikeBookmarkBar
-                    postId={post.id}
-                    initialLikes={post.likeCount}
-                  />
-                  <ShareBar url={url} title={post.title} />
+                <div className="w-full overflow-x-auto py-1 max-w-full no-scrollbar border-t border-slate-100 pt-6">
+                  <div className="flex flex-wrap items-center justify-between gap-4 min-w-0">
+                    <LikeBookmarkBar
+                      postId={post.id}
+                      initialLikes={post.likeCount}
+                    />
+                    <ShareBar url={url} title={post.title} />
+                  </div>
                 </div>
 
                 {/* Comments Section */}

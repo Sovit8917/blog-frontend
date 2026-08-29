@@ -1,14 +1,19 @@
-'use client';
+"use client";
 
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import * as authApi from '@/lib/api/auth';
-import type { User } from '@/types';
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import * as authApi from "@/lib/api/auth";
+import type { User } from "@/types";
 
 interface AuthContextValue {
   user: User | null;
   login: (input: { email: string; password: string }) => Promise<void>;
-  register: (input: { email: string; username: string; name: string; password: string }) => Promise<void>;
+  register: (input: {
+    email: string;
+    username: string;
+    name: string;
+    password: string;
+  }) => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -73,6 +78,6 @@ export function AuthProvider({
 
 export function useAuth() {
   const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error('useAuth must be used within <AuthProvider>');
+  if (!ctx) throw new Error("useAuth must be used within <AuthProvider>");
   return ctx;
 }
