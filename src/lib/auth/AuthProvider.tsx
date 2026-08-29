@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { authClient } from '@/lib/auth/client';
-import type { User } from '@/types';
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth/client";
+import type { User } from "@/types";
 
 interface AuthContextValue {
   user: User | null;
@@ -20,7 +20,9 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-function toUser(sessionUser: Record<string, unknown> | null | undefined): User | null {
+function toUser(
+  sessionUser: Record<string, unknown> | null | undefined,
+): User | null {
   if (!sessionUser) return null;
   return {
     id: sessionUser.id as string,
@@ -29,7 +31,7 @@ function toUser(sessionUser: Record<string, unknown> | null | undefined): User |
     email: sessionUser.email as string,
     avatarUrl: (sessionUser.image as string | null) ?? null,
     bio: (sessionUser.bio as string | null) ?? null,
-    role: sessionUser.role as User['role'],
+    role: sessionUser.role as User["role"],
   };
 }
 
@@ -62,22 +64,37 @@ export function AuthProvider({
       user,
       login: async (input) => {
         const { data, error } = await authClient.signIn.email(input);
-        if (error) throw new Error(error.message || 'Invalid email or password');
+        if (error)
+          throw new Error(error.message || "Invalid email or password");
         setUser(toUser(data?.user as Record<string, unknown> | undefined));
         router.refresh();
       },
-      loginWithGoogle: async (redirectTo = '/') => {
-        await authClient.signIn.social({ provider: 'google', callbackURL: redirectTo });
+      loginWithGoogle: async (redirectTo = "/") => {
+        const callbackURL = new URL(
+          redirectTo,
+          window.location.origin,
+        ).toString();
+
+        await authClient.signIn.social({
+          provider: "google",
+          callbackURL,
+        });
       },
       register: async (input) => {
+        const callbackURL = `${window.location.origin}/`;
+
         const { data, error } = await authClient.signUp.email({
           email: input.email,
           password: input.password,
           name: input.name,
-          // additionalField declared on the backend (src/auth/better-auth.ts)
           username: input.username,
+          callbackURL,
         } as Parameters<typeof authClient.signUp.email>[0]);
-        if (error) throw new Error(error.message || 'Could not create account');
+
+        if (error) {
+          throw new Error(error.message || "Could not create account");
+        }
+
         setUser(toUser(data?.user as Record<string, unknown> | undefined));
         router.refresh();
       },
@@ -95,6 +112,6 @@ export function AuthProvider({
 
 export function useAuth() {
   const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error('useAuth must be used within <AuthProvider>');
+  if (!ctx) throw new Error("useAuth must be used within <AuthProvider>");
   return ctx;
 }
