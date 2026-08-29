@@ -12,16 +12,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // under `/api/v1/sitemap.xml`, not `/sitemap.xml` (see setGlobalPrefix in
   // the backend's main.ts).
   const prefix = (process.env.NEXT_PUBLIC_API_PREFIX ?? '/api/v1').replace(/\/+$/, '');
-  const res = await fetch(`${base}${prefix}/sitemap.xml`, { next: { revalidate: 3600 } });
-  const xml = await res.text();
-
   const entries: MetadataRoute.Sitemap = [];
-  const urlRegex = /<loc>(.*?)<\/loc>(?:<lastmod>(.*?)<\/lastmod>)?/g;
-  let match;
-  while ((match = urlRegex.exec(xml))) {
-    const loc = match[1];
-    if (!loc) continue;
-    entries.push({ url: loc, lastModified: match[2] ? new Date(match[2]) : undefined });
+  try {
+    const res = await fetch(`${base}${prefix}/sitemap.xml`, { next: { revalidate: 3600 } });
+    if (!res.ok) return entries;
+    const xml = await res.text();
+
+    const urlRegex = /<loc>(.*?)<\/loc>(?:<lastmod>(.*?)<\/lastmod>)?/g;
+    let match;
+    while ((match = urlRegex.exec(xml))) {
+      const loc = match[1];
+      if (!loc) continue;
+      entries.push({ url: loc, lastModified: match[2] ? new Date(match[2]) : undefined });
+    }
+  } catch (err) {
+    console.warn('Failed to fetch backend sitemap during build:', err);
   }
   return entries;
 }

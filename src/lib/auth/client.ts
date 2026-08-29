@@ -12,7 +12,7 @@ export const authClient = createAuthClient({
   },
 });
 
-export const { useSession, signIn, signUp, signOut, forgetPassword, resetPassword } = authClient;
+export const { useSession, signIn, signUp, signOut, requestPasswordReset, resetPassword } = authClient;
 
 // Shape of `session.user` as returned by Better Auth, including the
 // `username`/`role`/`bio` additionalFields declared on the backend.
