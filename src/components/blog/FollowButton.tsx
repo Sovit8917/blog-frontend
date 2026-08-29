@@ -22,12 +22,15 @@ export function FollowButton({
   initialFollowerCount,
   isLoggedIn,
   isOwnProfile,
+  hideCount = false,
 }: {
   username: string;
   initialFollowing: boolean;
   initialFollowerCount: number;
   isLoggedIn: boolean;
   isOwnProfile: boolean;
+  /** Article byline usage doesn't have a follower count to show — hide the label instead of showing a misleading 0. */
+  hideCount?: boolean;
 }) {
   const router = useRouter();
   const [following, setFollowing] = useState(initialFollowing);
@@ -80,9 +83,11 @@ export function FollowButton({
         {following ? <UserCheck size={16} /> : <UserPlus size={16} />}
         {following ? 'Following' : 'Follow'}
       </button>
-      <span className="text-sm text-ink-500">
-        {followerCount} {followerCount === 1 ? 'follower' : 'followers'}
-      </span>
+      {!hideCount && (
+        <span className="text-sm text-ink-500">
+          {followerCount} {followerCount === 1 ? 'follower' : 'followers'}
+        </span>
+      )}
     </div>
   );
 }

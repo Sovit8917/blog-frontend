@@ -4,15 +4,17 @@ import { listCategories } from '@/lib/api';
 import { MobileNav } from './MobileNav';
 import { HeaderAuthActions } from './HeaderAuthActions';
 import { NavLink } from './NavLink';
+import { NavDropdown } from './NavDropdown';
 
-// Single source of truth for primary nav — job-board links live alongside
-// content categories instead of being a second, visually-identical group
-// bolted on after a divider (that's what caused the "Jobs / Companies /
-// Dev Resources" duplication next to "Tech Jobs / Developer Resources").
+// Kept deliberately short: only the categories + a single "Jobs" entry point
+// live in the visible bar. Companies / Dev Resources are one click away in
+// the "Jobs" dropdown instead of sitting in the bar as separate items —
+// fewer top-level choices is easier to scan than a wall of 6+ links.
 const JOB_BOARD_NAV = [
   { href: '/jobs', label: 'Jobs' },
   { href: '/companies', label: 'Companies' },
   { href: '/skills', label: 'Dev Resources' },
+  { href: '/career', label: 'Career Content' },
 ];
 
 /**
@@ -22,29 +24,24 @@ const JOB_BOARD_NAV = [
  */
 export async function Header() {
   const categories = await listCategories().catch(() => []);
-  const topLevel = (Array.isArray(categories) ? categories : [])
-    .filter((c) => !c.parentId)
-    .slice(0, 4);
+  const allTopLevel = (Array.isArray(categories) ? categories : []).filter((c) => !c.parentId);
+  const visibleCategories = allTopLevel.slice(0, 3);
 
   return (
     <header className="sticky top-0 z-50 border-b border-ink-100 bg-white/85 backdrop-blur supports-[backdrop-filter]:bg-white/70">
-      <div className="container-page flex h-14 items-center justify-between gap-3 sm:h-16">
-        <div className="flex min-w-0 items-center gap-6 xl:gap-8">
+      <div className="container-page flex h-14 items-center justify-between gap-2 sm:h-16">
+        <div className="flex min-w-0 items-center gap-2 sm:gap-4 xl:gap-6">
+          <MobileNav categories={allTopLevel} jobBoardNav={JOB_BOARD_NAV} />
           <Link href="/" className="shrink-0 text-lg font-bold tracking-tight text-ink-900 sm:text-xl">
             The<span className="text-brand-600">Blog</span>
           </Link>
           <nav aria-label="Primary" className="hidden items-center gap-0.5 lg:flex">
-            {topLevel.map((cat) => (
+            {visibleCategories.map((cat) => (
               <NavLink key={cat.id} href={`/category/${cat.slug}`}>
                 {cat.name}
               </NavLink>
             ))}
-            <span className="mx-2 h-4 w-px bg-ink-200" aria-hidden="true" />
-            {JOB_BOARD_NAV.map((item) => (
-              <NavLink key={item.href} href={item.href}>
-                {item.label}
-              </NavLink>
-            ))}
+            <NavDropdown label="Jobs" href="/jobs" items={JOB_BOARD_NAV.slice(1)} />
           </nav>
         </div>
 
@@ -64,7 +61,6 @@ export async function Header() {
             <Bookmark size={19} />
           </Link>
           <HeaderAuthActions />
-          <MobileNav categories={topLevel} jobBoardNav={JOB_BOARD_NAV} />
         </div>
       </div>
     </header>

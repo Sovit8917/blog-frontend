@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Heart, Bookmark } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { apiFetch } from '@/lib/api/client';
+import { CollectionPicker } from './CollectionPicker';
 
 /**
  * Optimistic like/bookmark control. Talks to POST /posts/:id/like and
@@ -66,6 +67,7 @@ export function LikeBookmarkBar({
       >
         <Bookmark size={16} className={bookmarked ? 'fill-brand-500 text-brand-500' : ''} />
       </button>
+      <CollectionPicker postId={postId} />
     </div>
   );
 }

@@ -77,10 +77,10 @@ export function MarkdownContent({
             <th className="whitespace-nowrap px-4 py-3 font-semibold text-ink-900">{children}</th>
           ),
           td: ({ children }) => <td className="px-4 py-3 align-top text-ink-700">{children}</td>,
-          ul: ({ children }) => <ul className="my-4 space-y-1.5">{children}</ul>,
-          ol: ({ children }) => <ol className="my-4 space-y-1.5">{children}</ol>,
+          ul: ({ children }) => <ul className="my-2 space-y-1">{children}</ul>,
+          ol: ({ children }) => <ol className="my-2 space-y-1">{children}</ol>,
           li: ({ children }) => (
-            <li className="marker:text-brand-400 pl-1 leading-relaxed">{children}</li>
+            <li className="marker:text-brand-400 pl-1 leading-snug">{children}</li>
           ),
           blockquote: ({ children }) => (
             <blockquote className="not-prose my-6 rounded-r-lg border-l-4 border-brand-300 bg-brand-50/60 px-5 py-3 text-ink-700">

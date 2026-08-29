@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useMemo, useState } from 'react';
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import * as authApi from '@/lib/api/auth';
 import type { User } from '@/types';
@@ -13,6 +13,13 @@ interface AuthContextValue {
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
+
+// access_token lives 15min server-side (see auth.controller.ts); refresh a
+// little ahead of that so an open tab never actually reaches the expiry
+// window during normal use. apiFetch's reactive 401-retry (client.ts) and
+// the middleware's SSR-time refresh both still cover the cases this timer
+// misses (tab backgrounded/throttled, first load with a stale access_token, etc).
+const BACKGROUND_REFRESH_INTERVAL_MS = 10 * 60 * 1000;
 
 /**
  * `initialUser` is resolved server-side (see lib/auth/session.ts) so the
@@ -30,6 +37,14 @@ export function AuthProvider({
 }) {
   const [user, setUser] = useState<User | null>(initialUser);
   const router = useRouter();
+
+  useEffect(() => {
+    if (!user) return;
+    const id = setInterval(() => {
+      authApi.refresh().catch(() => undefined);
+    }, BACKGROUND_REFRESH_INTERVAL_MS);
+    return () => clearInterval(id);
+  }, [user]);
 
   const value = useMemo<AuthContextValue>(
     () => ({

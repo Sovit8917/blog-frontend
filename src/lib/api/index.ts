@@ -10,3 +10,6 @@ export * from './jobs';
 export * from './companies';
 export * from './skills';
 export * from './users';
+export * from './reading-history';
+export * from './collections';
+export * from './growth';

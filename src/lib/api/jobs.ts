@@ -17,6 +17,14 @@ export function listJobs(params: ListJobsParams = {}) {
   });
 }
 
+/** GET /jobs/related-to-post/:postId — public. Skill-matched to the article's tags. */
+export function listJobsRelatedToPost(postId: string, limit = 3) {
+  return apiFetch<JobCard[]>(`/jobs/related-to-post/${postId}?limit=${limit}`, {
+    revalidate: 120,
+    tags: ['jobs', `jobs-related:${postId}`],
+  }).catch(() => []);
+}
+
 /** GET /jobs?skill=slug — jobs for a given skill (used by the Developer Resources pages). */
 export function listJobsBySkill(skillSlug: string, params: ListJobsParams = {}) {
   return listJobs({ ...params, skill: skillSlug });

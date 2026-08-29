@@ -24,11 +24,24 @@ export default async function JobsPage({ searchParams }: Props) {
     remoteType: (searchParams.remoteType as any) || undefined,
     employmentType: (searchParams.employmentType as any) || undefined,
     experienceLevel: (searchParams.experienceLevel as any) || undefined,
+    skill: searchParams.skill || undefined,
     sort: (searchParams.sort as any) || undefined,
     limit: 12,
   };
 
   const page = await listJobs(params);
+
+  // The API only runs the (relatively expensive) count() on the first page —
+  // see jobs.service.ts — so on later pages `meta.total` is absent. Carry the
+  // number forward as a query param instead of re-counting on every click.
+  const total = page.meta.total ?? (searchParams.total ? Number(searchParams.total) : undefined);
+  const loadMoreParams = { ...params, ...(total !== undefined ? { total } : {}) } as Record<
+    string,
+    string | number | undefined
+  >;
+  const hasActiveFilters = Boolean(
+    params.search || params.location || params.remoteType || params.employmentType || params.experienceLevel,
+  );
 
   return (
     <div className="bg-slate-50/50 py-8 lg:py-12">
@@ -41,16 +54,30 @@ export default async function JobsPage({ searchParams }: Props) {
           </p>
         </header>
 
-        <div className="rounded-2xl border border-slate-200/70 bg-white p-6 sm:p-8 shadow-sm space-y-8">
+        <div className="rounded-2xl border border-slate-200/70 bg-white p-6 sm:p-8 shadow-sm space-y-6">
           <JobFilters params={params} />
-          <JobGrid jobs={page.items} />
+
+          {/* Result count — sits right above the list so it's the first thing
+              read after adjusting filters, confirming the search "took". */}
+          <div className="flex items-center justify-between border-t border-ink-100 pt-6">
+            <p className="text-sm text-ink-500">
+              {total !== undefined ? (
+                <>
+                  <span className="font-semibold text-ink-800">{total.toLocaleString()}</span>{' '}
+                  {total === 1 ? 'job' : 'jobs'} found
+                </>
+              ) : (
+                <>
+                  <span className="font-semibold text-ink-800">{page.items.length}</span> jobs on this page
+                </>
+              )}
+            </p>
+          </div>
+
+          <JobGrid jobs={page.items} hasActiveFilters={hasActiveFilters} />
 
           {page.meta.hasMore && page.meta.nextCursor && (
-            <LoadMoreLink
-              basePath="/jobs"
-              params={params as Record<string, string | number | undefined>}
-              cursor={page.meta.nextCursor}
-            />
+            <LoadMoreLink basePath="/jobs" params={loadMoreParams} cursor={page.meta.nextCursor} />
           )}
         </div>
       </div>

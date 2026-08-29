@@ -48,12 +48,13 @@ export function searchPosts(query: string, params: ListPostsParams = {}) {
 }
 
 /**
- * "Related posts": same category, excluding current post. The backend doesn't
- * expose a dedicated endpoint yet, so this composes /posts client-side —
- * swap for a real `/posts/:slug/related` call if/when Phase 3 adds one.
+ * Related posts, scored server-side by shared tags/category/author
+ * (see PostsService.getRelated on the backend) — replaces the old
+ * client-side "same category, first N" stub.
  */
-export async function listRelatedPosts(post: Pick<Post, 'slug' | 'category'>, limit = 4) {
-  if (!post.category) return [];
-  const page = await listPostsByCategory(post.category.slug, { limit: limit + 1 });
-  return page.items.filter((p) => p.slug !== post.slug).slice(0, limit);
+export function listRelatedPosts(post: Pick<Post, 'id'>, limit = 4) {
+  return apiFetch<PostCard[]>(`/posts/by-id/${post.id}/related?limit=${limit}`, {
+    revalidate: 120,
+    tags: ['posts', `related:${post.id}`],
+  }).catch(() => []);
 }

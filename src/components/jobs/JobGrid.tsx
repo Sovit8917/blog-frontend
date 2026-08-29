@@ -1,3 +1,5 @@
+import Link from 'next/link';
+import { SearchX } from 'lucide-react';
 import type { JobCard as JobCardType } from '@/types';
 import { JobCard } from './JobCard';
 import { JobRow } from './JobRow';
@@ -8,11 +10,29 @@ import { JobRow } from './JobRow';
  * switch to a proper table so people can scan role / location / type /
  * salary / posted date across many rows at once.
  */
-export function JobGrid({ jobs }: { jobs: JobCardType[] }) {
+export function JobGrid({ jobs, hasActiveFilters = false }: { jobs: JobCardType[]; hasActiveFilters?: boolean }) {
   if (jobs.length === 0) {
     return (
-      <div className="rounded-xl border border-dashed border-ink-200 py-16 text-center text-ink-400">
-        No jobs match your filters yet. Try widening your search.
+      <div className="flex flex-col items-center gap-4 rounded-xl border border-dashed border-ink-200 px-6 py-16 text-center">
+        <span className="flex h-12 w-12 items-center justify-center rounded-full bg-ink-50 text-ink-400">
+          <SearchX size={22} />
+        </span>
+        <div>
+          <p className="font-semibold text-ink-800">No jobs match your filters</p>
+          <p className="mx-auto mt-1 max-w-sm text-sm text-ink-500">
+            {hasActiveFilters
+              ? "Try removing a filter or broadening your search — location and keyword tend to narrow results the most."
+              : "There aren't any open roles right now. Check back soon."}
+          </p>
+        </div>
+        {hasActiveFilters && (
+          <Link
+            href="/jobs"
+            className="rounded-lg bg-ink-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-ink-800"
+          >
+            Clear all filters
+          </Link>
+        )}
       </div>
     );
   }

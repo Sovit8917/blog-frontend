@@ -29,8 +29,20 @@ export function login(input: { email: string; password: string }) {
   });
 }
 
+/** POST /auth/logout — requires auth (cookie session). */
 export function logout() {
   return apiFetch<{ message: string }>('/auth/logout', { method: 'POST', revalidate: false });
+}
+
+/**
+ * POST /auth/refresh — exchanges the (7-day) `refresh_token` cookie for a new
+ * `access_token`/`refresh_token` pair. `apiFetch` already calls this
+ * automatically on a 401 (see client.ts), so components shouldn't normally
+ * need to call it directly — it's exported mainly for the background refresh
+ * in AuthProvider.
+ */
+export function refresh() {
+  return apiFetch<AuthTokens>('/auth/refresh', { method: 'POST', revalidate: false });
 }
 
 /** GET /auth/me — resolves the current session from cookies (or a forwarded `cookie` on the server). */

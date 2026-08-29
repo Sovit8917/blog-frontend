@@ -2,7 +2,14 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { getPostBySlug, listRelatedPosts, listComments } from "@/lib/api";
+import {
+  getPostBySlug,
+  listRelatedPosts,
+  listComments,
+  myFollowing,
+  listJobsRelatedToPost,
+} from "@/lib/api";
+import { getCurrentUser, getCookieHeader } from "@/lib/auth/session";
 import { buildPostMetadata } from "@/lib/seo/metadata";
 import { postJsonLd, breadcrumbJsonLd } from "@/lib/seo/jsonld";
 import { SITE } from "@/lib/seo/metadata";
@@ -12,6 +19,8 @@ import { TableOfContents } from "@/components/blog/TableOfContents";
 import { ShareBar } from "@/components/blog/ShareBar";
 import { LikeBookmarkBar } from "@/components/blog/LikeBookmarkBar";
 import { RelatedPosts } from "@/components/blog/RelatedPosts";
+import { FollowButton } from "@/components/blog/FollowButton";
+import { RelatedJobs } from "@/components/jobs/RelatedJobs";
 import { Sidebar } from "@/components/blog/Sidebar";
 import { CommentSection } from "@/components/comments/CommentSection";
 import { SponsoredBanner } from "@/components/ads/SponsoredBanner";
@@ -41,11 +50,25 @@ export default async function PostPage({ params }: Props) {
     listComments(post.id).catch(() => []),
   ]);
 
+  const [viewer, relatedJobs] = await Promise.all([
+    getCurrentUser().catch(() => null),
+    listJobsRelatedToPost(post.id).catch(() => []),
+  ]);
+
+  const isOwnPost = viewer?.username === post.author.username;
+  let initialFollowing = false;
+  if (viewer && !isOwnPost) {
+    const following = await myFollowing(getCookieHeader()).catch(() => []);
+    initialFollowing = following.some(
+      (f) => f.following.username === post.author.username,
+    );
+  }
+
   const url = `${SITE.url}/blog/${post.slug}`;
 
   return (
     <>
-      <ReadingProgress />
+      <ReadingProgress postId={post.id} isLoggedIn={!!viewer} />
       <script
         type="application/ld+json"
         // eslint-disable-next-line react/no-danger
@@ -123,16 +146,23 @@ export default async function PostPage({ params }: Props) {
                       </Badge>
                     </Link>
                   )}
-                  {post.tags.map((t) => (
-                    <Link key={t.id} href={`/tag/${t.slug}`}>
-                      <Badge
-                        variant="outline"
-                        className="px-2.5 py-1 text-xs font-medium transition hover:border-brand-300 hover:bg-brand-50/50 hover:text-brand-700"
-                      >
-                        #{t.name}
-                      </Badge>
-                    </Link>
-                  ))}
+                  {post.tags
+                    ?.filter((t) => t && (t.name || t.slug))
+                    .map((t, idx) => {
+                      const tagSlug = t.slug || t.name?.toLowerCase().replace(/\s+/g, "-");
+                      const tagName = t.name || t.slug;
+                      if (!tagSlug || !tagName) return null;
+                      return (
+                        <Link key={t.id || tagSlug || idx} href={`/tag/${tagSlug}`}>
+                          <Badge
+                            variant="outline"
+                            className="px-2.5 py-1 text-xs font-medium transition hover:border-brand-300 hover:bg-brand-50/50 hover:text-brand-700"
+                          >
+                            #{tagName}
+                          </Badge>
+                        </Link>
+                      );
+                    })}
                 </div>
 
                 {/* Title & Excerpt */}
@@ -166,6 +196,16 @@ export default async function PostPage({ params }: Props) {
                       </p>
                     </div>
                   </Link>
+                  {!isOwnPost && (
+                    <FollowButton
+                      username={post.author.username}
+                      initialFollowing={initialFollowing}
+                      initialFollowerCount={0}
+                      isLoggedIn={!!viewer}
+                      isOwnProfile={isOwnPost}
+                      hideCount
+                    />
+                  )}
                   <div className="flex items-center gap-3 rounded-full bg-slate-50 px-4 py-2 border border-slate-200/60">
                     <LikeBookmarkBar
                       postId={post.id}
@@ -227,6 +267,7 @@ export default async function PostPage({ params }: Props) {
       <div className="container-page">
         <AdSlot placement="BETWEEN_POSTS" className="mb-12" />
         <RelatedPosts posts={related} />
+        <RelatedJobs jobs={relatedJobs} />
       </div>
     </>
   );

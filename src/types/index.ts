@@ -109,7 +109,7 @@ export type PostCard = Pick<
 
 export interface CursorPage<T> {
   items: T[];
-  meta: { nextCursor: string | null; hasMore: boolean; limit: number };
+  meta: { nextCursor: string | null; hasMore: boolean; limit: number; total?: number };
 }
 
 export interface OffsetPage<T> {
@@ -358,3 +358,43 @@ export interface ApiError {
   message: string | string[];
   error?: string;
 }
+
+// ---- Growth features: reading history, collections, topic follows, feed ----
+
+export interface ReadingHistoryEntry {
+  id: string;
+  progressPct: number;
+  readAt: string;
+  post: PostCard;
+}
+
+export interface Collection {
+  id: string;
+  name: string;
+  slug: string;
+  description?: string | null;
+  isPrivate: boolean;
+  createdAt: string;
+  updatedAt: string;
+  _count?: { items: number };
+}
+
+export interface CollectionDetail extends Collection {
+  items: Array<{ id: string; addedAt: string; post: PostCard }>;
+}
+
+export interface CollectionMembership {
+  id: string;
+  name: string;
+  slug: string;
+  contains: boolean;
+}
+
+export interface TopicFollowEntry {
+  id: string;
+  createdAt: string;
+  category: Category;
+}
+
+export type MostReadPost = PostCard & { weeklyViews?: number };
+

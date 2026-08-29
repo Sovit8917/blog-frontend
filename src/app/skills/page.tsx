@@ -20,9 +20,10 @@ export default async function SkillsPage() {
     <div className="container-page py-10">
       <header className="mb-10 max-w-2xl">
         <p className="text-sm font-semibold uppercase tracking-wider text-brand-600">Developer Resources</p>
-        <h1 className="mt-1 text-3xl font-bold text-ink-900 sm:text-4xl">Browse jobs by skill</h1>
+        <h1 className="mt-1 text-3xl font-bold text-ink-900 sm:text-4xl">Learn a skill, then find the job</h1>
         <p className="mt-3 text-ink-500">
-          Explore the technologies and skills companies are hiring for right now.
+          Each technology below has its own hub: tutorials and articles to learn it, plus the
+          open roles currently hiring for it.
         </p>
       </header>
 
