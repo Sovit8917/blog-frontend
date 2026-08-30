@@ -9,13 +9,29 @@ interface AuthContextValue {
   user: User | null;
   login: (input: { email: string; password: string }) => Promise<void>;
   loginWithGoogle: (redirectTo?: string) => Promise<void>;
+  // Resolves with `{ needsVerification: true }` when the account was
+  // created but no session was issued (email verification pending) —
+  // the account exists, so this is not an error. Resolves with
+  // `{ needsVerification: false }` once we're actually signed in
+  // (e.g. requireEmailVerification is off, or a future social flow).
   register: (input: {
     email: string;
     username: string;
     name: string;
     password: string;
-  }) => Promise<void>;
+  }) => Promise<{ needsVerification: boolean }>;
+  resendVerificationEmail: (email: string) => Promise<void>;
   logout: () => Promise<void>;
+}
+
+/** Thrown by `login()` specifically when the credentials are correct but
+ *  the account hasn't verified its email yet — lets callers show a
+ *  "please verify" screen instead of a generic error message. */
+export class EmailNotVerifiedError extends Error {
+  constructor(public email: string) {
+    super('Please verify your email address before signing in.');
+    this.name = 'EmailNotVerifiedError';
+  }
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -64,8 +80,16 @@ export function AuthProvider({
       user,
       login: async (input) => {
         const { data, error } = await authClient.signIn.email(input);
-        if (error)
+        if (error) {
+          // Better Auth uses this code when the password is correct but
+          // the account's email hasn't been verified yet — surface that
+          // distinctly so the UI can point them at verification instead
+          // of just saying "invalid email or password".
+          if (error.code === "EMAIL_NOT_VERIFIED") {
+            throw new EmailNotVerifiedError(input.email);
+          }
           throw new Error(error.message || "Invalid email or password");
+        }
         setUser(toUser(data?.user as Record<string, unknown> | undefined));
         router.refresh();
       },
@@ -95,8 +119,30 @@ export function AuthProvider({
           throw new Error(error.message || "Could not create account");
         }
 
-        setUser(toUser(data?.user as Record<string, unknown> | undefined));
-        router.refresh();
+        // With requireEmailVerification on, Better Auth creates the user
+        // but does NOT issue a session/token here — `data.token` is only
+        // present when we're actually signed in. Don't set `user` in the
+        // pending case, or the app would treat an unverified visitor as
+        // logged in.
+        const signedIn = Boolean(
+          (data as { token?: string | null } | null)?.token,
+        );
+        if (signedIn) {
+          setUser(toUser(data?.user as Record<string, unknown> | undefined));
+          router.refresh();
+          return { needsVerification: false };
+        }
+        return { needsVerification: true };
+      },
+      resendVerificationEmail: async (email) => {
+        const callbackURL = `${window.location.origin}/`;
+        const { error } = await authClient.sendVerificationEmail({
+          email,
+          callbackURL,
+        });
+        if (error) {
+          throw new Error(error.message || "Could not resend verification email");
+        }
       },
       logout: async () => {
         await authClient.signOut().catch(() => undefined);

@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { listJobs } from '@/lib/api';
 import { JobFilters } from '@/components/jobs/JobFilters';
 import { JobGrid } from '@/components/jobs/JobGrid';
+import { RecommendedJobsSection } from '@/components/jobs/RecommendedJobsSection';
+import { SaveSearchAlertButton } from '@/components/jobs/SaveSearchAlertButton';
 import { LoadMoreLink } from '@/components/ui/LoadMoreLink';
 import { buildListMetadata } from '@/lib/seo/metadata';
 import type { ListJobsParams } from '@/types';
@@ -54,12 +56,16 @@ export default async function JobsPage({ searchParams }: Props) {
           </p>
         </header>
 
+        {/* Only on the default, unfiltered first page — repeating a
+            personalized row on every filtered/paginated view would be noise. */}
+        {!params.cursor && !hasActiveFilters && <RecommendedJobsSection />}
+
         <div className="rounded-2xl border border-slate-200/70 bg-white p-6 sm:p-8 shadow-sm space-y-6">
           <JobFilters params={params} />
 
           {/* Result count — sits right above the list so it's the first thing
               read after adjusting filters, confirming the search "took". */}
-          <div className="flex items-center justify-between border-t border-ink-100 pt-6">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-t border-ink-100 pt-6">
             <p className="text-sm text-ink-500">
               {total !== undefined ? (
                 <>
@@ -72,6 +78,7 @@ export default async function JobsPage({ searchParams }: Props) {
                 </>
               )}
             </p>
+            <SaveSearchAlertButton params={params} />
           </div>
 
           <JobGrid jobs={page.items} hasActiveFilters={hasActiveFilters} />

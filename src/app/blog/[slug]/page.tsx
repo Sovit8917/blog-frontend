@@ -213,7 +213,7 @@ export default async function PostPage({ params }: Props) {
                         initialLikes={post.likeCount}
                       />
                       <div className="h-4 w-px bg-slate-200 shrink-0" />
-                      <ShareBar url={url} title={post.title} />
+                      <ShareBar url={url} title={post.title} postId={post.id} />
                     </div>
                   </div>
                 </div>
@@ -249,7 +249,7 @@ export default async function PostPage({ params }: Props) {
                       postId={post.id}
                       initialLikes={post.likeCount}
                     />
-                    <ShareBar url={url} title={post.title} />
+                    <ShareBar url={url} title={post.title} postId={post.id} />
                   </div>
                 </div>
 

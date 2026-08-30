@@ -8,7 +8,8 @@ import type { EmploymentType, RemoteType } from '@/types';
 import { formatSalaryRange, EMPLOYMENT_TYPE_LABEL, REMOTE_TYPE_LABEL } from '@/lib/jobs/format';
 import { timeAgo } from '@/lib/utils';
 import { Badge } from '@/components/ui/Badge';
-import { buildListMetadata } from '@/lib/seo/metadata';
+import { buildListMetadata, SITE } from '@/lib/seo/metadata';
+import { ShareButton } from '@/components/shared/ShareButton';
 
 interface Props { params: { slug: string } }
 
@@ -44,36 +45,39 @@ export default async function CompanyDetailPage({ params }: Props) {
   return (
     <div className="bg-slate-50/50 py-8 lg:py-12">
       <div className="container-page space-y-8">
-        <header className="rounded-2xl border border-slate-200/70 bg-white p-6 sm:p-10 shadow-sm flex flex-col items-start gap-6 sm:flex-row sm:items-center">
-          <div className="relative flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-slate-100 border border-slate-200">
-            {company.logoUrl ? (
-              <Image src={company.logoUrl} alt={company.name} fill className="object-cover" />
-            ) : (
-              <span className="text-3xl font-serif font-bold text-brand-600">{company.name[0]}</span>
-            )}
-          </div>
-          <div>
-            <h1 className="flex items-center gap-2 font-serif text-3xl font-extrabold text-ink-950">
-              {company.name}
-              {company.isVerified && <BadgeCheck size={22} className="text-brand-500" />}
-            </h1>
-            <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-sm text-ink-500">
-              {company.location && (
-                <span className="flex items-center gap-1.5"><MapPin size={15} /> {company.location}</span>
-              )}
-              {company.website && (
-                <a
-                  href={company.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 link-underline text-brand-600 font-medium"
-                >
-                  <Globe size={15} /> Website
-                </a>
+        <header className="rounded-2xl border border-slate-200/70 bg-white p-6 sm:p-10 shadow-sm flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center">
+            <div className="relative flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-slate-100 border border-slate-200">
+              {company.logoUrl ? (
+                <Image src={company.logoUrl} alt={company.name} fill className="object-cover" />
+              ) : (
+                <span className="text-3xl font-serif font-bold text-brand-600">{company.name[0]}</span>
               )}
             </div>
-            {company.description && <p className="mt-3 max-w-2xl text-base leading-relaxed text-ink-600">{company.description}</p>}
+            <div>
+              <h1 className="flex items-center gap-2 font-serif text-3xl font-extrabold text-ink-950">
+                {company.name}
+                {company.isVerified && <BadgeCheck size={22} className="text-brand-500" />}
+              </h1>
+              <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-sm text-ink-500">
+                {company.location && (
+                  <span className="flex items-center gap-1.5"><MapPin size={15} /> {company.location}</span>
+                )}
+                {company.website && (
+                  <a
+                    href={company.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 link-underline text-brand-600 font-medium"
+                  >
+                    <Globe size={15} /> Website
+                  </a>
+                )}
+              </div>
+              {company.description && <p className="mt-3 max-w-2xl text-base leading-relaxed text-ink-600">{company.description}</p>}
+            </div>
           </div>
+          <ShareButton url={`${SITE.url}/companies/${company.slug}`} title={company.name} contentType="company" className="shrink-0" />
         </header>
 
         <section className="rounded-2xl border border-slate-200/70 bg-white p-6 sm:p-8 shadow-sm">

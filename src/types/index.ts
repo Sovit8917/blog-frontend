@@ -14,6 +14,11 @@ export interface AuthorSummary {
   bio?: string | null;
 }
 
+/** GET /users/search — public author search result (search page "People" section). */
+export interface AuthorSearchResult extends AuthorSummary {
+  _count: { posts: number; followers: number };
+}
+
 /** GET /users/:username — public profile, incl. follow counts. */
 export interface UserProfile {
   id: string;
@@ -166,6 +171,15 @@ export interface Sponsor {
   tier: SponsorTier;
 }
 
+export interface NewsletterSponsorSlot {
+  id: string;
+  headline: string;
+  body: string;
+  url: string;
+  issueDate: string;
+  sponsor: { id: string; name: string; logoUrl?: string | null };
+}
+
 export interface User {
   id: string;
   username: string;
@@ -250,6 +264,42 @@ export interface Skill {
   slug: string;
   createdAt: string;
   _count?: { jobs: number };
+}
+
+export type ResourceType = 'TOOL' | 'LIBRARY' | 'TUTORIAL' | 'COURSE' | 'DOCUMENTATION' | 'COMMUNITY' | 'OTHER';
+
+/** GET /developer-resources — curated tools/tutorials/docs, editorially ordered. */
+export interface DeveloperResource {
+  id: string;
+  title: string;
+  slug: string;
+  url: string;
+  description?: string | null;
+  resourceType: ResourceType;
+  tags: string[];
+  iconUrl?: string | null;
+  isFeatured: boolean;
+  clickCount: number;
+}
+
+export interface ListDeveloperResourcesParams {
+  page?: number;
+  limit?: number;
+  search?: string;
+  resourceType?: ResourceType;
+  tag?: string;
+  isFeatured?: boolean;
+}
+
+/** GET /search — one call across every pillar of the ecosystem. */
+export interface UnifiedSearchResult {
+  query: string;
+  posts: PostCard[];
+  jobs: JobCard[];
+  companies: Company[];
+  skills: Skill[];
+  developerResources: DeveloperResource[];
+  authors: AuthorSearchResult[];
 }
 
 export interface JobSkillLink {
@@ -351,6 +401,54 @@ export interface SavedJob {
     status: JobStatus;
     company: { name: string; slug: string; logoUrl?: string | null };
   };
+}
+
+// ---- Job alerts (#19) ----
+
+export type AlertFrequency = 'INSTANT' | 'DAILY' | 'WEEKLY';
+
+export interface JobAlert {
+  id: string;
+  userId: string;
+  name: string;
+  keywords?: string | null;
+  location?: string | null;
+  remoteType?: RemoteType | null;
+  employmentType?: EmploymentType | null;
+  experienceLevel?: ExperienceLevel | null;
+  skillSlugs: string[];
+  frequency: AlertFrequency;
+  isActive: boolean;
+  lastRunAt: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateJobAlertInput {
+  name: string;
+  keywords?: string;
+  location?: string;
+  remoteType?: RemoteType;
+  employmentType?: EmploymentType;
+  experienceLevel?: ExperienceLevel;
+  skillSlugs?: string[];
+  frequency?: AlertFrequency;
+  isActive?: boolean;
+}
+
+// ---- Saved resume (#17) ----
+
+export interface ResumeInfo {
+  resumeUrl?: string | null;
+  resumeFileName?: string | null;
+  resumeUpdatedAt?: string | null;
+}
+
+// ---- Personalized jobs (#20) ----
+
+export interface RecommendedJobs {
+  items: JobCard[];
+  personalized: boolean;
 }
 
 export interface ApiError {

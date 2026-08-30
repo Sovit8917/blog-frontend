@@ -7,13 +7,14 @@ import { NavLink } from './NavLink';
 import { NavDropdown } from './NavDropdown';
 
 // Kept deliberately short: only the categories + a single "Jobs" entry point
-// live in the visible bar. Companies / Dev Resources are one click away in
-// the "Jobs" dropdown instead of sitting in the bar as separate items —
-// fewer top-level choices is easier to scan than a wall of 6+ links.
+// live in the visible bar. Companies / Skills / Dev Resources are one click
+// away in the "Jobs" dropdown instead of sitting in the bar as separate
+// items — fewer top-level choices is easier to scan than a wall of 6+ links.
 const JOB_BOARD_NAV = [
   { href: '/jobs', label: 'Jobs' },
   { href: '/companies', label: 'Companies' },
-  { href: '/skills', label: 'Dev Resources' },
+  { href: '/skills', label: 'Skills' },
+  { href: '/resources', label: 'Dev Resources' },
   { href: '/career', label: 'Career Content' },
 ];
 

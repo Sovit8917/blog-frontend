@@ -161,6 +161,16 @@ export function MobileNav({
                       Saved Jobs
                     </MobileLink>
                   </li>
+                  <li>
+                    <MobileLink href="/me/job-alerts" active={isActive('/me/job-alerts')}>
+                      Job Alerts
+                    </MobileLink>
+                  </li>
+                  <li>
+                    <MobileLink href="/me/resume" active={isActive('/me/resume')}>
+                      My Resume
+                    </MobileLink>
+                  </li>
                 </>
               )}
             </ul>

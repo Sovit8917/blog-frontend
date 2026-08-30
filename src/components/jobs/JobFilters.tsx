@@ -147,13 +147,18 @@ export function JobFilters({ params }: { params: ListJobsParams }) {
         </div>
       </div>
 
-      <div className="mt-4 border-t border-ink-100 pt-4">
+      <div className="mt-4 flex items-center justify-between border-t border-ink-100 pt-4">
         <button
           type="submit"
-          className="w-full rounded-lg bg-ink-900 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-ink-800 sm:w-auto"
+          className="rounded-lg bg-ink-900 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-ink-800"
         >
           Apply filters
         </button>
+        {activeCount > 0 && (
+          <a href="/jobs" className="text-sm font-medium text-ink-500 transition hover:text-ink-800">
+            Clear all
+          </a>
+        )}
       </div>
     </form>
   );

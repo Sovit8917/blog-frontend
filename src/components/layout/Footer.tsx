@@ -29,6 +29,14 @@ export function Footer() {
           </div>
 
           <div>
+            <h3 className="text-sm font-semibold text-ink-900">Partner</h3>
+            <ul className="mt-3 space-y-2 text-sm text-ink-500">
+              <li><Link href="/advertise" className="hover:text-ink-900">Advertise with us</Link></li>
+              <li><Link href="/me/employer-access" className="hover:text-ink-900">Post a job</Link></li>
+            </ul>
+          </div>
+
+          <div>
             <h3 className="text-sm font-semibold text-ink-900">Legal</h3>
             <ul className="mt-3 space-y-2 text-sm text-ink-500">
               <li><Link href="/about" className="hover:text-ink-900">About</Link></li>

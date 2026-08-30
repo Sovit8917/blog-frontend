@@ -155,6 +155,26 @@ export default async function HomePage() {
           <AdSlot placement="BETWEEN_POSTS" />
           <SponsorStrip sponsors={safeSponsors} />
 
+          {/* ADVERTISE CTA — surfaces the monetization page to brands/employers
+              browsing the site, not just readers. */}
+          <Link
+            href="/advertise"
+            className="group flex flex-col items-start justify-between gap-3 rounded-2xl border border-ink-100 bg-gradient-to-br from-ink-900 to-ink-800 p-6 text-white transition hover:from-brand-700 hover:to-brand-600 sm:flex-row sm:items-center"
+          >
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wider text-brand-300 group-hover:text-brand-100">
+                For brands & employers
+              </p>
+              <p className="mt-1 text-lg font-bold">Advertise with us</p>
+              <p className="mt-1 text-sm text-ink-300 group-hover:text-brand-50">
+                Featured jobs, sponsored content, newsletter placements — with real analytics.
+              </p>
+            </div>
+            <span className="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-white/10 px-4 py-2 text-sm font-semibold ring-1 ring-white/20 transition group-hover:bg-white group-hover:text-brand-700">
+              See partnership options <ArrowRight size={14} />
+            </span>
+          </Link>
+
           {/* PERSONALIZATION — the real ranked feed for signed-in visitors
               (follows + read signals), Most Read fallback when signed out. */}
           <div>

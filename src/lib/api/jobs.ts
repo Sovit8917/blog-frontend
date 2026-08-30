@@ -1,11 +1,14 @@
 import { apiFetch, qs } from './client';
 import type {
   ApplicationStatus,
+  CreateJobAlertInput,
   CursorPage,
   Job,
+  JobAlert,
   JobApplication,
   JobCard,
   ListJobsParams,
+  RecommendedJobs,
   SavedJob,
 } from '@/types';
 
@@ -83,3 +86,48 @@ export const APPLICATION_STATUS_LABEL: Record<ApplicationStatus, string> = {
   HIRED: 'Hired',
   WITHDRAWN: 'Withdrawn',
 };
+
+// ---- Personalized jobs (#20) ----
+
+/** GET /jobs/recommended — requires auth. "Jobs for you" section. */
+export function getRecommendedJobs(cookie?: string, limit?: number) {
+  return apiFetch<RecommendedJobs>(`/jobs/recommended${qs({ limit })}`, {
+    revalidate: false,
+    cookie,
+  }).catch(() => ({ items: [], personalized: false }) as RecommendedJobs);
+}
+
+// ---- Job alerts (#19) ----
+
+/** GET /job-alerts — the current user's saved searches. */
+export function myJobAlerts(cookie?: string) {
+  return apiFetch<JobAlert[]>('/job-alerts', { revalidate: false, cookie });
+}
+
+/** POST /job-alerts — save the current /jobs filter state as an alert. */
+export function createJobAlert(input: CreateJobAlertInput) {
+  return apiFetch<JobAlert>('/job-alerts', {
+    method: 'POST',
+    body: JSON.stringify(input),
+    revalidate: false,
+  });
+}
+
+/** PATCH /job-alerts/:id */
+export function updateJobAlert(id: string, input: Partial<CreateJobAlertInput>) {
+  return apiFetch<JobAlert>(`/job-alerts/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(input),
+    revalidate: false,
+  });
+}
+
+/** DELETE /job-alerts/:id */
+export function deleteJobAlert(id: string) {
+  return apiFetch<{ message: string }>(`/job-alerts/${id}`, { method: 'DELETE', revalidate: false });
+}
+
+/** GET /job-alerts/:id/preview — jobs currently matching this alert. */
+export function previewJobAlert(id: string) {
+  return apiFetch<JobCard[]>(`/job-alerts/${id}/preview`, { revalidate: false });
+}

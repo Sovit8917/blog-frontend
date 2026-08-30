@@ -1,4 +1,5 @@
 import { NewsletterForm } from './NewsletterForm';
+import { NewsletterSponsorLine } from './NewsletterSponsorLine';
 
 export function NewsletterBanner() {
   return (
@@ -10,6 +11,7 @@ export function NewsletterBanner() {
       <div className="mx-auto mt-6 max-w-sm">
         <NewsletterForm />
       </div>
+      <NewsletterSponsorLine />
     </section>
   );
 }

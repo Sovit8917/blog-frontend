@@ -24,7 +24,8 @@ import { Badge } from '@/components/ui/Badge';
 import { JobGrid } from '@/components/jobs/JobGrid';
 import { MarkdownContent } from '@/components/shared/MarkdownContent';
 import { formatSalaryRange, EMPLOYMENT_TYPE_LABEL, EXPERIENCE_LEVEL_LABEL, REMOTE_TYPE_LABEL } from '@/lib/jobs/format';
-import { buildListMetadata } from '@/lib/seo/metadata';
+import { buildListMetadata, SITE } from '@/lib/seo/metadata';
+import { ShareButton } from '@/components/shared/ShareButton';
 import { formatDate, timeAgo } from '@/lib/utils';
 
 interface Props { params: { slug: string } }
@@ -60,6 +61,7 @@ export default async function JobDetailPage({ params }: Props) {
   const otherCompanyJobs = relatedJobs.items.filter((j) => j.id !== job.id);
   const salary = formatSalaryRange(job.salaryMin, job.salaryMax, job.salaryCurrency);
   const isExternalOnly = !job.allowInternalApply && !!job.applyUrl;
+  const jobUrl = `${SITE.url}/jobs/${job.slug}`;
 
   // Facts shown in the info grid — salary gets its own hero treatment above,
   // so it's deliberately left out here to avoid saying the same thing twice.
@@ -157,6 +159,7 @@ export default async function JobDetailPage({ params }: Props) {
                   alreadyApplied={alreadyApplied}
                 />
                 <SaveJobButton jobId={job.id} initialSaved={isSaved} />
+                <ShareButton url={jobUrl} title={`${job.title} at ${job.company.name}`} contentType="job" jobId={job.id} />
               </div>
 
               {/* Application-method messaging — makes it explicit up front whether
@@ -308,12 +311,14 @@ export default async function JobDetailPage({ params }: Props) {
       {/* ---- Sticky mobile apply bar ---- */}
       <div className="fixed inset-x-0 bottom-0 z-40 border-t border-ink-200 bg-white/95 p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] shadow-[0_-4px_16px_rgba(0,0,0,0.06)] backdrop-blur sm:hidden">
         <div className="flex items-center gap-2">
-          {salary && (
-            <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-bold text-ink-900">{salary}</p>
-              <p className="truncate text-xs text-ink-500">{job.company.name}</p>
-            </div>
-          )}
+          {/* Always show company context here, not just when a salary is
+              disclosed — otherwise an undisclosed-salary job left the bar
+              with nothing but two buttons and no reminder of what the
+              candidate is about to apply to. */}
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-sm font-bold text-ink-900">{salary || job.title}</p>
+            <p className="truncate text-xs text-ink-500">{job.company.name}</p>
+          </div>
           <div className="flex shrink-0 items-center gap-2">
             <SaveJobButton jobId={job.id} initialSaved={isSaved} />
             <ApplyJobButton

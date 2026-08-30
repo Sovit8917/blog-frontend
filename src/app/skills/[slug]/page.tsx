@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { BookOpen, Briefcase, ArrowRight } from 'lucide-react';
-import { getSkillBySlug, listJobsBySkill, listPostsByTag, searchPosts } from '@/lib/api';
+import { BookOpen, Briefcase, ArrowRight, Wrench } from 'lucide-react';
+import { getSkillBySlug, listJobsBySkill, listPostsByTag, searchPosts, listDeveloperResources } from '@/lib/api';
 import { JobGrid } from '@/components/jobs/JobGrid';
 import { PostGrid } from '@/components/blog/PostGrid';
+import { ResourceCard } from '@/components/resources/ResourceCard';
 import { LoadMoreLink } from '@/components/ui/LoadMoreLink';
 import { buildListMetadata } from '@/lib/seo/metadata';
 
@@ -32,20 +33,31 @@ export default async function SkillDetailPage({ params, searchParams }: Props) {
   // the skill (e.g. skill "node-js" vs tag "javascript"), so try an exact
   // tag match first, then fall back to a full-text search on the skill's
   // name so the page still shows *something* to learn from, not just jobs.
-  const [page, byTag] = await Promise.all([
+  const [page, byTag, resourcesByTag] = await Promise.all([
     listJobsBySkill(params.slug, jobsParams),
     listPostsByTag(params.slug, { limit: 6 }).catch(() => ({ items: [] })),
+    // Same tag-then-name-search fallback, applied to the curated Developer
+    // Resources catalog — this is the third leg of the loop (Skill →
+    // Article, Skill → Job, and now Skill → Resource) so a visitor
+    // learning a technology doesn't have to separately think to check
+    // /resources for tools that use the exact same tag vocabulary.
+    listDeveloperResources({ tag: params.slug, limit: 4 }).catch(() => ({ items: [] })),
   ]);
   let articles = byTag.items;
   if (articles.length === 0) {
     const bySearch = await searchPosts(skill.name, { limit: 6 }).catch(() => ({ items: [] }));
     articles = bySearch.items;
   }
+  let resources = resourcesByTag.items;
+  if (resources.length === 0) {
+    const bySearch = await listDeveloperResources({ search: skill.name, limit: 4 }).catch(() => ({ items: [] }));
+    resources = bySearch.items;
+  }
 
   return (
     <div className="container-page py-10">
       <header className="mb-10 max-w-2xl">
-        <p className="text-sm font-semibold uppercase tracking-wider text-brand-600">Developer Resources</p>
+        <p className="text-sm font-semibold uppercase tracking-wider text-brand-600">Skills &amp; Technologies</p>
         <h1 className="mt-1 text-3xl font-bold text-ink-900 sm:text-4xl">{skill.name}</h1>
         <p className="mt-3 text-ink-500">
           Learn {skill.name} from our articles below, then browse{' '}
@@ -71,6 +83,28 @@ export default async function SkillDetailPage({ params, searchParams }: Props) {
           <PostGrid posts={articles} />
         )}
       </section>
+
+      {resources.length > 0 && (
+        <section className="mb-12">
+          <div className="mb-6 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Wrench size={18} className="text-brand-600" />
+              <h2 className="text-xl font-bold text-ink-900">{skill.name} tools &amp; resources</h2>
+            </div>
+            <Link
+              href="/resources"
+              className="flex items-center gap-1 text-sm font-semibold text-brand-600 hover:text-brand-700"
+            >
+              Browse all resources <ArrowRight size={14} />
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {resources.map((resource) => (
+              <ResourceCard key={resource.id} resource={resource} />
+            ))}
+          </div>
+        </section>
+      )}
 
       <section>
         <div className="mb-6 flex items-center justify-between">

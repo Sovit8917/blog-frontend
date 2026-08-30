@@ -12,3 +12,5 @@ export * from './users';
 export * from './reading-history';
 export * from './collections';
 export * from './growth';
+export * from './resources';
+export * from './analytics';
