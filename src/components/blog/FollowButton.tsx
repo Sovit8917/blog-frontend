@@ -77,7 +77,7 @@ export function FollowButton({
           'flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium ring-1 transition disabled:opacity-60',
           following
             ? 'bg-ink-50 text-ink-700 ring-ink-200 hover:bg-ink-100'
-            : 'bg-brand-600 text-white ring-brand-600 hover:bg-brand-700',
+            : 'bg-slate-950 text-white ring-slate-950 hover:bg-slate-900',
         )}
       >
         {following ? <UserCheck size={16} /> : <UserPlus size={16} />}

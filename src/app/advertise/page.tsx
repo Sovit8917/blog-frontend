@@ -104,12 +104,12 @@ export default function AdvertisePage() {
           <div className="mt-7 flex flex-wrap gap-3">
             <Link
               href="/me/employer-access"
-              className="inline-flex items-center gap-2 rounded-lg bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700"
+              className="inline-flex items-center gap-2 rounded-xl bg-slate-950 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-900"
             >
               Become an employer <ArrowRight size={15} />
             </Link>
             <a
-              href="mailto:partnerships@theblog.com"
+              href="mailto:partnerships@devnexa.com"
               className="inline-flex items-center gap-2 rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-ink-700 ring-1 ring-inset ring-ink-200 transition hover:bg-ink-50"
             >
               Talk to our partnerships team
@@ -185,7 +185,7 @@ export default function AdvertisePage() {
             </p>
           </div>
           <a
-            href="mailto:partnerships@theblog.com"
+            href="mailto:partnerships@devnexa.com"
             className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-brand-700 shadow-sm transition hover:bg-brand-50"
           >
             Get in touch <ArrowRight size={15} />

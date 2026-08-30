@@ -120,7 +120,7 @@ export default async function CareerHubPage() {
         <div className="mt-5 flex flex-wrap justify-center gap-3">
           <Link
             href="/jobs"
-            className="rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700"
+            className="rounded-xl bg-slate-950 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-900"
           >
             Browse jobs
           </Link>

@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { subscribeNewsletter } from '@/lib/api';
-import { Button } from '@/components/ui/Button';
 
 export function NewsletterForm({ compact = false }: { compact?: boolean }) {
   const [email, setEmail] = useState('');
@@ -21,22 +20,26 @@ export function NewsletterForm({ compact = false }: { compact?: boolean }) {
   };
 
   if (status === 'done') {
-    return <p className="text-sm font-medium text-brand-600">You&apos;re subscribed — check your inbox to confirm.</p>;
+    return <p className="text-sm font-bold text-emerald-600">You&apos;re subscribed — check your inbox to confirm.</p>;
   }
 
   return (
-    <form onSubmit={onSubmit} className="flex gap-2">
+    <form onSubmit={onSubmit} className="flex flex-col gap-2.5 sm:flex-row">
       <input
         type="email"
         required
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="you@example.com"
-        className="w-full min-w-0 rounded-lg border border-ink-200 bg-white px-3.5 py-2.5 text-sm outline-none placeholder:text-ink-400 focus:border-brand-400 focus:ring-2 focus:ring-brand-100"
+        className="w-full min-w-0 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 shadow-sm outline-none placeholder:text-slate-400 focus:border-slate-400 focus:ring-2 focus:ring-slate-100"
       />
-      <Button type="submit" size={compact ? 'sm' : 'md'} disabled={status === 'loading'}>
+      <button
+        type="submit"
+        disabled={status === 'loading'}
+        className="inline-flex shrink-0 items-center justify-center rounded-xl bg-slate-950 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-900 active:scale-95 disabled:opacity-60"
+      >
         {status === 'loading' ? 'Joining…' : 'Subscribe'}
-      </Button>
+      </button>
     </form>
   );
 }

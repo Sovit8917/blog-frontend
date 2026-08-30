@@ -78,7 +78,7 @@ export default async function ResourcesPage({ searchParams }: Props) {
                     href={href}
                     className={`rounded-full px-3 py-1.5 text-xs font-semibold transition ${
                       active
-                        ? 'bg-brand-600 text-white'
+                        ? 'bg-slate-950 text-white'
                         : 'bg-ink-50 text-ink-600 hover:bg-ink-100'
                     }`}
                   >

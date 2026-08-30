@@ -207,7 +207,7 @@ export default async function PostPage({ params }: Props) {
                     />
                   )}
                   <div className="w-full sm:w-auto overflow-x-auto py-1 max-w-full no-scrollbar">
-                    <div className="flex items-center gap-2.5 rounded-full bg-slate-50 px-3.5 py-1.5 border border-slate-200/60 w-max">
+                    <div className="flex items-center gap-3 rounded-full bg-white/90 backdrop-blur-md px-4 py-2 border border-slate-200/80 shadow-md shadow-slate-900/5 w-max">
                       <LikeBookmarkBar
                         postId={post.id}
                         initialLikes={post.likeCount}

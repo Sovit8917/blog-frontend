@@ -125,27 +125,13 @@ export default async function JobDetailPage({ params }: Props) {
                 )}
               </header>
 
-              {/* Salary — the number most candidates scan for first, so it gets
-                  its own high-contrast block instead of hiding in a facts list. */}
-              {salary ? (
-                <div className="mt-6 flex items-center gap-3 rounded-xl bg-emerald-50 px-5 py-4 ring-1 ring-inset ring-emerald-100">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
-                    <DollarSign size={20} />
+              {/* Ultra-clean inline salary badge */}
+              {salary && (
+                <div className="mt-3 flex items-center gap-2">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3.5 py-1 text-sm font-bold text-emerald-700 ring-1 ring-inset ring-emerald-600/20">
+                    <DollarSign size={15} />
+                    {salary}
                   </span>
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">Salary</p>
-                    <p className="text-xl font-bold text-emerald-900 sm:text-2xl">{salary}</p>
-                  </div>
-                </div>
-              ) : (
-                <div className="mt-6 flex items-center gap-3 rounded-xl bg-ink-50 px-5 py-4 ring-1 ring-inset ring-ink-100">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-ink-100 text-ink-500">
-                    <DollarSign size={20} />
-                  </span>
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-wider text-ink-500">Salary</p>
-                    <p className="text-sm font-medium text-ink-600">Not disclosed by the employer</p>
-                  </div>
                 </div>
               )}
 

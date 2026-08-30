@@ -1,19 +1,31 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { createPortal } from 'react-dom';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { Menu, X, Bookmark, Search, Briefcase, Building2, GraduationCap, ChevronRight, User } from 'lucide-react';
-import { useAuth } from '@/lib/auth/AuthProvider';
-import type { Category } from '@/types';
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import {
+  Menu,
+  X,
+  Bookmark,
+  Search,
+  Briefcase,
+  Building2,
+  GraduationCap,
+  ChevronRight,
+  User,
+} from "lucide-react";
+import { useAuth } from "@/lib/auth/AuthProvider";
+import devnexaLogoTransparent from "@/assests/devnexa-logo-transpernet.png";
+import type { Category } from "@/types";
 
 type NavItem = { href: string; label: string };
 
 const JOB_ICON: Record<string, React.ElementType> = {
-  '/jobs': Briefcase,
-  '/companies': Building2,
-  '/skills': GraduationCap,
+  "/jobs": Briefcase,
+  "/companies": Building2,
+  "/skills": GraduationCap,
 };
 
 export function MobileNav({
@@ -41,13 +53,14 @@ export function MobileNav({
   useEffect(() => {
     if (!open) return;
     const original = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = original;
     };
   }, [open]);
 
-  const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
+  const isActive = (href: string) =>
+    pathname === href || pathname.startsWith(`${href}/`);
 
   const modalContent = open ? (
     <div className="fixed inset-0 z-[9999] flex">
@@ -69,9 +82,15 @@ export function MobileNav({
           <Link
             href="/"
             onClick={() => setOpen(false)}
-            className="text-xl font-extrabold tracking-tight text-ink-950"
+            className="flex items-center"
           >
-            The<span className="text-brand-600">Blog</span>
+            <Image
+              src={devnexaLogoTransparent}
+              alt="Devnexa"
+              height={44}
+              className="h-10.5 w-auto object-contain scale-110 origin-left contrast-125 brightness-95"
+              priority
+            />
           </Link>
           <button
             aria-label="Close menu"
@@ -108,11 +127,16 @@ export function MobileNav({
                     href={item.href}
                     className={`flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-xs font-semibold transition ${
                       isActive(item.href)
-                        ? 'bg-brand-50 text-brand-700 border border-brand-200/80'
-                        : 'bg-slate-50 text-ink-700 border border-slate-200/60 hover:bg-slate-100'
+                        ? "bg-brand-50 text-brand-700 border border-brand-200/80"
+                        : "bg-slate-50 text-ink-700 border border-slate-200/60 hover:bg-slate-100"
                     }`}
                   >
-                    <Icon size={16} className={isActive(item.href) ? 'text-brand-600' : 'text-ink-500'} />
+                    <Icon
+                      size={16}
+                      className={
+                        isActive(item.href) ? "text-brand-600" : "text-ink-500"
+                      }
+                    />
                     {item.label}
                   </Link>
                 );
@@ -129,7 +153,10 @@ export function MobileNav({
               <ul className="space-y-1">
                 {categories.map((cat) => (
                   <li key={cat.id}>
-                    <MobileLink href={`/category/${cat.slug}`} active={isActive(`/category/${cat.slug}`)}>
+                    <MobileLink
+                      href={`/category/${cat.slug}`}
+                      active={isActive(`/category/${cat.slug}`)}
+                    >
                       {cat.name}
                     </MobileLink>
                   </li>
@@ -145,29 +172,45 @@ export function MobileNav({
             </p>
             <ul className="space-y-1">
               <li>
-                <MobileLink href="/me/bookmarks" active={isActive('/me/bookmarks')} icon={<Bookmark size={17} />}>
+                <MobileLink
+                  href="/me/bookmarks"
+                  active={isActive("/me/bookmarks")}
+                  icon={<Bookmark size={17} />}
+                >
                   Bookmarks
                 </MobileLink>
               </li>
               {user && (
                 <>
                   <li>
-                    <MobileLink href="/me/applications" active={isActive('/me/applications')}>
+                    <MobileLink
+                      href="/me/applications"
+                      active={isActive("/me/applications")}
+                    >
                       My Applications
                     </MobileLink>
                   </li>
                   <li>
-                    <MobileLink href="/me/saved-jobs" active={isActive('/me/saved-jobs')}>
+                    <MobileLink
+                      href="/me/saved-jobs"
+                      active={isActive("/me/saved-jobs")}
+                    >
                       Saved Jobs
                     </MobileLink>
                   </li>
                   <li>
-                    <MobileLink href="/me/job-alerts" active={isActive('/me/job-alerts')}>
+                    <MobileLink
+                      href="/me/job-alerts"
+                      active={isActive("/me/job-alerts")}
+                    >
                       Job Alerts
                     </MobileLink>
                   </li>
                   <li>
-                    <MobileLink href="/me/resume" active={isActive('/me/resume')}>
+                    <MobileLink
+                      href="/me/resume"
+                      active={isActive("/me/resume")}
+                    >
                       My Resume
                     </MobileLink>
                   </li>
@@ -183,11 +226,15 @@ export function MobileNav({
             <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-3 min-w-0">
                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-100 text-brand-700 font-bold text-sm">
-                  {user.name?.[0] || 'U'}
+                  {user.name?.[0] || "U"}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-semibold text-ink-900">{user.name}</p>
-                  <p className="truncate text-xs text-ink-500">@{user.username}</p>
+                  <p className="truncate text-sm font-semibold text-ink-900">
+                    {user.name}
+                  </p>
+                  <p className="truncate text-xs text-ink-500">
+                    @{user.username}
+                  </p>
                 </div>
               </div>
               <button
@@ -205,7 +252,7 @@ export function MobileNav({
               <Link
                 href="/login"
                 onClick={() => setOpen(false)}
-                className="flex items-center justify-center gap-1.5 rounded-xl bg-brand-600 px-3 py-2.5 text-center text-xs font-semibold text-white shadow-sm hover:bg-brand-700 active:bg-brand-800 transition"
+                className="flex items-center justify-center gap-1.5 rounded-xl bg-slate-950 px-3 py-2.5 text-center text-xs font-semibold text-white shadow-sm hover:bg-slate-900 active:bg-black transition"
               >
                 <User size={15} />
                 <span>Sign in</span>
@@ -255,14 +302,19 @@ function MobileLink({
     <Link
       href={href}
       className={`flex items-center justify-between gap-2 rounded-lg px-3 py-3 text-[15px] font-medium transition ${
-        active ? 'bg-brand-50 text-brand-700' : 'text-ink-700 hover:bg-ink-50 active:bg-ink-100'
+        active
+          ? "bg-brand-50 text-brand-700"
+          : "text-ink-700 hover:bg-ink-50 active:bg-ink-100"
       }`}
     >
       <span className="flex items-center gap-2.5">
         {icon}
         {children}
       </span>
-      <ChevronRight size={16} className={active ? 'text-brand-400' : 'text-ink-300'} />
+      <ChevronRight
+        size={16}
+        className={active ? "text-brand-400" : "text-ink-300"}
+      />
     </Link>
   );
 }

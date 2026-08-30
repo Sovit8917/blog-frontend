@@ -139,7 +139,7 @@ export function CollectionPicker({ postId }: { postId: string }) {
               onClick={onCreate}
               disabled={!newName.trim() || creating}
               className={cn(
-                'shrink-0 rounded-lg bg-brand-600 px-2.5 py-1.5 text-xs font-semibold text-white transition hover:bg-brand-700 disabled:opacity-50',
+                'shrink-0 rounded-lg bg-slate-950 px-2.5 py-1.5 text-xs font-semibold text-white transition hover:bg-slate-900 disabled:opacity-50',
               )}
             >
               {creating ? <Loader2 size={14} className="animate-spin" /> : 'Add'}
