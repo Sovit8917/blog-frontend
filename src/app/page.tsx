@@ -121,9 +121,8 @@ export default async function HomePage() {
         </div>
       )}
 
-      <div className="container-page mt-10">
-        <AdSlot placement="HEADER" />
-      </div>
+
+      <AdSlot placement="HEADER" className="container-page mt-10" />
 
       <div className="container-page mt-12 grid grid-cols-1 gap-12 lg:grid-cols-[1fr_320px]">
         <div className="flex flex-col gap-12">

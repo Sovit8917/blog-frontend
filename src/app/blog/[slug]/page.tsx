@@ -238,9 +238,7 @@ export default async function PostPage({ params }: Props) {
                 </div>
 
                 {/* In-content Ad */}
-                <div className="my-10">
-                  <AdSlot placement="IN_CONTENT" />
-                </div>
+                <AdSlot placement="IN_CONTENT" className="my-10" />
 
                 {/* Footer Action Bar */}
                 <div className="w-full overflow-x-auto py-1 max-w-full no-scrollbar border-t border-slate-100 pt-6">
