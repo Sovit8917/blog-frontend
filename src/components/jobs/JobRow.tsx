@@ -1,10 +1,14 @@
-import Link from 'next/link';
-import Image from 'next/image';
-import { MapPin, BadgeCheck, ArrowUpRight } from 'lucide-react';
-import type { JobCard as JobCardType } from '@/types';
-import { Badge } from '@/components/ui/Badge';
-import { timeAgo } from '@/lib/utils';
-import { formatSalaryRange, EMPLOYMENT_TYPE_LABEL, REMOTE_TYPE_LABEL } from '@/lib/jobs/format';
+import Link from "next/link";
+import Image from "next/image";
+import { MapPin, BadgeCheck, ArrowUpRight } from "lucide-react";
+import type { JobCard as JobCardType } from "@/types";
+import { Badge } from "@/components/ui/Badge";
+import { timeAgo } from "@/lib/utils";
+import {
+  formatSalaryRange,
+  EMPLOYMENT_TYPE_LABEL,
+  REMOTE_TYPE_LABEL,
+} from "@/lib/jobs/format";
 
 /**
  * One row of the desktop/tablet jobs table. Mirrors the data shown in
@@ -12,7 +16,11 @@ import { formatSalaryRange, EMPLOYMENT_TYPE_LABEL, REMOTE_TYPE_LABEL } from '@/l
  * breakpoint never drops information.
  */
 export function JobRow({ job }: { job: JobCardType }) {
-  const salary = formatSalaryRange(job.salaryMin, job.salaryMax, job.salaryCurrency);
+  const salary = formatSalaryRange(
+    job.salaryMin,
+    job.salaryMax,
+    job.salaryCurrency,
+  );
 
   return (
     <tr className="border-b border-ink-100 align-top transition last:border-0 hover:bg-ink-50/60">
@@ -23,9 +31,16 @@ export function JobRow({ job }: { job: JobCardType }) {
             className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-ink-100"
           >
             {job.company.logoUrl ? (
-              <Image src={job.company.logoUrl} alt={job.company.name} fill className="object-cover" />
+              <Image
+                src={job.company.logoUrl}
+                alt={job.company.name}
+                fill
+                className="object-cover"
+              />
             ) : (
-              <span className="text-sm font-bold text-ink-400">{job.company.name[0]}</span>
+              <span className="text-sm font-bold text-ink-400">
+                {job.company.name[0]}
+              </span>
             )}
           </Link>
           <div className="min-w-0">
@@ -40,12 +55,18 @@ export function JobRow({ job }: { job: JobCardType }) {
               className="mt-0.5 flex items-center gap-1 truncate text-xs font-medium text-ink-500 hover:text-ink-700"
             >
               {job.company.name}
-              {job.company.isVerified && <BadgeCheck size={12} className="shrink-0 text-brand-500" />}
+              {job.company.isVerified && (
+                <BadgeCheck size={12} className="shrink-0 text-brand-500" />
+              )}
             </Link>
             {job.skills.length > 0 && (
               <div className="mt-1.5 flex flex-wrap gap-1">
                 {job.skills.slice(0, 3).map(({ skill }) => (
-                  <Badge key={skill.id} variant="outline" className="text-[11px]">
+                  <Badge
+                    key={skill.id}
+                    variant="outline"
+                    className="text-[11px]"
+                  >
                     {skill.name}
                   </Badge>
                 ))}
@@ -58,7 +79,8 @@ export function JobRow({ job }: { job: JobCardType }) {
       <td className="whitespace-nowrap px-4 py-4 text-ink-600">
         {job.location ? (
           <span className="flex items-center gap-1.5">
-            <MapPin size={13} className="shrink-0 text-ink-400" /> {job.location}
+            <MapPin size={13} className="shrink-0 text-ink-400" />{" "}
+            {job.location}
           </span>
         ) : (
           <span className="text-ink-300">—</span>
@@ -85,7 +107,7 @@ export function JobRow({ job }: { job: JobCardType }) {
       </td>
 
       <td className="whitespace-nowrap px-4 py-4 text-ink-400">
-        {job.publishedAt ? timeAgo(job.publishedAt) : '—'}
+        {job.publishedAt ? timeAgo(job.publishedAt) : "—"}
       </td>
 
       <td className="whitespace-nowrap px-4 py-4 text-right">

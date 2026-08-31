@@ -22,7 +22,9 @@ export function CommentSection({
   initialComments: Comment[];
 }) {
   const [comments] = useState<Comment[]>(
-    Array.isArray(initialComments) ? initialComments : [],
+    Array.isArray(initialComments)
+      ? initialComments
+      : (initialComments as { items?: Comment[] })?.items ?? [],
   );
   const [draft, setDraft] = useState("");
   const [submitting, setSubmitting] = useState(false);

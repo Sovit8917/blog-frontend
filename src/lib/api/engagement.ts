@@ -1,12 +1,17 @@
 import { apiFetch } from './client';
-import type { Comment, Post } from '@/types';
+import type { Comment, CursorPage, Post } from '@/types';
 
 /** GET /posts/:postId/comments — approved, threaded comments for a post. */
-export function listComments(postId: string) {
-  return apiFetch<Comment[]>(`/posts/${postId}/comments`, {
+export async function listComments(postId: string): Promise<Comment[]> {
+  const res = await apiFetch<CursorPage<Comment> | Comment[]>(`/posts/${postId}/comments`, {
     revalidate: 30,
     tags: [`comments:${postId}`],
   });
+  if (Array.isArray(res)) return res;
+  if (res && typeof res === 'object' && 'items' in res && Array.isArray((res as CursorPage<Comment>).items)) {
+    return (res as CursorPage<Comment>).items;
+  }
+  return [];
 }
 
 /**
