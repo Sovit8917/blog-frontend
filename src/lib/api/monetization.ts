@@ -45,3 +45,37 @@ export function getCurrentNewsletterSponsorSlot() {
 export function recordNewsletterSponsorClick(id: string) {
   return apiFetch<void>(`/newsletter/sponsor-slot/${id}/click`, { method: 'POST', revalidate: false });
 }
+
+export interface AdsenseSettings {
+  publisherId: string;
+  clientId: string;
+  slots: Partial<Record<AdPlacement, string>>;
+}
+
+/**
+ * GET /settings?group=monetization -- AdSense config as set in the admin
+ * Settings page. This is the source of truth when an admin has configured it
+ * there; NEXT_PUBLIC_ADSENSE_* env vars remain a deploy-time fallback for
+ * anyone who hasn't touched the admin UI (see getAdsenseSettings callers).
+ * Cached briefly since this rarely changes and every page load would
+ * otherwise cost an extra request.
+ */
+export async function getAdsenseSettings(): Promise<AdsenseSettings> {
+  const settings = await apiFetch<Record<string, any>>('/settings?group=monetization', {
+    revalidate: 300,
+    tags: ['settings:monetization'],
+  }).catch(() => ({}) as Record<string, any>);
+
+  return {
+    publisherId: settings.adsense_publisher_id || process.env.NEXT_PUBLIC_ADSENSE_PUBLISHER_ID || '',
+    clientId: settings.adsense_client_id || process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || '',
+    slots: {
+      HEADER: settings.adsense_slots?.HEADER || process.env.NEXT_PUBLIC_ADSENSE_SLOT_HEADER || '',
+      SIDEBAR: settings.adsense_slots?.SIDEBAR || process.env.NEXT_PUBLIC_ADSENSE_SLOT_SIDEBAR || '',
+      IN_CONTENT: settings.adsense_slots?.IN_CONTENT || process.env.NEXT_PUBLIC_ADSENSE_SLOT_IN_CONTENT || '',
+      FOOTER: settings.adsense_slots?.FOOTER || process.env.NEXT_PUBLIC_ADSENSE_SLOT_FOOTER || '',
+      BETWEEN_POSTS:
+        settings.adsense_slots?.BETWEEN_POSTS || process.env.NEXT_PUBLIC_ADSENSE_SLOT_BETWEEN_POSTS || '',
+    },
+  };
+}

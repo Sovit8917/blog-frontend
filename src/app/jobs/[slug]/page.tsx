@@ -23,7 +23,7 @@ import { SaveJobButton } from '@/components/jobs/SaveJobButton';
 import { Badge } from '@/components/ui/Badge';
 import { JobGrid } from '@/components/jobs/JobGrid';
 import { MarkdownContent } from '@/components/shared/MarkdownContent';
-import { formatSalaryRange, EMPLOYMENT_TYPE_LABEL, EXPERIENCE_LEVEL_LABEL, REMOTE_TYPE_LABEL } from '@/lib/jobs/format';
+import { formatSalaryRange, EMPLOYMENT_TYPE_LABEL, EXPERIENCE_LEVEL_LABEL, REMOTE_TYPE_LABEL, getJobCompany } from '@/lib/jobs/format';
 import { buildListMetadata, SITE } from '@/lib/seo/metadata';
 import { ShareButton } from '@/components/shared/ShareButton';
 import { formatDate, timeAgo } from '@/lib/utils';
@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const job = await getJobBySlug(params.slug).catch(() => null);
   if (!job) return {};
   return buildListMetadata({
-    title: job.seoTitle || `${job.title} at ${job.company.name}`,
+    title: job.seoTitle || `${job.title} at ${getJobCompany(job).name}`,
     description: job.seoDescription || job.description.slice(0, 160),
     path: `/jobs/${job.slug}`,
     image: job.ogImageUrl,
@@ -48,10 +48,11 @@ export default async function JobDetailPage({ params }: Props) {
   if (!job) notFound();
 
   const user = await getCurrentUser();
+  const company = getJobCompany(job);
 
-  const [relatedJobs, company, savedJobs, applications] = await Promise.all([
-    listJobsByCompany(job.company.slug, { limit: 4 }).catch(() => ({ items: [] as typeof job[] })),
-    getCompanyBySlug(job.company.slug).catch(() => null),
+  const [relatedJobs, companyProfile, savedJobs, applications] = await Promise.all([
+    company.slug ? listJobsByCompany(company.slug, { limit: 4 }).catch(() => ({ items: [] as typeof job[] })) : Promise.resolve({ items: [] as typeof job[] }),
+    company.slug ? getCompanyBySlug(company.slug).catch(() => null) : Promise.resolve(null),
     user ? mySavedJobs(getCookieHeader()).catch(() => []) : Promise.resolve([]),
     user ? myApplications(getCookieHeader()).catch(() => []) : Promise.resolve([]),
   ]);
@@ -88,6 +89,9 @@ export default async function JobDetailPage({ params }: Props) {
               <header>
                 <div className="mb-4 flex flex-wrap items-center gap-2">
                   {job.isFeatured && <Badge variant="brand" className="px-3 py-1 font-semibold">Featured</Badge>}
+                  {job.tags?.map((tag) => (
+                    <Badge key={tag} variant="dark" className="px-2.5 py-1">{tag}</Badge>
+                  ))}
                   <Badge variant="outline" className="px-2.5 py-1">{EMPLOYMENT_TYPE_LABEL[job.employmentType]}</Badge>
                   <Badge variant="outline" className="px-2.5 py-1">{REMOTE_TYPE_LABEL[job.remoteType]}</Badge>
                   {job.experienceLevel && <Badge variant="outline" className="px-2.5 py-1">{EXPERIENCE_LEVEL_LABEL[job.experienceLevel]}</Badge>}
@@ -97,26 +101,45 @@ export default async function JobDetailPage({ params }: Props) {
                   {job.title}
                 </h1>
 
-                <Link
-                  href={`/companies/${job.company.slug}`}
-                  className="mt-3 flex w-fit items-center gap-2 text-ink-600 transition hover:text-brand-600"
-                >
-                  {job.company.logoUrl ? (
-                    <Image
-                      src={job.company.logoUrl}
-                      alt=""
-                      width={24}
-                      height={24}
-                      className="h-6 w-6 shrink-0 rounded-md object-contain ring-1 ring-inset ring-ink-100"
-                    />
-                  ) : (
-                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-ink-100 text-ink-400">
-                      <Building2 size={13} />
-                    </span>
-                  )}
-                  <span className="font-semibold">{job.company.name}</span>
-                  {job.company.isVerified && <BadgeCheck size={16} className="text-brand-500" />}
-                </Link>
+                {company.slug ? (
+                  <Link
+                    href={`/companies/${company.slug}`}
+                    className="mt-3 flex w-fit items-center gap-2 text-ink-600 transition hover:text-brand-600"
+                  >
+                    {company.logoUrl ? (
+                      <Image
+                        src={company.logoUrl}
+                        alt=""
+                        width={24}
+                        height={24}
+                        className="h-6 w-6 shrink-0 rounded-md object-contain ring-1 ring-inset ring-ink-100"
+                      />
+                    ) : (
+                      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-ink-100 text-ink-400">
+                        <Building2 size={13} />
+                      </span>
+                    )}
+                    <span className="font-semibold">{company.name}</span>
+                    {company.isVerified && <BadgeCheck size={16} className="text-brand-500" />}
+                  </Link>
+                ) : (
+                  <div className="mt-3 flex w-fit items-center gap-2 text-ink-600">
+                    {company.logoUrl ? (
+                      <Image
+                        src={company.logoUrl}
+                        alt=""
+                        width={24}
+                        height={24}
+                        className="h-6 w-6 shrink-0 rounded-md object-contain ring-1 ring-inset ring-ink-100"
+                      />
+                    ) : (
+                      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-ink-100 text-ink-400">
+                        <Building2 size={13} />
+                      </span>
+                    )}
+                    <span className="font-semibold">{company.name}</span>
+                  </div>
+                )}
 
                 {job.location && (
                   <p className="mt-2 flex items-center gap-1.5 text-sm text-ink-500">
@@ -145,7 +168,7 @@ export default async function JobDetailPage({ params }: Props) {
                   alreadyApplied={alreadyApplied}
                 />
                 <SaveJobButton jobId={job.id} initialSaved={isSaved} />
-                <ShareButton url={jobUrl} title={`${job.title} at ${job.company.name}`} contentType="job" jobId={job.id} />
+                <ShareButton url={jobUrl} title={`${job.title} at ${company.name}`} contentType="job" jobId={job.id} />
               </div>
 
               {/* Application-method messaging — makes it explicit up front whether
@@ -154,12 +177,12 @@ export default async function JobDetailPage({ params }: Props) {
                 {isExternalOnly ? (
                   <>
                     <ExternalLink size={13} />
-                    You'll be taken to {job.company.name}'s own site to finish applying.
+                    You'll be taken to {company.name}'s own site to finish applying.
                   </>
                 ) : (
                   <>
                     <ShieldCheck size={13} />
-                    Apply directly — your profile and resume are sent straight to {job.company.name}.
+                    Apply directly — your profile and resume are sent straight to {company.name}.
                   </>
                 )}
               </p>
@@ -213,10 +236,10 @@ export default async function JobDetailPage({ params }: Props) {
               {/* ---- Stronger company card ---- */}
               <div className="overflow-hidden rounded-2xl border border-slate-200/70 bg-white shadow-sm">
                 <div className="flex items-center gap-3 border-b border-slate-100 p-6">
-                  {job.company.logoUrl ? (
+                  {company.logoUrl ? (
                     <Image
-                      src={job.company.logoUrl}
-                      alt={job.company.name}
+                      src={company.logoUrl}
+                      alt={company.name}
                       width={52}
                       height={52}
                       className="h-13 w-13 shrink-0 rounded-xl object-contain ring-1 ring-inset ring-ink-100"
@@ -228,63 +251,65 @@ export default async function JobDetailPage({ params }: Props) {
                   )}
                   <div className="min-w-0">
                     <div className="flex items-center gap-1.5">
-                      <h3 className="truncate font-serif text-lg font-bold text-ink-950">{job.company.name}</h3>
-                      {job.company.isVerified && <BadgeCheck size={16} className="shrink-0 text-brand-500" />}
+                      <h3 className="truncate font-serif text-lg font-bold text-ink-950">{company.name}</h3>
+                      {company.isVerified && <BadgeCheck size={16} className="shrink-0 text-brand-500" />}
                     </div>
-                    {company?.location && (
+                    {companyProfile?.location && (
                       <p className="flex items-center gap-1 truncate text-xs text-ink-500">
-                        <MapPin size={12} /> {company.location}
+                        <MapPin size={12} /> {companyProfile.location}
                       </p>
                     )}
                   </div>
                 </div>
 
                 <div className="space-y-4 p-6">
-                  {company?.description && (
-                    <p className="line-clamp-4 text-sm leading-relaxed text-ink-600">{company.description}</p>
+                  {companyProfile?.description && (
+                    <p className="line-clamp-4 text-sm leading-relaxed text-ink-600">{companyProfile.description}</p>
                   )}
 
                   <dl className="space-y-2.5 text-sm">
-                    {company?._count && (
+                    {companyProfile?._count && (
                       <div className="flex items-center justify-between">
                         <dt className="flex items-center gap-1.5 text-ink-500">
                           <Briefcase size={14} /> Open roles
                         </dt>
-                        <dd className="font-semibold text-ink-900">{company._count.jobs}</dd>
+                        <dd className="font-semibold text-ink-900">{companyProfile._count.jobs}</dd>
                       </div>
                     )}
-                    {company?.website && (
+                    {companyProfile?.website && (
                       <div className="flex items-center justify-between gap-2">
                         <dt className="flex items-center gap-1.5 text-ink-500">
                           <Globe size={14} /> Website
                         </dt>
                         <dd className="truncate">
                           <a
-                            href={company.website}
+                            href={companyProfile.website}
                             target="_blank"
                             rel="noopener noreferrer nofollow"
                             className="font-semibold text-brand-600 hover:underline"
                           >
-                            {company.website.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')}
+                            {companyProfile.website.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')}
                           </a>
                         </dd>
                       </div>
                     )}
                   </dl>
 
-                  <Link
-                    href={`/companies/${job.company.slug}`}
-                    className="flex items-center justify-center gap-1.5 rounded-lg bg-ink-50 py-2.5 text-sm font-semibold text-ink-700 transition hover:bg-ink-100"
-                  >
-                    View company profile →
-                  </Link>
+                  {company.slug && (
+                    <Link
+                      href={`/companies/${company.slug}`}
+                      className="flex items-center justify-center gap-1.5 rounded-lg bg-ink-50 py-2.5 text-sm font-semibold text-ink-700 transition hover:bg-ink-100"
+                    >
+                      View company profile →
+                    </Link>
+                  )}
                 </div>
               </div>
 
               {otherCompanyJobs.length > 0 && (
                 <div className="rounded-2xl border border-slate-200/70 bg-white p-6 shadow-sm">
                   <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-brand-600">
-                    More at {job.company.name}
+                    More at {company.name}
                   </h3>
                   <JobGrid jobs={otherCompanyJobs} />
                 </div>
@@ -303,7 +328,7 @@ export default async function JobDetailPage({ params }: Props) {
               candidate is about to apply to. */}
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-bold text-ink-900">{salary || job.title}</p>
-            <p className="truncate text-xs text-ink-500">{job.company.name}</p>
+            <p className="truncate text-xs text-ink-500">{company.name}</p>
           </div>
           <div className="flex shrink-0 items-center gap-2">
             <SaveJobButton jobId={job.id} initialSaved={isSaved} />

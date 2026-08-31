@@ -8,6 +8,7 @@ import {
   formatSalaryRange,
   EMPLOYMENT_TYPE_LABEL,
   REMOTE_TYPE_LABEL,
+  getJobCompany,
 } from "@/lib/jobs/format";
 
 /**
@@ -16,6 +17,7 @@ import {
  * breakpoint never drops information.
  */
 export function JobRow({ job }: { job: JobCardType }) {
+  const company = getJobCompany(job);
   const salary = formatSalaryRange(
     job.salaryMin,
     job.salaryMax,
@@ -24,41 +26,77 @@ export function JobRow({ job }: { job: JobCardType }) {
 
   return (
     <tr className="border-b border-ink-100 align-top transition last:border-0 hover:bg-ink-50/60">
-      <td className="max-w-[340px] px-4 py-4">
+      <td className="max-w-[360px] px-4 py-4">
         <div className="flex items-start gap-3">
-          <Link
-            href={`/companies/${job.company.slug}`}
-            className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-ink-100"
-          >
-            {job.company.logoUrl ? (
-              <Image
-                src={job.company.logoUrl}
-                alt={job.company.name}
-                fill
-                className="object-cover"
-              />
-            ) : (
-              <span className="text-sm font-bold text-ink-400">
-                {job.company.name[0]}
-              </span>
-            )}
-          </Link>
-          <div className="min-w-0">
-            <Link href={`/jobs/${job.slug}`} className="group">
-              <p className="flex items-center gap-1.5 truncate font-semibold text-ink-900 group-hover:text-brand-600">
-                {job.title}
-                {job.isFeatured && <Badge variant="brand">Featured</Badge>}
-              </p>
-            </Link>
+          {company.slug ? (
             <Link
-              href={`/companies/${job.company.slug}`}
-              className="mt-0.5 flex items-center gap-1 truncate text-xs font-medium text-ink-500 hover:text-ink-700"
+              href={`/companies/${company.slug}`}
+              className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-ink-100"
             >
-              {job.company.name}
-              {job.company.isVerified && (
-                <BadgeCheck size={12} className="shrink-0 text-brand-500" />
+              {company.logoUrl ? (
+                <Image
+                  src={company.logoUrl}
+                  alt={company.name}
+                  fill
+                  className="object-cover"
+                />
+              ) : (
+                <span className="text-sm font-bold text-ink-400">
+                  {company.name[0]}
+                </span>
               )}
             </Link>
+          ) : (
+            <div className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-ink-100">
+              {company.logoUrl ? (
+                <Image
+                  src={company.logoUrl}
+                  alt={company.name}
+                  fill
+                  className="object-cover"
+                />
+              ) : (
+                <span className="text-sm font-bold text-ink-400">
+                  {company.name[0]}
+                </span>
+              )}
+            </div>
+          )}
+          <div className="min-w-0">
+            {(job.tags && job.tags.length > 0) || job.isFeatured ? (
+              <div className="mb-1 flex flex-wrap gap-1">
+                {job.isFeatured && (
+                  <Badge variant="dark" className="text-[10px]">
+                    Featured
+                  </Badge>
+                )}
+                {job.tags?.slice(0, 2).map((tag) => (
+                  <Badge key={tag} variant="dark" className="text-[10px]">
+                    {tag}
+                  </Badge>
+                ))}
+              </div>
+            ) : null}
+            <Link href={`/jobs/${job.slug}`} className="group">
+              <p className="truncate font-semibold text-ink-900 group-hover:text-brand-600">
+                {job.title}
+              </p>
+            </Link>
+            {company.slug ? (
+              <Link
+                href={`/companies/${company.slug}`}
+                className="mt-0.5 flex items-center gap-1 truncate text-xs font-medium text-ink-500 hover:text-ink-700"
+              >
+                {company.name}
+                {company.isVerified && (
+                  <BadgeCheck size={12} className="shrink-0 text-brand-500" />
+                )}
+              </Link>
+            ) : (
+              <span className="mt-0.5 flex items-center gap-1 truncate text-xs font-medium text-ink-500">
+                {company.name}
+              </span>
+            )}
             {job.skills.length > 0 && (
               <div className="mt-1.5 flex flex-wrap gap-1">
                 {job.skills.slice(0, 3).map(({ skill }) => (
@@ -113,9 +151,9 @@ export function JobRow({ job }: { job: JobCardType }) {
       <td className="whitespace-nowrap px-4 py-4 text-right">
         <Link
           href={`/jobs/${job.slug}`}
-          className="inline-flex items-center gap-1 rounded-lg px-3 py-1.5 text-sm font-medium text-brand-600 ring-1 ring-inset ring-brand-200 transition hover:bg-brand-50"
+          className="inline-flex items-center gap-1.5 rounded-lg bg-ink-900 px-3.5 py-1.5 text-sm font-semibold text-white transition hover:bg-ink-800"
         >
-          View <ArrowUpRight size={14} />
+          Apply Now <ArrowUpRight size={14} />
         </Link>
       </td>
     </tr>

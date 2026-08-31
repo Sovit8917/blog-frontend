@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, MapPin } from "lucide-react";
 import type { JobCard as JobCardType } from "@/types";
-import { formatSalaryRange, REMOTE_TYPE_LABEL } from "@/lib/jobs/format";
+import { formatSalaryRange, REMOTE_TYPE_LABEL, getJobCompany } from "@/lib/jobs/format";
 
 /**
  * Sits inline in the reading flow (between article rows) instead of only in
@@ -26,7 +26,9 @@ export function RelatedJobsStrip({ jobs }: { jobs: JobCardType[] }) {
         </Link>
       </div>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-        {jobs.slice(0, 3).map((job) => (
+        {jobs.slice(0, 3).map((job) => {
+          const company = getJobCompany(job);
+          return (
           <Link
             key={job.id}
             href={`/jobs/${job.slug}`}
@@ -34,21 +36,21 @@ export function RelatedJobsStrip({ jobs }: { jobs: JobCardType[] }) {
           >
             <div className="flex items-center gap-2">
               <div className="relative flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-md bg-ink-100">
-                {job.company.logoUrl ? (
+                {company.logoUrl ? (
                   <Image
-                    src={job.company.logoUrl}
-                    alt={job.company.name}
+                    src={company.logoUrl}
+                    alt={company.name}
                     fill
                     className="object-cover"
                   />
                 ) : (
                   <span className="text-[10px] font-bold text-ink-400">
-                    {job.company.name[0]}
+                    {company.name[0]}
                   </span>
                 )}
               </div>
               <span className="truncate text-xs font-medium text-ink-500">
-                {job.company.name}
+                {company.name}
               </span>
             </div>
             <h3 className="line-clamp-2 text-sm font-semibold leading-snug text-ink-900 transition group-hover:text-brand-600">
@@ -74,7 +76,8 @@ export function RelatedJobsStrip({ jobs }: { jobs: JobCardType[] }) {
               )}
             </div>
           </Link>
-        ))}
+          );
+        })}
       </div>
     </section>
   );

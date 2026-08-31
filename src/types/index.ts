@@ -310,7 +310,10 @@ export interface Job {
   id: string;
   title: string;
   slug: string;
-  companyId: string;
+  companyId?: string | null;
+  companyName?: string | null;
+  companyLogoUrl?: string | null;
+  tags?: string[];
   description: string;
   responsibilities?: string | null;
   requirements?: string | null;
@@ -338,7 +341,9 @@ export interface Job {
   expiresAt?: string | null;
   createdAt: string;
   updatedAt: string;
-  company: CompanySummary;
+  // Present when the job links to a real Company record. When absent, fall
+  // back to companyName/companyLogoUrl (see lib/jobs/format.ts#getJobCompany).
+  company?: CompanySummary | null;
   postedBy: { id: string; username: string; name: string };
   skills: JobSkillLink[];
 }
@@ -382,7 +387,9 @@ export interface JobApplication {
     title: string;
     slug: string;
     status: JobStatus;
-    company: { name: string; slug: string; logoUrl?: string | null };
+    companyName?: string | null;
+    companyLogoUrl?: string | null;
+    company?: { name: string; slug: string; logoUrl?: string | null } | null;
   };
 }
 
@@ -399,7 +406,9 @@ export interface SavedJob {
     remoteType: RemoteType;
     employmentType: EmploymentType;
     status: JobStatus;
-    company: { name: string; slug: string; logoUrl?: string | null };
+    companyName?: string | null;
+    companyLogoUrl?: string | null;
+    company?: { name: string; slug: string; logoUrl?: string | null } | null;
   };
 }
 

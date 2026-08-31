@@ -7,6 +7,7 @@ import { APPLICATION_STATUS_LABEL } from "@/lib/api/jobs";
 import { Badge } from "@/components/ui/Badge";
 import { WithdrawApplicationButton } from "@/components/jobs/WithdrawApplicationButton";
 import { timeAgo } from "@/lib/utils";
+import { getJobCompany } from "@/lib/jobs/format";
 import { buildListMetadata } from "@/lib/seo/metadata";
 
 export const metadata: Metadata = buildListMetadata({
@@ -46,22 +47,24 @@ export default async function MyApplicationsPage() {
         </div>
       ) : (
         <ul className="flex flex-col gap-4">
-          {applications.map((app) => (
+          {applications.map((app) => {
+            const company = app.job ? getJobCompany(app.job) : null;
+            return (
             <li
               key={app.id}
               className="flex items-center gap-4 rounded-xl border border-ink-100 p-4"
             >
               <div className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-ink-100">
-                {app.job?.company.logoUrl ? (
+                {company?.logoUrl ? (
                   <Image
-                    src={app.job.company.logoUrl}
-                    alt={app.job.company.name}
+                    src={company.logoUrl}
+                    alt={company.name}
                     fill
                     className="object-cover"
                   />
                 ) : (
                   <span className="text-sm font-bold text-ink-400">
-                    {app.job?.company.name?.[0]}
+                    {company?.name?.[0]}
                   </span>
                 )}
               </div>
@@ -72,7 +75,7 @@ export default async function MyApplicationsPage() {
                 >
                   {app.job?.title}
                 </Link>
-                <p className="text-sm text-ink-500">{app.job?.company.name}</p>
+                <p className="text-sm text-ink-500">{company?.name}</p>
                 <p className="mt-0.5 text-xs text-ink-400">
                   Applied {timeAgo(app.createdAt)}
                 </p>
@@ -84,7 +87,8 @@ export default async function MyApplicationsPage() {
                 <WithdrawApplicationButton applicationId={app.id} />
               )}
             </li>
-          ))}
+            );
+          })}
         </ul>
       )}
     </div>

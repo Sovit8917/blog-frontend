@@ -40,3 +40,31 @@ export function formatSalaryRange(
   if (min != null) return `From ${fmt(min)}`;
   return `Up to ${fmt(max as number)}`;
 }
+
+/**
+ * A job either links to a real Company record (`job.company`) or was posted
+ * with a manually-typed name/logo (`job.companyName`/`companyLogoUrl`) for
+ * external/off-platform postings. This is the single place that resolves
+ * which one to show, so cards/rows/detail pages never have to branch on it
+ * themselves.
+ */
+export function getJobCompany(job: {
+  company?: { name: string; slug: string; logoUrl?: string | null; isVerified?: boolean } | null;
+  companyName?: string | null;
+  companyLogoUrl?: string | null;
+}) {
+  if (job.company) {
+    return {
+      name: job.company.name,
+      logoUrl: job.company.logoUrl ?? null,
+      isVerified: job.company.isVerified ?? false,
+      slug: job.company.slug as string | null,
+    };
+  }
+  return {
+    name: job.companyName || 'Company',
+    logoUrl: job.companyLogoUrl ?? null,
+    isVerified: false,
+    slug: null as string | null,
+  };
+}

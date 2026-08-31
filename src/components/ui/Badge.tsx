@@ -6,7 +6,7 @@ export function Badge({
   className,
 }: {
   children: React.ReactNode;
-  variant?: 'default' | 'brand' | 'sponsor' | 'outline';
+  variant?: 'default' | 'brand' | 'sponsor' | 'outline' | 'dark';
   className?: string;
 }) {
   const styles = {
@@ -14,6 +14,7 @@ export function Badge({
     brand: 'bg-brand-50 text-brand-700',
     sponsor: 'bg-amber-50 text-amber-800 ring-1 ring-amber-200',
     outline: 'ring-1 ring-inset ring-ink-200 text-ink-600',
+    dark: 'bg-ink-900 text-white uppercase tracking-wide',
   };
   return (
     <span

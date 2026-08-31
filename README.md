@@ -180,6 +180,109 @@ Tailwind config (`tailwind.config.ts`) defines the whole visual language:
   `SIDEBAR` in the shared `Sidebar`, `IN_CONTENT` + `BETWEEN_POSTS` on post
   detail.
 
+### Monetization: house ads + Google AdSense waterfall
+
+`AdSlot` is a two-tier waterfall, not just a house-ad renderer:
+
+1. **House ad** (`GET /ads?placement=X`) — direct-sold sponsor/affiliate ads.
+   These win whenever one is active for the slot, since direct deals almost
+   always pay better per-impression than programmatic.
+2. **Google AdSense fallback** — if no house ad is active (nothing booked,
+   campaign paused, budget exhausted), `AdSlot` renders a `GoogleAdUnit`
+   instead of leaving the space empty and unmonetized. If neither is
+   configured, the slot renders nothing — never a broken placeholder.
+
+**Preferred setup: the admin panel.** Publisher ID, client ID, and per-
+placement ad-unit slot IDs are editable at Settings → "Ad network (Google
+AdSense)" in blog-admin-frontend, stored as a public `monetization` setting
+group (`GET/POST /cms/settings`, publicly readable at `GET /settings` since
+none of these values are secret — they're embedded in client-side script
+tags either way). Changes there go live on the site immediately, no
+frontend rebuild/redeploy required.
+
+`NEXT_PUBLIC_ADSENSE_*` env vars still work as a deploy-time fallback for
+anyone who hasn't configured it in the admin panel (see
+`getAdsenseSettings` in `src/lib/api/monetization.ts`, which checks admin
+settings first and falls back to these):
+
+```bash
+# .env.local — only needed if not configuring via the admin panel
+NEXT_PUBLIC_ADSENSE_PUBLISHER_ID=pub-XXXXXXXXXXXXXXXX   # AdSense > Account
+NEXT_PUBLIC_ADSENSE_CLIENT_ID=ca-pub-XXXXXXXXXXXXXXXX   # same number, ca-pub- prefix
+NEXT_PUBLIC_ADSENSE_SLOT_HEADER=1111111111
+NEXT_PUBLIC_ADSENSE_SLOT_SIDEBAR=2222222222
+NEXT_PUBLIC_ADSENSE_SLOT_IN_CONTENT=3333333333
+NEXT_PUBLIC_ADSENSE_SLOT_FOOTER=4444444444
+NEXT_PUBLIC_ADSENSE_SLOT_BETWEEN_POSTS=5555555555
+```
+
+- `GoogleAdSenseScript` (loaded once in the root layout) injects the AdSense
+  loader tag site-wide — required even for manual ad units, not just Auto
+  Ads. It renders nothing if no client ID is configured anywhere, so
+  local/staging environments without an approved AdSense account are
+  unaffected.
+- `/ads.txt` is served dynamically from the same settings/env source
+  (`src/app/ads.txt/route.ts`) rather than a static file. A missing or wrong
+  `ads.txt` is one of the most common causes of AdSense "limited ads" /
+  reduced fill, so this can't silently drift from the publisher ID used
+  elsewhere.
+- Placements left blank in the admin panel (or unset in env) simply get no
+  AdSense fallback — house ads still work there regardless. `POPUP` has no
+  admin field at all, since most AdSense policies frown on interstitial-style
+  placement.
+- Auto Ads (Google's algorithmic extra placements) is a per-site toggle in
+  the AdSense dashboard, not a code flag — deliberately left off by default
+  there, since it tends to visually clash with these hand-placed slots.
+- **Before going live**: get the domain verified and approved in AdSense
+  first (Sites > Add site), or ad units will render as blank space until
+  approval clears — this can take anywhere from a day to a couple of weeks.
+- **Layout shift**: `GoogleAdUnit` reserves a slot-shaped box via the same
+  `SLOT_SIZES` map used for house ads, but AdSense's actual rendered size
+  can still vary slightly by format — worth a Lighthouse/CLS check after
+  wiring in real slot IDs.
+
+### Consent (Google Consent Mode v2)
+
+`ConsentBanner` (root layout, shown to every visitor once — see
+`src/lib/ads/consent.ts`) gates ad personalization/measurement cookies via
+Google's Consent Mode v2:
+
+- `GoogleAdSenseScript` injects a `beforeInteractive` snippet that sets
+  `ad_storage` / `ad_user_data` / `ad_personalization` / `analytics_storage`
+  to `'denied'` by default, before the AdSense loader script runs. AdSense
+  reads this signal itself — the denied default means it serves
+  non-personalized ads only, until/unless the visitor accepts.
+- Choosing Accept/Decline in the banner calls `gtag('consent', 'update', …)`
+  immediately (no reload needed) and stores the choice in `localStorage` so
+  the banner doesn't reappear on the next visit.
+- Declining doesn't disable ads — it withholds personalization/measurement
+  consent, so AdSense falls back to non-personalized (still revenue-
+  generating, just lower-CPM) ads instead.
+- This is a self-hosted, minimal Consent Mode implementation — not a full
+  IAB TCF-certified CMP. It's shown to every visitor rather than gated by
+  geo-IP, since there's no geo lookup in this codebase and "only show it in
+  the EU" is easy to get wrong. If you need TCF/GDPR compliance at a more
+  rigorous level (e.g. per-vendor consent, TC string generation for ad
+  exchanges beyond AdSense), swap this for a certified CMP — Google's
+  [approved CMP list](https://support.google.com/adsense/answer/13554116).
+- `ConsentBanner` intentionally has no "Learn more" link yet, since this
+  repo has no `/privacy` page — add one and link it in
+  `ConsentBanner.tsx` (see the `TODO` there) before relying on this for
+  actual compliance.
+
+### Ideas for going further on monetization
+
+- **Header bidding** (e.g. Prebid.js) if AdSense fill/CPM alone plateaus —
+  runs AdSense alongside other demand sources (Amazon TAM, other SSPs) in
+  parallel and serves whichever bids highest per-impression. Meaningfully
+  more setup than a single network, worth it once traffic justifies it.
+- **Newsletter/lead-gen slots** using the existing `Advertisement` model —
+  a `NEWSLETTER` placement alongside the ad ones, sold the same way as
+  `SPONSOR`/`AFFILIATE` inventory today.
+- **Reader-funded tier**: the `for-you`/`me` auth surface already exists;
+  an ad-free subscription is a small addition — gate `AdSlot`'s render on
+  `viewer?.plan !== 'AD_FREE'`.
+
 ---
 
 ## Setup

@@ -6,6 +6,8 @@ import { organizationJsonLd } from '@/lib/seo/jsonld';
 import { SITE } from '@/lib/seo/metadata';
 import { AuthProvider } from '@/lib/auth/AuthProvider';
 import { getCurrentUser } from '@/lib/auth/session';
+import { GoogleAdSenseScript } from '@/components/ads/GoogleAdSenseScript';
+import { ConsentBanner } from '@/components/ads/ConsentBanner';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -23,6 +25,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en" className={`${inter.variable} ${sourceSerif.variable}`}>
       <body className="flex min-h-screen flex-col">
+        <GoogleAdSenseScript />
         <script
           type="application/ld+json"
           // eslint-disable-next-line react/no-danger
@@ -33,6 +36,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <main className="flex-1">{children}</main>
           <Footer />
         </AuthProvider>
+        <ConsentBanner />
       </body>
     </html>
   );

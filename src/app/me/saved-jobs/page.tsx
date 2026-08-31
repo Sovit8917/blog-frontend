@@ -4,7 +4,7 @@ import Image from "next/image";
 import { mySavedJobs } from "@/lib/api";
 import { getCookieHeader } from "@/lib/auth/session";
 import { UnsaveJobButton } from "@/components/jobs/UnsaveJobButton";
-import { EMPLOYMENT_TYPE_LABEL, REMOTE_TYPE_LABEL } from "@/lib/jobs/format";
+import { EMPLOYMENT_TYPE_LABEL, REMOTE_TYPE_LABEL, getJobCompany } from "@/lib/jobs/format";
 import { Badge } from "@/components/ui/Badge";
 import { buildListMetadata } from "@/lib/seo/metadata";
 
@@ -36,22 +36,24 @@ export default async function SavedJobsPage() {
         </div>
       ) : (
         <ul className="flex flex-col gap-4">
-          {saved.map((s) => (
+          {saved.map((s) => {
+            const company = getJobCompany(s.job);
+            return (
             <li
               key={s.id}
               className="flex items-center gap-4 rounded-xl border border-ink-100 p-4"
             >
               <div className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-ink-100">
-                {s.job.company.logoUrl ? (
+                {company.logoUrl ? (
                   <Image
-                    src={s.job.company.logoUrl}
-                    alt={s.job.company.name}
+                    src={company.logoUrl}
+                    alt={company.name}
                     fill
                     className="object-cover"
                   />
                 ) : (
                   <span className="text-sm font-bold text-ink-400">
-                    {s.job.company.name[0]}
+                    {company.name[0]}
                   </span>
                 )}
               </div>
@@ -62,7 +64,7 @@ export default async function SavedJobsPage() {
                 >
                   {s.job.title}
                 </Link>
-                <p className="text-sm text-ink-500">{s.job.company.name}</p>
+                <p className="text-sm text-ink-500">{company.name}</p>
                 <div className="mt-1 flex gap-2">
                   <Badge variant="outline">
                     {EMPLOYMENT_TYPE_LABEL[s.job.employmentType]}
@@ -74,7 +76,8 @@ export default async function SavedJobsPage() {
               </div>
               <UnsaveJobButton jobId={s.jobId} />
             </li>
-          ))}
+            );
+          })}
         </ul>
       )}
     </div>

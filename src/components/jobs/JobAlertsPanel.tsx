@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Loader2, Search, Trash2 } from 'lucide-react';
 import { deleteJobAlert, previewJobAlert, updateJobAlert } from '@/lib/api/jobs';
+import { getJobCompany } from '@/lib/jobs/format';
 import { ApiRequestError } from '@/lib/api/client';
 import { Badge } from '@/components/ui/Badge';
 import {
@@ -182,7 +183,7 @@ function AlertRow({
                 <Link href={`/jobs/${job.slug}`} className="text-sm font-medium text-ink-700 hover:text-brand-600">
                   {job.title}
                 </Link>{' '}
-                <span className="text-sm text-ink-400">— {job.company.name}</span>
+                <span className="text-sm text-ink-400">— {getJobCompany(job).name}</span>
               </li>
             ))}
           </ul>
