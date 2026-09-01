@@ -3,13 +3,15 @@ import type { AdPlacement } from '@/types';
 import { AdBox } from './AdBox';
 import { GoogleAdUnit } from './GoogleAdUnit';
 
+// Mobile gets a shorter reserved box than desktop so the slot never eats a
+// disproportionate share of a small viewport while it's loading/unfilled.
 const SLOT_SIZES: Record<AdPlacement, string> = {
-  HEADER: 'h-[90px] max-w-[728px]',
+  HEADER: 'h-[50px] sm:h-[90px] max-w-[728px]',
   SIDEBAR: 'aspect-[300/250] max-w-[300px]',
-  IN_CONTENT: 'aspect-[16/6] max-w-full',
-  FOOTER: 'h-[90px] max-w-[728px]',
-  BETWEEN_POSTS: 'aspect-[16/5] max-w-full',
-  POPUP: 'aspect-square max-w-[400px]',
+  IN_CONTENT: 'aspect-[16/9] sm:aspect-[16/6] max-w-full',
+  FOOTER: 'h-[50px] sm:h-[90px] max-w-[728px]',
+  BETWEEN_POSTS: 'aspect-[16/9] sm:aspect-[16/5] max-w-full',
+  POPUP: 'aspect-square max-w-[280px] sm:max-w-[400px]',
 };
 
 /**

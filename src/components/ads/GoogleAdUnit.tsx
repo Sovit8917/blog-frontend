@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useId, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 declare global {
   interface Window {
@@ -16,9 +16,8 @@ declare global {
  * here, since it may come from the admin Settings page at request time —
  * see getAdsenseSettings.
  *
- * Pushes to window.adsbygoogle on mount, and re-pushes if `slot` changes
- * (e.g. client-side navigation between posts) since each <ins> needs its
- * own (single) push call to actually render.
+ * Pushes to window.adsbygoogle on mount, and re-pushes if `clientId` or `slot`
+ * changes (e.g. client-side navigation between posts) with fresh ins tracking.
  */
 export function GoogleAdUnit({
   clientId,
@@ -36,58 +35,143 @@ export function GoogleAdUnit({
   style?: React.CSSProperties;
 }) {
   const insRef = useRef<HTMLModElement>(null);
-  const pushed = useRef(false);
-  const uid = useId();
-  // AdSense reserves layout space via `min-height` on the <ins> the moment
-  // it's pushed, even when the request ends up unfilled (no approved ads
-  // for this slot yet, blocked by an ad blocker, etc). Left unchecked that
-  // leaves a big blank "Advertisement" box on the page. So: assume filled
-  // optimistically, then check the actual rendered height shortly after —
-  // an unfilled AdSense unit collapses itself to 0px, which is our signal
-  // to hide the whole slot (including the label) instead of showing empty
-  // reserved space.
-  const [filled, setFilled] = useState(true);
+  // Three-state lifecycle:
+  //  - 'loading': request just went out, fill status unknown yet. Shown with minimal space.
+  //  - 'filled': AdSense actually rendered something with real height — show full dimensions.
+  //  - 'unfilled': confirmed no-fill, blocked, or errored — collapses to 0 height / null.
+  const [status, setStatus] = useState<'loading' | 'filled' | 'unfilled'>('loading');
 
   useEffect(() => {
-    if (!clientId) return;
-    if (!pushed.current) {
-      try {
-        window.adsbygoogle = window.adsbygoogle || [];
-        window.adsbygoogle.push({});
-        pushed.current = true;
-      } catch {
-        // adsbygoogle script may not have loaded yet (blocked by an ad
-        // blocker, slow network, etc.) — fail silently, never break the page.
-        setFilled(false);
-        return;
-      }
+    if (!clientId || !slot) {
+      setStatus('unfilled');
+      return;
     }
 
-    const timer = setTimeout(() => {
-      if (insRef.current && insRef.current.clientHeight === 0) {
-        setFilled(false);
+    setStatus('loading');
+
+    // Attempt to push to AdSense for this unit
+    let pushSucceeded = false;
+    try {
+      window.adsbygoogle = window.adsbygoogle || [];
+      window.adsbygoogle.push({});
+      pushSucceeded = true;
+    } catch {
+      // adsbygoogle script may not have loaded yet or ad blocker active
+      setStatus('unfilled');
+      return;
+    }
+
+    if (!pushSucceeded) return;
+
+    let cancelled = false;
+
+    // Monitor AdSense status attributes and rendered iframe size
+    const checkFillStatus = () => {
+      if (cancelled || !insRef.current) return;
+
+      const adStatus = insRef.current.getAttribute('data-ad-status');
+      if (adStatus === 'unfilled') {
+        cancelled = true;
+        clearInterval(pollInterval);
+        setStatus('unfilled');
+        return;
       }
-    }, 2000);
-    return () => clearTimeout(timer);
+
+      if (adStatus === 'filled') {
+        cancelled = true;
+        clearInterval(pollInterval);
+        setStatus('filled');
+        return;
+      }
+
+      // Check if ins element or its iframe has received real dimensions
+      const iframe = insRef.current.querySelector('iframe');
+      if (iframe) {
+        // If iframe is visible and has height > 0
+        const rect = iframe.getBoundingClientRect();
+        if (rect.height > 10) {
+          cancelled = true;
+          clearInterval(pollInterval);
+          setStatus('filled');
+          return;
+        }
+
+        try {
+          const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
+          if (iframeDoc && iframeDoc.body) {
+            if (iframeDoc.body.children.length > 0 && iframeDoc.body.scrollHeight > 10) {
+              cancelled = true;
+              clearInterval(pollInterval);
+              setStatus('filled');
+              return;
+            }
+          }
+        } catch {
+          // Cross-origin iframe: normal for served ads
+        }
+      }
+    };
+
+    const pollInterval = setInterval(checkFillStatus, 200);
+
+    // Hard cap: if AdSense does not confirm fill within 3.5s, collapse completely to avoid blank space
+    const timeout = setTimeout(() => {
+      clearInterval(pollInterval);
+      if (!cancelled) {
+        const adStatus = insRef.current?.getAttribute('data-ad-status');
+        if (adStatus === 'filled') {
+          setStatus('filled');
+        } else {
+          setStatus('unfilled');
+        }
+      }
+    }, 3500);
+
+    return () => {
+      cancelled = true;
+      clearInterval(pollInterval);
+      clearTimeout(timeout);
+    };
   }, [clientId, slot]);
 
-  if (!clientId || !filled) return null;
+  if (!clientId || !slot || status === 'unfilled') return null;
+
+  // Use a unique key combining clientId and slot on the ins element to guarantee
+  // a clean DOM node and reliable re-push whenever slot or clientId changes.
+  const adUnitKey = `${clientId}-${slot}`;
 
   return (
-    <div className={`mx-auto w-full text-center ${className}`}>
-      <p className="mb-1.5 text-center text-[10px] font-medium uppercase tracking-wider text-ink-300">
-        Advertisement
-      </p>
-      <ins
-        key={uid}
-        ref={insRef}
-        className="adsbygoogle"
-        style={{ display: 'block', ...style }}
-        data-ad-client={clientId}
-        data-ad-slot={slot}
-        data-ad-format={format}
-        data-full-width-responsive={fullWidthResponsive ? 'true' : 'false'}
-      />
+    <div
+      className={`mx-auto w-full text-center transition-all duration-200 ${
+        status === 'filled' ? className : 'h-auto min-h-0'
+      }`}
+    >
+      {status === 'filled' && (
+        <p className="mb-1.5 text-center text-[10px] font-medium uppercase tracking-wider text-ink-300">
+          Advertisement
+        </p>
+      )}
+      {status === 'loading' && (
+        <div className="mx-auto my-1 h-[6px] w-full max-w-[80px] animate-pulse rounded-full bg-ink-100" />
+      )}
+      <div
+        style={
+          status === 'loading'
+            ? { height: 0, maxHeight: 0, overflow: 'hidden', opacity: 0 }
+            : undefined
+        }
+      >
+        <ins
+          key={adUnitKey}
+          ref={insRef}
+          className="adsbygoogle"
+          style={{ display: 'block', ...style }}
+          data-ad-client={clientId}
+          data-ad-slot={slot}
+          data-ad-format={format}
+          data-full-width-responsive={fullWidthResponsive ? 'true' : 'false'}
+        />
+      </div>
     </div>
   );
 }
