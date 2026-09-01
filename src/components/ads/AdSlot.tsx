@@ -1,8 +1,6 @@
-import Image from 'next/image';
 import { getAdsForPlacement, getAdsenseSettings } from '@/lib/api';
 import type { AdPlacement } from '@/types';
-import { AdImpressionTracker } from './AdImpressionTracker';
-import { AdClickLink } from './AdClickLink';
+import { AdBox } from './AdBox';
 import { GoogleAdUnit } from './GoogleAdUnit';
 
 const SLOT_SIZES: Record<AdPlacement, string> = {
@@ -58,24 +56,13 @@ export async function AdSlot({ placement, className = '' }: { placement: AdPlace
 
   return (
     <div className={`mx-auto w-full ${className}`}>
-      <p className="mb-1.5 text-center text-[10px] font-medium uppercase tracking-wider text-ink-300">
-        Advertisement
-      </p>
-      <AdImpressionTracker adId={ad.id}>
-        <AdClickLink
-          adId={ad.id}
-          targetUrl={ad.targetUrl}
-          className={`relative block w-full overflow-hidden rounded-xl ring-1 ring-ink-100 ${SLOT_SIZES[placement]}`}
-        >
-          <Image
-            src={ad.imageUrl}
-            alt={ad.title}
-            fill
-            className="object-cover transition group-hover:scale-[1.02]"
-            sizes="(max-width: 768px) 100vw, 728px"
-          />
-        </AdClickLink>
-      </AdImpressionTracker>
+      <AdBox
+        adId={ad.id}
+        imageUrl={ad.imageUrl}
+        title={ad.title}
+        targetUrl={ad.targetUrl}
+        slotClassName={SLOT_SIZES[placement]}
+      />
     </div>
   );
 }

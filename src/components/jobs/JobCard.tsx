@@ -27,8 +27,23 @@ export function JobCard({ job }: { job: JobCardType }) {
   );
   const excerpt = truncate(stripMarkdown(job.description || ""), 140);
 
+  const bannerImage = job.images?.[0];
+
   return (
-    <article className="group relative flex flex-col gap-3 rounded-xl border border-ink-100 bg-white p-5 transition hover:border-brand-200 hover:shadow-md hover:shadow-ink-100/50">
+    <article className="group relative flex flex-col gap-3 overflow-hidden rounded-xl border border-ink-100 bg-white transition hover:border-brand-200 hover:shadow-md hover:shadow-ink-100/50">
+      {bannerImage && (
+        <Link href={`/jobs/${job.slug}`} className="relative block aspect-[16/7] w-full overflow-hidden bg-ink-100">
+          <Image
+            src={bannerImage}
+            alt=""
+            fill
+            className="object-cover transition group-hover:scale-[1.03]"
+            sizes="(max-width: 640px) 100vw, 400px"
+          />
+        </Link>
+      )}
+
+      <div className={`flex flex-col gap-3 p-5 ${bannerImage ? 'pt-0' : ''}`}>
       <div className="flex items-start gap-3">
         <div className="relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-ink-100 ring-1 ring-ink-100">
           {company.logoUrl ? (
@@ -138,6 +153,7 @@ export function JobCard({ job }: { job: JobCardType }) {
         >
           Apply Now <ArrowUpRight size={14} />
         </Link>
+      </div>
       </div>
     </article>
   );

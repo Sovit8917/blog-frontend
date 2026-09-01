@@ -313,6 +313,10 @@ export interface Job {
   companyId?: string | null;
   companyName?: string | null;
   companyLogoUrl?: string | null;
+  // Gallery of extra images the poster/admin attached (office/team photos,
+  // banners). images[0] doubles as the default share/OG image server-side
+  // when ogImageUrl isn't explicitly set.
+  images?: string[];
   tags?: string[];
   description: string;
   responsibilities?: string | null;

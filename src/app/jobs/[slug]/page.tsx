@@ -26,6 +26,7 @@ import { MarkdownContent } from '@/components/shared/MarkdownContent';
 import { formatSalaryRange, EMPLOYMENT_TYPE_LABEL, EXPERIENCE_LEVEL_LABEL, REMOTE_TYPE_LABEL, getJobCompany } from '@/lib/jobs/format';
 import { buildListMetadata, SITE } from '@/lib/seo/metadata';
 import { ShareButton } from '@/components/shared/ShareButton';
+import { JobGallery } from '@/components/jobs/JobGallery';
 import { formatDate, timeAgo } from '@/lib/utils';
 
 interface Props { params: { slug: string } }
@@ -64,9 +65,13 @@ export default async function JobDetailPage({ params }: Props) {
   const isExternalOnly = !job.allowInternalApply && !!job.applyUrl;
   const jobUrl = `${SITE.url}/jobs/${job.slug}`;
 
-  // Facts shown in the info grid — salary gets its own hero treatment above,
-  // so it's deliberately left out here to avoid saying the same thing twice.
+  // Facts shown in the info table — a plain label/value table (like a
+  // typical job-board "highlights" table) scans faster than a card grid,
+  // and mirrors the structured layout candidates are used to seeing.
+  // Salary gets its own hero treatment above, so it's left out here to
+  // avoid saying the same thing twice.
   const infoFacts: { label: string; value: string; icon: React.ReactNode }[] = [
+    { label: 'Company', value: company.name, icon: <Building2 size={17} /> },
     { label: 'Work mode', value: REMOTE_TYPE_LABEL[job.remoteType], icon: <Laptop size={17} /> },
     { label: 'Employment type', value: EMPLOYMENT_TYPE_LABEL[job.employmentType], icon: <Briefcase size={17} /> },
     ...(job.location ? [{ label: 'Location', value: job.location, icon: <MapPin size={17} /> }] : []),
@@ -188,12 +193,38 @@ export default async function JobDetailPage({ params }: Props) {
               </p>
             </div>
 
-            {/* ---- Info grid: replaces the old quick-facts table with scannable cards ---- */}
-            <section className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
-              {infoFacts.map((fact) => (
-                <InfoCard key={fact.label} icon={fact.icon} label={fact.label} value={fact.value} />
-              ))}
+            {/* ---- Info table: scannable "Job Details / Information" style table ---- */}
+            <section className="mt-6 overflow-hidden rounded-xl border border-slate-200/80">
+              <table className="w-full border-collapse text-sm">
+                <tbody>
+                  {infoFacts.map((fact, i) => (
+                    <tr
+                      key={fact.label}
+                      className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50/70'}
+                    >
+                      <th
+                        scope="row"
+                        className="w-2/5 border-b border-slate-100 px-4 py-3 text-left align-top font-semibold text-ink-700 sm:w-1/3"
+                      >
+                        <span className="flex items-center gap-2">
+                          <span className="text-brand-500">{fact.icon}</span>
+                          {fact.label}
+                        </span>
+                      </th>
+                      <td className="border-b border-slate-100 px-4 py-3 text-ink-900">
+                        {fact.value}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </section>
+
+            {job.images && job.images.length > 0 && (
+              <div className="mt-6">
+                <JobGallery images={job.images} title={job.title} />
+              </div>
+            )}
 
             {/* ---- Full write-up ---- */}
             <div className="mt-6 rounded-2xl border border-slate-200/70 bg-white p-6 shadow-sm sm:p-8">
@@ -346,16 +377,3 @@ export default async function JobDetailPage({ params }: Props) {
   );
 }
 
-function InfoCard({ label, value, icon }: { label: string; value: string; icon: React.ReactNode }) {
-  return (
-    <div className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-white p-4 shadow-sm">
-      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-600">
-        {icon}
-      </span>
-      <div className="min-w-0">
-        <p className="text-xs font-medium uppercase tracking-wide text-ink-400">{label}</p>
-        <p className="truncate text-sm font-semibold text-ink-900">{value}</p>
-      </div>
-    </div>
-  );
-}
