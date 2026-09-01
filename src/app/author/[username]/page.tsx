@@ -4,6 +4,7 @@ import { listPostsByAuthor, getUserProfile, myFollowing } from '@/lib/api';
 import { PostGrid } from '@/components/blog/PostGrid';
 import { Avatar } from '@/components/ui/Avatar';
 import { FollowButton } from '@/components/blog/FollowButton';
+import { AdSlot } from '@/components/ads/AdSlot';
 import { buildListMetadata } from '@/lib/seo/metadata';
 import { getCurrentUser, getCookieHeader } from '@/lib/auth/session';
 
@@ -57,6 +58,8 @@ export default async function AuthorPage({ params, searchParams }: Props) {
             isOwnProfile={isOwnProfile}
           />
         </header>
+
+        <AdSlot placement="HEADER" />
 
         <div className="rounded-2xl border border-slate-200/70 bg-white p-6 sm:p-8 shadow-sm">
           <h2 className="mb-6 text-xl font-bold text-ink-900">Articles by {author.name || `@${author.username}`}</h2>

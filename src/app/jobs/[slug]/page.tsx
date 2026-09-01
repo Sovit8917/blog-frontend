@@ -28,6 +28,7 @@ import { formatSalaryRange, EMPLOYMENT_TYPE_LABEL, EXPERIENCE_LEVEL_LABEL, REMOT
 import { buildListMetadata, SITE } from '@/lib/seo/metadata';
 import { ShareButton } from '@/components/shared/ShareButton';
 import { JobGallery } from '@/components/jobs/JobGallery';
+import { AdSlot } from '@/components/ads/AdSlot';
 import { formatDate } from '@/lib/utils';
 
 interface Props { params: { slug: string } }
@@ -271,6 +272,8 @@ export default async function JobDetailPage({ params }: Props) {
                 <JobGallery images={job.images} title={job.title} />
               </div>
             )}
+
+            <AdSlot placement="IN_CONTENT" className="mt-6" />
 
             {/* ---- Full write-up ---- */}
             <div className="mt-6 rounded-2xl border border-slate-200/70 bg-white p-6 shadow-sm sm:p-8">

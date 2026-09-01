@@ -3,6 +3,7 @@ import { Wrench } from 'lucide-react';
 import { listDeveloperResources } from '@/lib/api';
 import { ResourceCard } from '@/components/resources/ResourceCard';
 import { OffsetPager } from '@/components/ui/OffsetPager';
+import { AdSlot } from '@/components/ads/AdSlot';
 import { buildListMetadata } from '@/lib/seo/metadata';
 import type { ResourceType } from '@/types';
 
@@ -52,6 +53,8 @@ export default async function ResourcesPage({ searchParams }: Props) {
             .
           </p>
         </header>
+
+        <AdSlot placement="HEADER" />
 
         <div className="rounded-2xl border border-slate-200/70 bg-white p-6 sm:p-8 shadow-sm space-y-6">
           <div className="flex flex-wrap items-center justify-between gap-4">

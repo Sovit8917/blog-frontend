@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Code2 } from 'lucide-react';
 import { listSkills } from '@/lib/api';
+import { AdSlot } from '@/components/ads/AdSlot';
 import { buildListMetadata } from '@/lib/seo/metadata';
 
 export const metadata: Metadata = buildListMetadata({
@@ -26,6 +27,8 @@ export default async function SkillsPage() {
           open roles currently hiring for it.
         </p>
       </header>
+
+      <AdSlot placement="HEADER" className="mb-10" />
 
       {sorted.length === 0 ? (
         <div className="rounded-xl border border-dashed border-ink-200 py-16 text-center text-ink-400">

@@ -4,6 +4,7 @@ import { Sparkles, LogIn } from 'lucide-react';
 import { listForYou, listMostRead } from '@/lib/api';
 import { getCurrentUser, getCookieHeader } from '@/lib/auth/session';
 import { PostGrid } from '@/components/blog/PostGrid';
+import { AdSlot } from '@/components/ads/AdSlot';
 import { buildListMetadata } from '@/lib/seo/metadata';
 
 export const metadata: Metadata = buildListMetadata({
@@ -53,6 +54,8 @@ export default async function ForYouPage() {
           </Link>
         </div>
       )}
+
+      <AdSlot placement="HEADER" className="mb-8" />
 
       <PostGrid posts={posts} priorityCount={3} />
     </div>

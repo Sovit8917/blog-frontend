@@ -8,6 +8,7 @@ import { TagCloudWidget } from "@/components/jobs/TagCloudWidget";
 import { RecommendedJobsSection } from "@/components/jobs/RecommendedJobsSection";
 import { SaveSearchAlertButton } from "@/components/jobs/SaveSearchAlertButton";
 import { Pagination } from "@/components/ui/Pagination";
+import { AdSlot } from "@/components/ads/AdSlot";
 import { buildListMetadata } from "@/lib/seo/metadata";
 import type { ListJobsParams } from "@/types";
 import { SearchX } from "lucide-react";
@@ -91,6 +92,8 @@ export default async function JobsPage({ searchParams }: Props) {
           </p>
         </header>
 
+        <AdSlot placement="HEADER" />
+
         {/* Only on the default, unfiltered first page — repeating a
             personalized row on every filtered/paginated view would be noise. */}
         {currentPage === 1 && !params.cursor && !hasActiveFilters && <RecommendedJobsSection />}
@@ -154,6 +157,8 @@ export default async function JobsPage({ searchParams }: Props) {
                 ))}
               </div>
             )}
+
+            <AdSlot placement="BETWEEN_POSTS" />
 
             <Pagination
               basePath="/jobs"

@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { getTag, listPostsByTag } from '@/lib/api';
 import { PostGrid } from '@/components/blog/PostGrid';
 import { Sidebar } from '@/components/blog/Sidebar';
+import { AdSlot } from '@/components/ads/AdSlot';
 import { buildListMetadata } from '@/lib/seo/metadata';
 
 interface Props { params: { slug: string }; searchParams: { cursor?: string } }
@@ -32,6 +33,8 @@ export default async function TagPage({ params, searchParams }: Props) {
           <p className="text-xs font-bold uppercase tracking-wider text-brand-600">Tag</p>
           <h1 className="mt-1 font-serif text-3xl font-extrabold text-ink-950 sm:text-4xl">#{tag.name}</h1>
         </header>
+
+        <AdSlot placement="HEADER" />
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_320px]">
           <div className="rounded-2xl border border-slate-200/70 bg-white p-6 sm:p-8 shadow-sm">

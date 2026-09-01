@@ -7,6 +7,7 @@ import { JobGrid } from '@/components/jobs/JobGrid';
 import { CompanyCard } from '@/components/companies/CompanyCard';
 import { ResourceCard } from '@/components/resources/ResourceCard';
 import { Avatar } from '@/components/ui/Avatar';
+import { AdSlot } from '@/components/ads/AdSlot';
 import { buildListMetadata } from '@/lib/seo/metadata';
 
 interface Props { searchParams: { q?: string } }
@@ -55,6 +56,8 @@ export default async function SearchPage({ searchParams }: Props) {
           </div>
         ) : (
           <>
+            <AdSlot placement="HEADER" />
+
             {results!.authors.length > 0 && (
               <Section icon={<Users size={16} />} title="Matching authors">
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">

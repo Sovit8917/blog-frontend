@@ -7,6 +7,7 @@ import { JobGrid } from '@/components/jobs/JobGrid';
 import { PostGrid } from '@/components/blog/PostGrid';
 import { ResourceCard } from '@/components/resources/ResourceCard';
 import { Pagination } from '@/components/ui/Pagination';
+import { AdSlot } from '@/components/ads/AdSlot';
 import { buildListMetadata } from '@/lib/seo/metadata';
 
 interface Props { params: { slug: string }; searchParams: { page?: string; cursor?: string } }
@@ -88,6 +89,8 @@ export default async function SkillDetailPage({ params, searchParams }: Props) {
           <PostGrid posts={articles} />
         )}
       </section>
+
+      <AdSlot placement="IN_CONTENT" className="mb-12" />
 
       {resources.length > 0 && (
         <section className="mb-12">

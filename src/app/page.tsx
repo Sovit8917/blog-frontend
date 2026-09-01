@@ -98,7 +98,7 @@ export default async function HomePage() {
               Find a job <ArrowRight size={15} />
             </Link>
             <Link
-              href="/skills"
+              href="/resources"
               className="inline-flex items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-ink-700 ring-1 ring-inset ring-ink-200 transition hover:bg-ink-50"
             >
               Browse Developer Resources

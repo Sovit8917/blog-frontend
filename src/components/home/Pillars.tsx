@@ -17,11 +17,11 @@ const PILLARS = [
     cta: 'Read career guides',
   },
   {
-    href: '/skills',
+    href: '/resources',
     icon: Code2,
     title: 'Developer Resources',
-    description: 'Deep dives, tutorials, and hiring trends organized by skill and technology.',
-    cta: 'Explore by skill',
+    description: 'Curated developer tools, libraries, tutorials, courses, and documentation.',
+    cta: 'Browse resources',
   },
 ];
 

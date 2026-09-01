@@ -91,6 +91,7 @@ export function ResourceCard({ resource }: { resource: DeveloperResource }) {
           url={resource.url}
           title={resource.title}
           contentType="developer_resource"
+          variant="dropdown"
           className="pointer-events-auto relative z-10 shrink-0"
         />
       </div>

@@ -14,8 +14,8 @@ export interface ShareButtonProps {
   contentType?: ShareContentType;
   postId?: string;
   jobId?: string;
-  /** Compact renders icon-only buttons (default). 'full' adds text labels. */
-  variant?: 'compact' | 'full';
+  /** Compact renders icon-only row, 'full' adds text labels, 'dropdown' renders a single share icon with a popup. */
+  variant?: 'compact' | 'full' | 'dropdown';
   className?: string;
 }
 
@@ -31,6 +31,7 @@ type Channel = 'copy_link' | 'whatsapp' | 'linkedin' | 'x' | 'facebook' | 'teleg
  */
 export function ShareButton({ url, title, contentType, postId, jobId, variant = 'compact', className }: ShareButtonProps) {
   const [copied, setCopied] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   // navigator.share is undefined during SSR and on desktop browsers without
   // Web Share support — only render the native button where it'll work.
   const [canNativeShare, setCanNativeShare] = useState(false);
@@ -40,6 +41,18 @@ export function ShareButton({ url, title, contentType, postId, jobId, variant = 
   useEffect(() => {
     setCanNativeShare(typeof navigator !== 'undefined' && typeof navigator.share === 'function');
   }, []);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest('[data-share-container]')) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [isOpen]);
 
   function track(channel: Channel) {
     trackEvent({ type: 'SHARE', channel, postId, jobId, path: typeof window !== 'undefined' ? window.location.pathname : undefined });
@@ -93,6 +106,75 @@ export function ShareButton({ url, title, contentType, postId, jobId, variant = 
   const fullButtonClass =
     'inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[13px] font-medium text-ink-600 ring-1 ring-ink-200 transition hover:bg-ink-50 hover:text-ink-900';
   const itemClass = variant === 'full' ? fullButtonClass : iconButtonClass;
+
+  if (variant === 'dropdown') {
+    return (
+      <div data-share-container className={cn('relative inline-flex items-center', className)}>
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            if (canNativeShare) {
+              nativeShare();
+            } else {
+              setIsOpen((prev) => !prev);
+            }
+          }}
+          aria-label="Share resource"
+          className="flex h-8 w-8 items-center justify-center rounded-full text-ink-400 ring-1 ring-ink-200 transition hover:bg-brand-50 hover:text-brand-600 hover:ring-brand-300"
+        >
+          <Share2 size={14} />
+        </button>
+
+        {isOpen && (
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="absolute bottom-full right-0 mb-2 z-50 flex w-48 flex-col rounded-xl border border-slate-200/80 bg-white p-1.5 shadow-xl ring-1 ring-black/5 animate-in fade-in zoom-in-95 duration-150"
+          >
+            <div className="px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-ink-400">
+              Share to
+            </div>
+            {links.map(({ channel, icon: Icon, label, href }) => (
+              <a
+                key={channel}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => {
+                  track(channel);
+                  setIsOpen(false);
+                }}
+                className="flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-xs font-medium text-ink-700 transition hover:bg-brand-50 hover:text-brand-700"
+              >
+                <Icon size={14} className="shrink-0 text-ink-400" />
+                <span>{label.replace('Share on ', '')}</span>
+              </a>
+            ))}
+            <button
+              type="button"
+              onClick={async () => {
+                await copy();
+                setTimeout(() => setIsOpen(false), 800);
+              }}
+              className="flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-xs font-medium text-ink-700 transition hover:bg-brand-50 hover:text-brand-700"
+            >
+              {copied ? (
+                <>
+                  <Check size={14} className="shrink-0 text-green-600" />
+                  <span className="text-green-600 font-semibold">Link Copied!</span>
+                </>
+              ) : (
+                <>
+                  <Link2 size={14} className="shrink-0 text-ink-400" />
+                  <span>Copy Link</span>
+                </>
+              )}
+            </button>
+          </div>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className={cn('flex items-center gap-2', className)}>

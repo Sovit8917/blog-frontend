@@ -4,6 +4,7 @@ import { getCategory, listPostsByCategory, listFollowedTopics } from '@/lib/api'
 import { PostGrid } from '@/components/blog/PostGrid';
 import { Sidebar } from '@/components/blog/Sidebar';
 import { TopicFollowButton } from '@/components/blog/TopicFollowButton';
+import { AdSlot } from '@/components/ads/AdSlot';
 import { buildListMetadata } from '@/lib/seo/metadata';
 import { getCurrentUser, getCookieHeader } from '@/lib/auth/session';
 
@@ -52,6 +53,8 @@ export default async function CategoryPage({ params, searchParams }: Props) {
             isLoggedIn={!!viewer}
           />
         </header>
+
+        <AdSlot placement="HEADER" />
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_320px]">
           <div className="rounded-2xl border border-slate-200/70 bg-white p-6 sm:p-8 shadow-sm">

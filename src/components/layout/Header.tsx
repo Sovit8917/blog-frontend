@@ -51,15 +51,19 @@ export async function Header() {
             className="hidden items-center gap-0.5 lg:flex"
           >
             <NavLink href="/jobs">Jobs</NavLink>
-            <NavLink href="/category/developer-resources">Developer Resources</NavLink>
-            <NavLink href="/resources">All Resources</NavLink>
+            {allTopLevel.slice(0, 3).map((cat) => (
+              <NavLink key={cat.id} href={`/category/${cat.slug}`}>
+                {cat.name}
+              </NavLink>
+            ))}
             <NavDropdown
               label="More"
               href="#"
               items={[
+                { href: "/resources", label: "All Resources" },
                 { href: "/career", label: "Career Content" },
                 { href: "/companies", label: "Companies" },
-                ...visibleCategories.map((cat) => ({
+                ...allTopLevel.slice(3).map((cat) => ({
                   href: `/category/${cat.slug}`,
                   label: cat.name,
                 })),

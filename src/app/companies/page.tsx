@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { listCompanies } from '@/lib/api';
 import { CompanyGrid } from '@/components/companies/CompanyGrid';
 import { OffsetPager } from '@/components/ui/OffsetPager';
+import { AdSlot } from '@/components/ads/AdSlot';
 import { buildListMetadata } from '@/lib/seo/metadata';
 
 interface Props { searchParams: { search?: string; page?: string } }
@@ -27,6 +28,8 @@ export default async function CompaniesPage({ searchParams }: Props) {
           <h1 className="mt-1 font-serif text-3xl font-extrabold text-ink-950 sm:text-4xl">Companies hiring</h1>
           <p className="mt-2 text-base leading-relaxed text-ink-600">Explore companies with open roles on the board.</p>
         </header>
+
+        <AdSlot placement="HEADER" />
 
         <div className="rounded-2xl border border-slate-200/70 bg-white p-6 sm:p-8 shadow-sm space-y-8">
           <form action="/companies" method="GET" className="max-w-md">

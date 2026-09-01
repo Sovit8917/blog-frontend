@@ -4,6 +4,7 @@ import { Compass, ArrowRight, FileText, MessagesSquare, Wallet, Laptop } from 'l
 import { getCategory, listPostsByCategory, listPostsByTag, listFollowedTopics } from '@/lib/api';
 import { PostGrid } from '@/components/blog/PostGrid';
 import { TopicFollowButton } from '@/components/blog/TopicFollowButton';
+import { AdSlot } from '@/components/ads/AdSlot';
 import { getCurrentUser, getCookieHeader } from '@/lib/auth/session';
 import { buildListMetadata } from '@/lib/seo/metadata';
 
@@ -84,6 +85,8 @@ export default async function CareerHubPage() {
         ))}
       </div>
 
+      <AdSlot placement="HEADER" className="mb-12" />
+
       <section className="mb-12">
         <h2 className="mb-6 text-xl font-bold text-ink-900">Latest career content</h2>
         <PostGrid posts={latest.items} priorityCount={3} />
@@ -109,6 +112,8 @@ export default async function CareerHubPage() {
           </section>
         );
       })}
+
+      <AdSlot placement="BETWEEN_POSTS" className="mb-12" />
 
       <section className="rounded-2xl border border-brand-100 bg-gradient-to-br from-brand-50/60 to-white p-6 text-center">
         <Wallet size={22} className="mx-auto mb-3 text-brand-600" />

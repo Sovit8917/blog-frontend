@@ -14,6 +14,7 @@ import { timeAgo } from "@/lib/utils";
 import { Badge } from "@/components/ui/Badge";
 import { buildListMetadata, SITE } from "@/lib/seo/metadata";
 import { ShareButton } from "@/components/shared/ShareButton";
+import { AdSlot } from "@/components/ads/AdSlot";
 
 interface Props {
   params: { slug: string };
@@ -108,6 +109,8 @@ export default async function CompanyDetailPage({ params }: Props) {
             className="shrink-0"
           />
         </header>
+
+        <AdSlot placement="HEADER" />
 
         <section className="rounded-2xl border border-slate-200/70 bg-white p-6 sm:p-8 shadow-sm">
           <h2 className="mb-6 text-xl font-bold text-ink-900">
