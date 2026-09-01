@@ -23,11 +23,23 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: Variant;
   size?: Size;
   href?: string;
+  target?: string;
+  rel?: string;
 }
 
-export function Button({ variant = 'primary', size = 'md', className, href, children, ...rest }: Props) {
+export function Button({ variant = 'primary', size = 'md', className, href, target, rel, children, ...rest }: Props) {
   const cls = cn(base, variants[variant], sizes[size], className);
   if (href) {
+    const isExternal = /^https?:\/\//.test(href);
+    // External (mostly employer apply-links) get a plain <a> so target/rel
+    // are guaranteed to apply — Next's <Link> is meant for internal routes.
+    if (isExternal || target === '_blank') {
+      return (
+        <a href={href} target={target} rel={rel} className={cls}>
+          {children}
+        </a>
+      );
+    }
     return (
       <Link href={href} className={cls}>
         {children}

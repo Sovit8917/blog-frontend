@@ -14,10 +14,10 @@ import { NavDropdown } from "./NavDropdown";
 // items — fewer top-level choices is easier to scan than a wall of 6+ links.
 const JOB_BOARD_NAV = [
   { href: "/jobs", label: "Jobs" },
+  { href: "/resources", label: "All Resources" },
+  { href: "/career", label: "Career Content" },
   { href: "/companies", label: "Companies" },
   { href: "/skills", label: "Skills" },
-  { href: "/resources", label: "Dev Resources" },
-  { href: "/career", label: "Career Content" },
 ];
 
 /**
@@ -50,15 +50,20 @@ export async function Header() {
             aria-label="Primary"
             className="hidden items-center gap-0.5 lg:flex"
           >
-            {visibleCategories.map((cat) => (
-              <NavLink key={cat.id} href={`/category/${cat.slug}`}>
-                {cat.name}
-              </NavLink>
-            ))}
+            <NavLink href="/jobs">Jobs</NavLink>
+            <NavLink href="/category/developer-resources">Developer Resources</NavLink>
+            <NavLink href="/resources">All Resources</NavLink>
             <NavDropdown
-              label="Jobs"
-              href="/jobs"
-              items={JOB_BOARD_NAV.slice(1)}
+              label="More"
+              href="#"
+              items={[
+                { href: "/career", label: "Career Content" },
+                { href: "/companies", label: "Companies" },
+                ...visibleCategories.map((cat) => ({
+                  href: `/category/${cat.slug}`,
+                  label: cat.name,
+                })),
+              ]}
             />
           </nav>
         </div>

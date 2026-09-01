@@ -6,10 +6,10 @@ import { getSkillBySlug, listJobsBySkill, listPostsByTag, searchPosts, listDevel
 import { JobGrid } from '@/components/jobs/JobGrid';
 import { PostGrid } from '@/components/blog/PostGrid';
 import { ResourceCard } from '@/components/resources/ResourceCard';
-import { LoadMoreLink } from '@/components/ui/LoadMoreLink';
+import { Pagination } from '@/components/ui/Pagination';
 import { buildListMetadata } from '@/lib/seo/metadata';
 
-interface Props { params: { slug: string }; searchParams: { cursor?: string } }
+interface Props { params: { slug: string }; searchParams: { page?: string; cursor?: string } }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const skill = await getSkillBySlug(params.slug).catch(() => null);
@@ -27,7 +27,9 @@ export default async function SkillDetailPage({ params, searchParams }: Props) {
   const skill = await getSkillBySlug(params.slug);
   if (!skill) notFound();
 
-  const jobsParams = { cursor: searchParams.cursor, limit: 12 };
+  const currentPage = Math.max(1, Number(searchParams.page) || 1);
+  const limit = 12;
+  const jobsParams = { page: currentPage, cursor: searchParams.cursor, limit };
 
   // Educational content lookup: tags aren't guaranteed to share a slug with
   // the skill (e.g. skill "node-js" vs tag "javascript"), so try an exact
@@ -53,6 +55,9 @@ export default async function SkillDetailPage({ params, searchParams }: Props) {
     const bySearch = await listDeveloperResources({ search: skill.name, limit: 4 }).catch(() => ({ items: [] }));
     resources = bySearch.items;
   }
+
+  const total = page.meta.total;
+  const totalPages = total !== undefined ? Math.ceil(total / limit) : (page.meta.hasMore ? currentPage + 1 : currentPage);
 
   return (
     <div className="container-page py-10">
@@ -122,10 +127,9 @@ export default async function SkillDetailPage({ params, searchParams }: Props) {
 
         <JobGrid jobs={page.items} />
 
-        {page.meta.hasMore && page.meta.nextCursor && (
-          <LoadMoreLink basePath={`/skills/${skill.slug}`} params={jobsParams} cursor={page.meta.nextCursor} />
-        )}
+        <Pagination basePath={`/skills/${skill.slug}`} params={jobsParams} page={currentPage} totalPages={totalPages} />
       </section>
     </div>
   );
 }
+

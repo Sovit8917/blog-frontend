@@ -1,6 +1,6 @@
 'use client';
 
-import { Twitter, Linkedin, Link2, Facebook, Check, Share2, MessageCircle } from 'lucide-react';
+import { Twitter, Linkedin, Link2, Facebook, Check, Share2, MessageCircle, Send } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { trackEvent } from '@/lib/api/analytics';
 import { cn } from '@/lib/utils';
@@ -19,7 +19,7 @@ export interface ShareButtonProps {
   className?: string;
 }
 
-type Channel = 'copy_link' | 'whatsapp' | 'linkedin' | 'x' | 'facebook' | 'native';
+type Channel = 'copy_link' | 'whatsapp' | 'linkedin' | 'x' | 'facebook' | 'telegram' | 'native';
 
 /**
  * Universal Share component (#9) — one component used everywhere content can
@@ -53,13 +53,14 @@ export function ShareButton({ url, title, contentType, postId, jobId, variant = 
       href: `https://api.whatsapp.com/send?text=${encodedTitle}%20${encoded}`,
     },
     { channel: 'x', icon: Twitter, label: 'Share on X', href: `https://twitter.com/intent/tweet?url=${encoded}&text=${encodedTitle}` },
+    { channel: 'facebook', icon: Facebook, label: 'Share on Facebook', href: `https://www.facebook.com/sharer/sharer.php?u=${encoded}` },
+    { channel: 'telegram', icon: Send, label: 'Share on Telegram', href: `https://t.me/share/url?url=${encoded}&text=${encodedTitle}` },
     {
       channel: 'linkedin',
       icon: Linkedin,
       label: 'Share on LinkedIn',
       href: `https://www.linkedin.com/sharing/share-offsite/?url=${encoded}`,
     },
-    { channel: 'facebook', icon: Facebook, label: 'Share on Facebook', href: `https://www.facebook.com/sharer/sharer.php?u=${encoded}` },
   ];
 
   const nativeShare = async () => {
@@ -88,7 +89,7 @@ export function ShareButton({ url, title, contentType, postId, jobId, variant = 
   };
 
   const iconButtonClass =
-    'rounded-full p-2 text-ink-500 ring-1 ring-ink-200 transition hover:bg-ink-50 hover:text-ink-900';
+    'rounded-full p-2 text-ink-500 ring-1 ring-ink-200 transition hover:bg-brand-50 hover:text-brand-600 hover:ring-brand-200';
   const fullButtonClass =
     'inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[13px] font-medium text-ink-600 ring-1 ring-ink-200 transition hover:bg-ink-50 hover:text-ink-900';
   const itemClass = variant === 'full' ? fullButtonClass : iconButtonClass;

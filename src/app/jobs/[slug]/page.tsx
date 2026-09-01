@@ -16,7 +16,8 @@ import {
   ShieldCheck,
   Globe,
 } from 'lucide-react';
-import { getJobBySlug, getCompanyBySlug, listJobsByCompany, myApplications, mySavedJobs } from '@/lib/api';
+import { getJobBySlug, getCompanyBySlug, listJobsByCompany, listJobs, myApplications, mySavedJobs } from '@/lib/api';
+import { RecentJobsWidget } from '@/components/jobs/RecentJobsWidget';
 import { getCurrentUser, getCookieHeader } from '@/lib/auth/session';
 import { ApplyJobButton } from '@/components/jobs/ApplyJobButton';
 import { SaveJobButton } from '@/components/jobs/SaveJobButton';
@@ -27,7 +28,7 @@ import { formatSalaryRange, EMPLOYMENT_TYPE_LABEL, EXPERIENCE_LEVEL_LABEL, REMOT
 import { buildListMetadata, SITE } from '@/lib/seo/metadata';
 import { ShareButton } from '@/components/shared/ShareButton';
 import { JobGallery } from '@/components/jobs/JobGallery';
-import { formatDate, timeAgo } from '@/lib/utils';
+import { formatDate } from '@/lib/utils';
 
 interface Props { params: { slug: string } }
 
@@ -51,11 +52,14 @@ export default async function JobDetailPage({ params }: Props) {
   const user = await getCurrentUser();
   const company = getJobCompany(job);
 
-  const [relatedJobs, companyProfile, savedJobs, applications] = await Promise.all([
+  const [relatedJobs, companyProfile, savedJobs, applications, recentJobs] = await Promise.all([
     company.slug ? listJobsByCompany(company.slug, { limit: 4 }).catch(() => ({ items: [] as typeof job[] })) : Promise.resolve({ items: [] as typeof job[] }),
     company.slug ? getCompanyBySlug(company.slug).catch(() => null) : Promise.resolve(null),
     user ? mySavedJobs(getCookieHeader()).catch(() => []) : Promise.resolve([]),
     user ? myApplications(getCookieHeader()).catch(() => []) : Promise.resolve([]),
+    // Sitewide "Recent Jobs" rail — independent of this job's company, shown
+    // on every job page so it always has content (unlike "More at company").
+    listJobs({ limit: 8, sort: 'newest' }).catch(() => ({ items: [] as typeof job[] })),
   ]);
 
   const isSaved = savedJobs.some((s) => s.jobId === job.id);
@@ -70,18 +74,34 @@ export default async function JobDetailPage({ params }: Props) {
   // and mirrors the structured layout candidates are used to seeing.
   // Salary gets its own hero treatment above, so it's left out here to
   // avoid saying the same thing twice.
+  // Facts shown in the info table — mirrors the jobcode.in "Job Details /
+  // Information" table structure: Job Title, Role, Company, Job ID,
+  // Location, Category, Experience, Employment Type, Posted Date, plus any
+  // freeform additionalDetails rows the poster added (Database Skills,
+  // Version Control, etc.). Salary gets its own hero treatment above, so
+  // it's left out here to avoid saying the same thing twice. Applicants is
+  // only shown for jobs that actually take internal applications — an
+  // external-only job's "0 applicants" is meaningless (we never see them).
   const infoFacts: { label: string; value: string; icon: React.ReactNode }[] = [
+    { label: 'Job Title', value: job.title, icon: <Briefcase size={17} /> },
+    ...(job.role ? [{ label: 'Role', value: job.role, icon: <Briefcase size={17} /> }] : []),
     { label: 'Company', value: company.name, icon: <Building2 size={17} /> },
-    { label: 'Work mode', value: REMOTE_TYPE_LABEL[job.remoteType], icon: <Laptop size={17} /> },
-    { label: 'Employment type', value: EMPLOYMENT_TYPE_LABEL[job.employmentType], icon: <Briefcase size={17} /> },
+    ...(job.externalJobId ? [{ label: 'Job ID', value: job.externalJobId, icon: <BadgeCheck size={17} /> }] : []),
     ...(job.location ? [{ label: 'Location', value: job.location, icon: <MapPin size={17} /> }] : []),
+    ...(job.category ? [{ label: 'Category', value: job.category, icon: <Building2 size={17} /> }] : []),
     ...(job.experienceLevel
       ? [{ label: 'Experience', value: EXPERIENCE_LEVEL_LABEL[job.experienceLevel], icon: <GraduationCap size={17} /> }]
       : []),
-    ...(job.publishedAt
-      ? [{ label: 'Posted', value: timeAgo(job.publishedAt), icon: <Clock size={17} /> }]
+    { label: 'Employment Type', value: EMPLOYMENT_TYPE_LABEL[job.employmentType], icon: <Briefcase size={17} /> },
+    { label: 'Work Mode', value: REMOTE_TYPE_LABEL[job.remoteType], icon: <Laptop size={17} /> },
+    ...(job.skills.length > 0
+      ? [{ label: 'Primary Skill', value: job.skills.map(({ skill }) => skill.name).join(', '), icon: <GraduationCap size={17} /> }]
       : []),
-    { label: 'Applicants', value: `${job.applicationCount}`, icon: <Users size={17} /> },
+    ...(job.additionalDetails || []).map((d) => ({ label: d.label, value: d.value, icon: <BadgeCheck size={17} /> })),
+    ...(job.publishedAt
+      ? [{ label: 'Posted Date', value: formatDate(job.publishedAt), icon: <Clock size={17} /> }]
+      : []),
+    ...(!isExternalOnly ? [{ label: 'Applicants', value: `${job.applicationCount}`, icon: <Users size={17} /> }] : []),
   ];
 
   return (
@@ -163,6 +183,22 @@ export default async function JobDetailPage({ params }: Props) {
                 </div>
               )}
 
+              {/* ---- Featured image — the single lead visual for the role, shown
+                  right under the title like a job-board banner. Only the extra
+                  photos (if more than one) get the fuller gallery further down. */}
+              {job.images && job.images.length > 0 && job.images[0] && (
+                <div className="relative mt-6 aspect-[1200/628] w-full overflow-hidden rounded-xl bg-ink-100 ring-1 ring-inset ring-ink-100">
+                  <Image
+                    src={job.images[0]}
+                    alt={job.title}
+                    fill
+                    priority
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 100vw, 700px"
+                  />
+                </div>
+              )}
+
               {/* Desktop apply row — hidden on mobile in favor of the sticky bar. */}
               <div className="mt-6 hidden gap-3 sm:flex">
                 <ApplyJobButton
@@ -191,36 +227,46 @@ export default async function JobDetailPage({ params }: Props) {
                   </>
                 )}
               </p>
+
+              {/* ---- Info table: scannable "Job Details / Information" style table ---- */}
+              <section className="mt-6 overflow-hidden rounded-xl border border-slate-200/80 shadow-sm">
+                <table className="w-full border-collapse text-sm">
+                  <thead>
+                    <tr className="bg-brand-50">
+                      <th scope="col" className="border-b border-slate-200 px-4 py-2.5 text-left text-xs font-bold uppercase tracking-wider text-brand-700">
+                        Job Details
+                      </th>
+                      <th scope="col" className="border-b border-slate-200 px-4 py-2.5 text-left text-xs font-bold uppercase tracking-wider text-brand-700">
+                        Information
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {infoFacts.map((fact, i) => (
+                      <tr
+                        key={fact.label}
+                        className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50/70'}
+                      >
+                        <th
+                          scope="row"
+                          className="w-2/5 border-b border-slate-100 px-4 py-3 text-left align-top font-semibold text-ink-700 sm:w-1/3"
+                        >
+                          <span className="flex items-center gap-2">
+                            <span className="text-brand-500">{fact.icon}</span>
+                            {fact.label}
+                          </span>
+                        </th>
+                        <td className="border-b border-slate-100 px-4 py-3 text-ink-900">
+                          {fact.value}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </section>
             </div>
 
-            {/* ---- Info table: scannable "Job Details / Information" style table ---- */}
-            <section className="mt-6 overflow-hidden rounded-xl border border-slate-200/80">
-              <table className="w-full border-collapse text-sm">
-                <tbody>
-                  {infoFacts.map((fact, i) => (
-                    <tr
-                      key={fact.label}
-                      className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50/70'}
-                    >
-                      <th
-                        scope="row"
-                        className="w-2/5 border-b border-slate-100 px-4 py-3 text-left align-top font-semibold text-ink-700 sm:w-1/3"
-                      >
-                        <span className="flex items-center gap-2">
-                          <span className="text-brand-500">{fact.icon}</span>
-                          {fact.label}
-                        </span>
-                      </th>
-                      <td className="border-b border-slate-100 px-4 py-3 text-ink-900">
-                        {fact.value}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </section>
-
-            {job.images && job.images.length > 0 && (
+            {job.images && job.images.length > 1 && (
               <div className="mt-6">
                 <JobGallery images={job.images} title={job.title} />
               </div>
@@ -259,11 +305,34 @@ export default async function JobDetailPage({ params }: Props) {
                   </div>
                 </section>
               )}
+
+              {/* ---- Bottom CTA + share row — the closing "Apply" moment once the
+                  candidate has read the full write-up, mirroring how job boards
+                  end an article with a big apply button and share icons. ---- */}
+              <div className="mt-10 rounded-xl bg-ink-50/70 p-5 sm:p-6">
+                <div className="flex flex-wrap items-center justify-between gap-4">
+                  <ApplyJobButton
+                    jobId={job.id}
+                    jobSlug={job.slug}
+                    applyUrl={job.applyUrl}
+                    allowInternalApply={job.allowInternalApply}
+                    alreadyApplied={alreadyApplied}
+                  />
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-ink-400">Share</span>
+                    <ShareButton url={jobUrl} title={`${job.title} at ${company.name}`} contentType="job" jobId={job.id} />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
           <aside className="flex flex-col gap-6">
             <div className="sticky top-24 space-y-6">
+              {/* ---- Recent Jobs rail — sitewide, always populated, mirrors
+                  the "Recent Posts" widget pattern used on jobcode.in ---- */}
+              <RecentJobsWidget jobs={recentJobs.items} excludeJobId={job.id} />
+
               {/* ---- Stronger company card ---- */}
               <div className="overflow-hidden rounded-2xl border border-slate-200/70 bg-white shadow-sm">
                 <div className="flex items-center gap-3 border-b border-slate-100 p-6">

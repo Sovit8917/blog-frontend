@@ -28,10 +28,10 @@ export function AdBox({
 }) {
   const [broken, setBroken] = useState(false);
 
-  if (broken) return null;
+  if (broken || !imageUrl) return null;
 
   return (
-    <>
+    <div className="flex flex-col items-center justify-center">
       <p className="mb-1.5 text-center text-[10px] font-medium uppercase tracking-wider text-ink-300">
         Advertisement
       </p>
@@ -51,6 +51,6 @@ export function AdBox({
           />
         </AdClickLink>
       </AdImpressionTracker>
-    </>
+    </div>
   );
 }

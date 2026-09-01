@@ -1,15 +1,24 @@
-import Link from 'next/link';
-import Image from 'next/image';
-import { Clock, MessageCircle, Heart } from 'lucide-react';
-import type { PostCard as PostCardType } from '@/types';
-import { Badge } from '@/components/ui/Badge';
-import { Avatar } from '@/components/ui/Avatar';
-import { formatDate, readingTimeLabel } from '@/lib/utils';
+import Link from "next/link";
+import Image from "next/image";
+import { Clock, MessageCircle, Heart } from "lucide-react";
+import type { PostCard as PostCardType } from "@/types";
+import { Badge } from "@/components/ui/Badge";
+import { Avatar } from "@/components/ui/Avatar";
+import { formatDate, readingTimeLabel } from "@/lib/utils";
 
-export function PostCard({ post, priority = false }: { post: PostCardType; priority?: boolean }) {
+export function PostCard({
+  post,
+  priority = false,
+}: {
+  post: PostCardType;
+  priority?: boolean;
+}) {
   return (
     <article className="group flex flex-col">
-      <Link href={`/blog/${post.slug}`} className="relative block aspect-[16/9] overflow-hidden rounded-xl bg-ink-100">
+      <Link
+        href={`/blog/${post.slug}`}
+        className="relative block aspect-[16/9] overflow-hidden rounded-xl bg-ink-100"
+      >
         {post.coverImageUrl ? (
           <Image
             src={post.coverImageUrl}
@@ -25,7 +34,9 @@ export function PostCard({ post, priority = false }: { post: PostCardType; prior
           </div>
         )}
         {post.isSponsored && (
-          <Badge variant="sponsor" className="absolute left-3 top-3">Sponsored</Badge>
+          <Badge variant="sponsor" className="absolute left-3 top-3">
+            Sponsored
+          </Badge>
         )}
       </Link>
 
@@ -49,18 +60,38 @@ export function PostCard({ post, priority = false }: { post: PostCardType; prior
       </Link>
 
       {post.excerpt && (
-        <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-ink-500">{post.excerpt}</p>
+        <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-ink-500">
+          {post.excerpt}
+        </p>
       )}
 
       <div className="mt-3 flex items-center justify-between">
-        <Link href={`/author/${post.author.username}`} className="flex items-center gap-2">
-          <Avatar src={post.author.avatarUrl} name={post.author.name} size={24} />
-          <span className="text-sm font-medium text-ink-600">{post.author.name}</span>
+        <Link
+          href={`/author/${post.author.username}`}
+          className="flex items-center gap-2"
+        >
+          <Avatar
+            src={post.author.avatarUrl}
+            name={post.author.name}
+            size={24}
+          />
+          <span className="text-sm font-medium text-ink-600">
+            {post.author.name}
+          </span>
         </Link>
         <div className="flex items-center gap-3 text-xs text-ink-400">
-          <span className="flex items-center gap-1"><Clock size={13} />{readingTimeLabel(post.readingTimeMins)}</span>
-          <span className="hidden items-center gap-1 sm:flex"><Heart size={13} />{post.likeCount}</span>
-          <span className="hidden items-center gap-1 sm:flex"><MessageCircle size={13} />{post.commentCount}</span>
+          <span className="flex items-center gap-1">
+            <Clock size={13} />
+            {readingTimeLabel(post.readingTimeMins)}
+          </span>
+          <span className="hidden items-center gap-1 sm:flex">
+            <Heart size={13} />
+            {post.likeCount}
+          </span>
+          <span className="hidden items-center gap-1 sm:flex">
+            <MessageCircle size={13} />
+            {post.commentCount}
+          </span>
         </div>
       </div>
     </article>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useId, useRef } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 
 declare global {
   interface Window {
@@ -38,20 +38,40 @@ export function GoogleAdUnit({
   const insRef = useRef<HTMLModElement>(null);
   const pushed = useRef(false);
   const uid = useId();
+  // AdSense reserves layout space via `min-height` on the <ins> the moment
+  // it's pushed, even when the request ends up unfilled (no approved ads
+  // for this slot yet, blocked by an ad blocker, etc). Left unchecked that
+  // leaves a big blank "Advertisement" box on the page. So: assume filled
+  // optimistically, then check the actual rendered height shortly after —
+  // an unfilled AdSense unit collapses itself to 0px, which is our signal
+  // to hide the whole slot (including the label) instead of showing empty
+  // reserved space.
+  const [filled, setFilled] = useState(true);
 
   useEffect(() => {
-    if (!clientId || pushed.current) return;
-    try {
-      window.adsbygoogle = window.adsbygoogle || [];
-      window.adsbygoogle.push({});
-      pushed.current = true;
-    } catch {
-      // adsbygoogle script may not have loaded yet (blocked by an ad
-      // blocker, slow network, etc.) — fail silently, never break the page.
+    if (!clientId) return;
+    if (!pushed.current) {
+      try {
+        window.adsbygoogle = window.adsbygoogle || [];
+        window.adsbygoogle.push({});
+        pushed.current = true;
+      } catch {
+        // adsbygoogle script may not have loaded yet (blocked by an ad
+        // blocker, slow network, etc.) — fail silently, never break the page.
+        setFilled(false);
+        return;
+      }
     }
+
+    const timer = setTimeout(() => {
+      if (insRef.current && insRef.current.clientHeight === 0) {
+        setFilled(false);
+      }
+    }, 2000);
+    return () => clearTimeout(timer);
   }, [clientId, slot]);
 
-  if (!clientId) return null;
+  if (!clientId || !filled) return null;
 
   return (
     <div className={`mx-auto w-full text-center ${className}`}>

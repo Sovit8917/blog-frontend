@@ -53,13 +53,17 @@ export function NavDropdown({ label, href, items }: { label: string; href: strin
           role="menu"
           className="absolute left-0 top-full z-50 w-56 rounded-xl border border-ink-100 bg-white p-1.5 shadow-lg animate-fade-in"
         >
-          <Link
-            href={href}
-            className="block rounded-lg px-3 py-2 text-sm font-semibold text-ink-900 hover:bg-ink-50"
-          >
-            All jobs
-          </Link>
-          <div className="my-1 h-px bg-ink-100" />
+          {href !== '#' && (
+            <>
+              <Link
+                href={href}
+                className="block rounded-lg px-3 py-2 text-sm font-semibold text-ink-900 hover:bg-ink-50"
+              >
+                All jobs
+              </Link>
+              <div className="my-1 h-px bg-ink-100" />
+            </>
+          )}
           {items.map((item) => (
             <Link
               key={item.href}

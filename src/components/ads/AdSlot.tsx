@@ -46,13 +46,17 @@ export async function AdSlot({ placement, className = '' }: { placement: AdPlace
     const adsenseSlot = adsense.slots[placement];
     if (!adsense.clientId || !adsenseSlot) return null;
     return (
-      <GoogleAdUnit
-        clientId={adsense.clientId}
-        slot={adsenseSlot}
-        className={`${SLOT_SIZES[placement]} ${className}`}
-      />
+      <div className={`mx-auto w-full ${className}`}>
+        <GoogleAdUnit
+          clientId={adsense.clientId}
+          slot={adsenseSlot}
+          className={SLOT_SIZES[placement]}
+        />
+      </div>
     );
   }
+
+  if (!ad.imageUrl) return null;
 
   return (
     <div className={`mx-auto w-full ${className}`}>

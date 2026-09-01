@@ -78,8 +78,13 @@ export function ApplyJobButton({
   // External-only applications just deep-link out — no internal application record.
   if (!allowInternalApply && applyUrl) {
     return (
-      <Button href={applyUrl} className="w-full sm:w-auto">
-        Apply on company site <ExternalLink size={15} />
+      <Button
+        href={applyUrl}
+        target="_blank"
+        rel="noopener noreferrer nofollow sponsored"
+        className="w-full sm:w-auto"
+      >
+        Apply Now <ExternalLink size={15} />
       </Button>
     );
   }

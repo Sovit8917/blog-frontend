@@ -313,6 +313,14 @@ export interface Job {
   companyId?: string | null;
   companyName?: string | null;
   companyLogoUrl?: string | null;
+  // Structured "job board" fields for the jobcode.in-style Job Details
+  // table. role/category/externalJobId are common ones with their own
+  // columns; additionalDetails holds any other label/value rows the
+  // poster added (Database Skills, Version Control, Primary Skill...).
+  role?: string | null;
+  category?: string | null;
+  externalJobId?: string | null;
+  additionalDetails?: { label: string; value: string }[];
   // Gallery of extra images the poster/admin attached (office/team photos,
   // banners). images[0] doubles as the default share/OG image server-side
   // when ogImageUrl isn't explicitly set.

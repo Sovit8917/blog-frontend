@@ -112,7 +112,7 @@ export default async function HomePage() {
       </div>
 
       <div className="container-page mt-12">
-        <FeaturedHero posts={featured.items} />
+        <FeaturedHero posts={featured.items} jobs={jobItems} />
       </div>
 
       {history.length > 0 && (
