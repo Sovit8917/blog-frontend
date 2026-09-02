@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
-import type { ButtonHTMLAttributes } from 'react';
+import type { AnchorHTMLAttributes, ButtonHTMLAttributes } from 'react';
 
 type Variant = 'primary' | 'secondary' | 'ghost' | 'outline';
 type Size = 'sm' | 'md' | 'lg';
@@ -19,7 +19,7 @@ const sizes: Record<Size, string> = {
   lg: 'text-base px-5 py-3',
 };
 
-interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface Props extends ButtonHTMLAttributes<HTMLButtonElement>, Pick<AnchorHTMLAttributes<HTMLAnchorElement>, 'onClick'> {
   variant?: Variant;
   size?: Size;
   href?: string;
@@ -27,7 +27,7 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   rel?: string;
 }
 
-export function Button({ variant = 'primary', size = 'md', className, href, target, rel, children, ...rest }: Props) {
+export function Button({ variant = 'primary', size = 'md', className, href, target, rel, onClick, children, ...rest }: Props) {
   const cls = cn(base, variants[variant], sizes[size], className);
   if (href) {
     const isExternal = /^https?:\/\//.test(href);
@@ -35,19 +35,19 @@ export function Button({ variant = 'primary', size = 'md', className, href, targ
     // are guaranteed to apply — Next's <Link> is meant for internal routes.
     if (isExternal || target === '_blank') {
       return (
-        <a href={href} target={target} rel={rel} className={cls}>
+        <a href={href} target={target} rel={rel} className={cls} onClick={onClick as any}>
           {children}
         </a>
       );
     }
     return (
-      <Link href={href} className={cls}>
+      <Link href={href} className={cls} onClick={onClick as any}>
         {children}
       </Link>
     );
   }
   return (
-    <button className={cls} {...rest}>
+    <button className={cls} onClick={onClick as any} {...rest}>
       {children}
     </button>
   );

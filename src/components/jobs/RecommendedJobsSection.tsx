@@ -25,12 +25,19 @@ export async function RecommendedJobsSection() {
       </div>
       <p className="mb-5 text-sm text-ink-500">
         {personalized
-          ? 'Matched to skills from the jobs you\u2019ve saved and applied to.'
-          : 'Save or apply to a few jobs and this section will start tailoring itself to you.'}
+          ? 'Matched to your saved skills and job preferences.'
+          : 'Save or apply to a few jobs, or set your job preferences, and this section will start tailoring itself to you.'}
       </p>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((job) => (
-          <JobCard key={job.id} job={job} />
+          <div key={job.id} className="relative">
+            {personalized && typeof job.matchScore === 'number' && job.matchScore > 0 && (
+              <span className="absolute right-3 top-3 z-10 rounded-full bg-brand-600 px-2.5 py-1 text-xs font-semibold text-white shadow-sm">
+                {job.matchScore}% match
+              </span>
+            )}
+            <JobCard job={job} />
+          </div>
         ))}
       </div>
     </div>

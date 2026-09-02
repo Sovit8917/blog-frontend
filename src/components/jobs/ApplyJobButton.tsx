@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ExternalLink, FileText, Loader2, Upload, X } from 'lucide-react';
 import { useAuth } from '@/lib/auth/AuthProvider';
-import { applyToJob } from '@/lib/api/jobs';
+import { applyToJob, trackExternalApplyClick } from '@/lib/api/jobs';
 import { getOwnResume, uploadResume } from '@/lib/api/users';
 import { ApiRequestError } from '@/lib/api/client';
 import { Button } from '@/components/ui/Button';
@@ -82,6 +82,11 @@ export function ApplyJobButton({
         href={applyUrl}
         target="_blank"
         rel="noopener noreferrer nofollow sponsored"
+        // Fire-and-forget click tracking (P0 External Apply tracking) — never
+        // blocks or delays the actual navigation to the employer's site.
+        onClick={() => {
+          trackExternalApplyClick(jobSlug);
+        }}
         className="w-full sm:w-auto"
       >
         Apply Now <ExternalLink size={15} />

@@ -1,6 +1,7 @@
 'use client';
 
-import { ExternalLink, Star } from 'lucide-react';
+import Link from 'next/link';
+import { Briefcase, ExternalLink, Star } from 'lucide-react';
 import { recordResourceClick } from '@/lib/api';
 import { ShareButton } from '@/components/shared/ShareButton';
 import type { DeveloperResource } from '@/types';
@@ -71,6 +72,27 @@ export function ResourceCard({ resource }: { resource: DeveloperResource }) {
 
       {resource.description && (
         <p className="pointer-events-none relative z-[1] line-clamp-2 text-sm text-ink-500">{resource.description}</p>
+      )}
+
+      {/* Resource -> Job linking (P1): editor-picked open roles related to
+          this resource (e.g. a "Free React course" resource pointing at open
+          React jobs). Sits above the stretched anchor so these links are
+          independently clickable rather than triggering the outbound resource.url nav. */}
+      {resource.linkedJobs && resource.linkedJobs.length > 0 && (
+        <div className="relative z-[1] flex flex-wrap items-center gap-1.5 border-t border-ink-50 pt-2.5">
+          <span className="flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wide text-ink-400">
+            <Briefcase size={11} /> Related jobs
+          </span>
+          {resource.linkedJobs.slice(0, 3).map((job) => (
+            <Link
+              key={job.id}
+              href={`/jobs/${job.slug}`}
+              className="pointer-events-auto relative z-10 rounded-full bg-brand-50 px-2.5 py-1 text-[11px] font-medium text-brand-700 transition hover:bg-brand-100"
+            >
+              {job.title}
+            </Link>
+          ))}
+        </div>
       )}
 
       <div className="relative z-[1] mt-auto flex items-end justify-between gap-2 pt-1">

@@ -18,9 +18,11 @@ import {
 } from 'lucide-react';
 import { getJobBySlug, getCompanyBySlug, listJobsByCompany, listJobs, myApplications, mySavedJobs } from '@/lib/api';
 import { RecentJobsWidget } from '@/components/jobs/RecentJobsWidget';
+import { ResumeMatchWidget } from '@/components/jobs/ResumeMatchWidget';
 import { getCurrentUser, getCookieHeader } from '@/lib/auth/session';
 import { ApplyJobButton } from '@/components/jobs/ApplyJobButton';
 import { SaveJobButton } from '@/components/jobs/SaveJobButton';
+import { ReportJobButton } from '@/components/jobs/ReportJobButton';
 import { Badge } from '@/components/ui/Badge';
 import { JobGrid } from '@/components/jobs/JobGrid';
 import { MarkdownContent } from '@/components/shared/MarkdownContent';
@@ -115,6 +117,11 @@ export default async function JobDetailPage({ params }: Props) {
               <header>
                 <div className="mb-4 flex flex-wrap items-center gap-2">
                   {job.isFeatured && <Badge variant="brand" className="px-3 py-1 font-semibold">Featured</Badge>}
+                  {job.verificationStatus === 'VERIFIED' && (
+                    <Badge variant="outline" className="!ring-emerald-200 bg-emerald-50 px-2.5 py-1 !text-emerald-700">
+                      <BadgeCheck size={13} className="text-emerald-600" /> Verified listing
+                    </Badge>
+                  )}
                   {job.tags?.map((tag) => (
                     <Badge key={tag} variant="dark" className="px-2.5 py-1">{tag}</Badge>
                   ))}
@@ -211,6 +218,9 @@ export default async function JobDetailPage({ params }: Props) {
                 />
                 <SaveJobButton jobId={job.id} initialSaved={isSaved} />
                 <ShareButton url={jobUrl} title={`${job.title} at ${company.name}`} contentType="job" jobId={job.id} />
+              </div>
+              <div className="mt-2 hidden sm:block">
+                <ReportJobButton jobSlug={job.slug} />
               </div>
 
               {/* Application-method messaging — makes it explicit up front whether
@@ -335,6 +345,9 @@ export default async function JobDetailPage({ params }: Props) {
               {/* ---- Recent Jobs rail — sitewide, always populated, mirrors
                   the "Recent Posts" widget pattern used on jobcode.in ---- */}
               <RecentJobsWidget jobs={recentJobs.items} excludeJobId={job.id} />
+
+              {/* ---- Candidate ATS (P2): resume vs. this job's required skills ---- */}
+              <ResumeMatchWidget jobSlug={job.slug} isLoggedIn={!!user} />
 
               {/* ---- Stronger company card ---- */}
               <div className="overflow-hidden rounded-2xl border border-slate-200/70 bg-white shadow-sm">

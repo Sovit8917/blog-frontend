@@ -208,10 +208,26 @@ export function MobileNav({
                   </li>
                   <li>
                     <MobileLink
+                      href="/me/preferences"
+                      active={isActive("/me/preferences")}
+                    >
+                      Job Preferences
+                    </MobileLink>
+                  </li>
+                  <li>
+                    <MobileLink
                       href="/me/resume"
                       active={isActive("/me/resume")}
                     >
                       My Resume
+                    </MobileLink>
+                  </li>
+                  <li>
+                    <MobileLink
+                      href="/me/resume-ats"
+                      active={isActive("/me/resume-ats")}
+                    >
+                      Resume ATS Analysis
                     </MobileLink>
                   </li>
                 </>

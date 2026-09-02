@@ -48,3 +48,35 @@ export function organizationJsonLd() {
     logo: `${SITE.url}/logo.png`,
   };
 }
+
+/**
+ * ItemList of JobPosting entries — used by SEO landing pages that curate a
+ * specific slice of the job board (e.g. /jobs/fresher) so search engines can
+ * pick up the listings as rich results without us hand-rolling full
+ * JobPosting objects (validThrough/hiringOrganization etc.) per card.
+ */
+export function jobListJsonLd(jobs: { title: string; slug: string; location?: string | null }[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    itemListElement: jobs.map((job, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      url: `${SITE.url}/jobs/${job.slug}`,
+      name: job.title,
+    })),
+  };
+}
+
+/** FAQPage schema for the FAQ blocks on SEO landing pages like /jobs/fresher. */
+export function faqJsonLd(qa: { question: string; answer: string }[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: qa.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: { '@type': 'Answer', text: item.answer },
+    })),
+  };
+}

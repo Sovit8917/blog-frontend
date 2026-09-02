@@ -16,6 +16,17 @@ export function listDeveloperResources(params: ListDeveloperResourcesParams = {}
 }
 
 /**
+ * GET /developer-resources/by-slug/:slug — public resource detail, including
+ * its editorially-linked jobs (P1 Resource -> Job linking, DeveloperResource.linkedJobs).
+ */
+export function getDeveloperResourceBySlug(slug: string) {
+  return apiFetch<DeveloperResource>(`/developer-resources/by-slug/${slug}`, {
+    revalidate: 120,
+    tags: ['developer-resources', `developer-resource:${slug}`],
+  });
+}
+
+/**
  * POST /developer-resources/:id/click — fire-and-forget outbound click
  * tracking, called right before navigating to `resource.url`. Never blocks
  * the navigation and never surfaces an error to the visitor.

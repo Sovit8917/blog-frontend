@@ -39,6 +39,8 @@ export default async function JobsPage({ searchParams }: Props) {
     remoteType: (searchParams.remoteType as any) || undefined,
     employmentType: (searchParams.employmentType as any) || undefined,
     experienceLevel: (searchParams.experienceLevel as any) || undefined,
+    freshersOnly: searchParams.freshersOnly === 'true' || undefined,
+    verifiedOnly: searchParams.verifiedOnly === 'true' || undefined,
     skill: searchParams.skill || undefined,
     sort: (searchParams.sort as any) || undefined,
     limit,
@@ -74,7 +76,9 @@ export default async function JobsPage({ searchParams }: Props) {
     params.location ||
     params.remoteType ||
     params.employmentType ||
-    params.experienceLevel,
+    params.experienceLevel ||
+    params.freshersOnly ||
+    params.verifiedOnly,
   );
 
   return (

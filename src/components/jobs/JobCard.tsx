@@ -61,9 +61,14 @@ export function JobCard({ job }: { job: JobCardType }) {
         </div>
 
         <div className="min-w-0 flex-1">
-          {(job.tags && job.tags.length > 0) || job.isFeatured ? (
+          {(job.tags && job.tags.length > 0) || job.isFeatured || job.verificationStatus === 'VERIFIED' ? (
             <div className="mb-1.5 flex flex-wrap gap-1.5">
               {job.isFeatured && <Badge variant="dark">Featured</Badge>}
+              {job.verificationStatus === 'VERIFIED' && (
+                <Badge variant="outline" className="!ring-emerald-200 !text-emerald-700 bg-emerald-50">
+                  <BadgeCheck size={11} className="text-emerald-600" /> Verified
+                </Badge>
+              )}
               {job.tags?.slice(0, 3).map((tag) => (
                 <Badge key={tag} variant="dark">
                   {tag}

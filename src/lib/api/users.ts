@@ -1,5 +1,5 @@
 import { apiFetch, API_BASE, ApiRequestError, qs } from './client';
-import type { ApiError, AuthorSearchResult, AuthorSummary, EmployerRequest, ResumeInfo, UserProfile } from '@/types';
+import type { ApiError, AuthorSearchResult, AuthorSummary, CandidatePreferences, EmployerRequest, ResumeInfo, UpdateCandidatePreferencesInput, UserProfile } from '@/types';
 
 /** GET /users/:username — public profile (name, bio, avatar, post/follow counts). */
 export function getUserProfile(username: string) {
@@ -113,4 +113,22 @@ export async function uploadResume(file: File): Promise<ResumeInfo> {
 /** DELETE /me/resume — requires auth. */
 export function deleteOwnResume() {
   return apiFetch<{ message: string }>('/me/resume', { method: 'DELETE', revalidate: false });
+}
+
+// ---- Candidate job preferences (P1 "Candidate profile/preferences") ----
+// Soft matching signal used by GET /jobs/recommended (see lib/api/jobs.ts)
+// to compute each job's matchScore, and to pre-fill the job board filters.
+
+/** GET /me/preferences — requires auth. */
+export function getOwnPreferences(cookie?: string) {
+  return apiFetch<CandidatePreferences>('/me/preferences', { revalidate: false, cookie });
+}
+
+/** PATCH /me/preferences — requires auth. */
+export function updateOwnPreferences(input: UpdateCandidatePreferencesInput) {
+  return apiFetch<CandidatePreferences>('/me/preferences', {
+    method: 'PATCH',
+    body: JSON.stringify(input),
+    revalidate: false,
+  });
 }

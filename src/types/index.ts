@@ -19,6 +19,17 @@ export interface AuthorSearchResult extends AuthorSummary {
   _count: { posts: number; followers: number };
 }
 
+/** Computed on the fly from published-post engagement — see UsersService.getAuthorReputation. */
+export interface AuthorReputation {
+  score: number;
+  tier: 'Newcomer' | 'Rising' | 'Established' | 'Expert' | 'Elite';
+  label: string;
+  publishedPostCount: number;
+  totalViews: number;
+  totalLikes: number;
+  nextTier: { tier: string; scoreNeeded: number } | null;
+}
+
 /** GET /users/:username — public profile, incl. follow counts. */
 export interface UserProfile {
   id: string;
@@ -33,6 +44,7 @@ export interface UserProfile {
     followers: number;
     following: number;
   };
+  reputation: AuthorReputation;
 }
 
 export interface Category {
@@ -91,6 +103,13 @@ export interface Post {
   sponsoredContent?: SponsoredContent | null;
   createdAt: string;
   updatedAt: string;
+  /**
+   * Editorially-curated "Article -> Job" picks (P1) — an editor hand-picking
+   * specific open roles to feature on this article, distinct from the
+   * auto-matched jobs from GET /jobs/related-to-post/:id. Empty unless the
+   * author/editor explicitly linked jobs on this post.
+   */
+  linkedJobs?: JobCard[];
 }
 
 export type PostCard = Pick<
@@ -280,6 +299,8 @@ export interface DeveloperResource {
   iconUrl?: string | null;
   isFeatured: boolean;
   clickCount: number;
+  /** Editorially-curated "Resource -> Job" picks (P1) — see Post.linkedJobs. */
+  linkedJobs?: JobCard[];
 }
 
 export interface ListDeveloperResourcesParams {
@@ -289,6 +310,66 @@ export interface ListDeveloperResourcesParams {
   resourceType?: ResourceType;
   tag?: string;
   isFeatured?: boolean;
+}
+
+// ---- Learning paths (P2) — curated, ordered sequences of DeveloperResource steps ----
+export interface LearningPathStep {
+  id: string;
+  order: number;
+  note?: string | null;
+  resource: DeveloperResource;
+}
+
+export interface LearningPath {
+  id: string;
+  title: string;
+  slug: string;
+  description?: string | null;
+  coverImageUrl?: string | null;
+  isFeatured: boolean;
+  isActive: boolean;
+  order: number;
+  steps: LearningPathStep[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ListLearningPathsParams {
+  page?: number;
+  limit?: number;
+  search?: string;
+  isFeatured?: boolean;
+}
+
+// ---- Candidate ATS / resume analysis (P2) ----
+export interface ResumeAnalysisResult {
+  resumeScore: number;
+  extractedSkillSlugs: string[];
+  suggestions: string[];
+  updatedAt: string;
+}
+
+export interface ResumeJobMatch {
+  jobId: string;
+  jobSlug: string;
+  jobTitle: string;
+  resumeScore: number;
+  jobMatchScore: number;
+  matchingSkills: { name: string; slug: string }[];
+  missingSkills: { name: string; slug: string }[];
+  suggestions: string[];
+}
+
+export interface ResumeRecommendedJob {
+  id: string;
+  slug: string;
+  title: string;
+  company: { id: string; name: string; slug: string; logoUrl?: string | null; isVerified: boolean } | null;
+  location?: string | null;
+  remoteType: string;
+  matchScore: number;
+  matchingSkillCount: number;
+  requiredSkillCount: number;
 }
 
 /** GET /search — one call across every pillar of the ecosystem. */
@@ -305,6 +386,8 @@ export interface UnifiedSearchResult {
 export interface JobSkillLink {
   skill: Skill;
 }
+
+export type JobVerificationStatus = 'UNVERIFIED' | 'VERIFIED' | 'FLAGGED';
 
 export interface Job {
   id: string;
@@ -342,7 +425,9 @@ export interface Job {
   postedById: string;
   viewCount: number;
   applicationCount: number;
+  externalApplyCount?: number;
   isFeatured: boolean;
+  verificationStatus?: JobVerificationStatus;
   seoTitle?: string | null;
   seoDescription?: string | null;
   seoKeywords?: string | null;
@@ -358,6 +443,9 @@ export interface Job {
   company?: CompanySummary | null;
   postedBy: { id: string; username: string; name: string };
   skills: JobSkillLink[];
+  // Only present on GET /jobs/recommended results (P1 "Skill-based
+  // matching") — 0-100 fit score against the current user's preferences.
+  matchScore?: number;
 }
 
 export type JobCard = Job;
@@ -370,6 +458,12 @@ export interface ListJobsParams {
   remoteType?: RemoteType;
   employmentType?: EmploymentType;
   experienceLevel?: ExperienceLevel;
+  // Multi-select experience filter — "Freshers" quick chip and any custom
+  // combination of INTERNSHIP/ENTRY_LEVEL/etc checkboxes both go through
+  // this (see JobFilters).
+  experienceLevels?: ExperienceLevel[];
+  freshersOnly?: boolean;
+  verifiedOnly?: boolean;
   skill?: string;
   company?: string;
   salaryMin?: number;
@@ -470,6 +564,30 @@ export interface ResumeInfo {
 export interface RecommendedJobs {
   items: JobCard[];
   personalized: boolean;
+}
+
+// ---- Candidate profile/preferences (P1) ----
+// Soft matching signal only — powers RecommendedJobs' matchScore above and
+// pre-fills the job board filters. Nothing here gates applying to a job.
+
+export interface CandidatePreferences {
+  preferredLocation?: string | null;
+  preferredRemoteType?: RemoteType | null;
+  preferredEmploymentType?: EmploymentType | null;
+  preferredExperienceLevel?: ExperienceLevel | null;
+  expectedSalaryMin?: number | null;
+  expectedSalaryMax?: number | null;
+  preferredSkillSlugs: string[];
+}
+
+export interface UpdateCandidatePreferencesInput {
+  preferredLocation?: string;
+  preferredRemoteType?: RemoteType;
+  preferredEmploymentType?: EmploymentType;
+  preferredExperienceLevel?: ExperienceLevel;
+  expectedSalaryMin?: number;
+  expectedSalaryMax?: number;
+  preferredSkillSlugs?: string[];
 }
 
 export interface ApiError {

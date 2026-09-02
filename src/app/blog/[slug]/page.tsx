@@ -50,10 +50,13 @@ export default async function PostPage({ params }: Props) {
     listComments(post.id).catch(() => []),
   ]);
 
-  const [viewer, relatedJobs] = await Promise.all([
+  const [viewer, autoRelatedJobs] = await Promise.all([
     getCurrentUser().catch(() => null),
-    listJobsRelatedToPost(post.id).catch(() => []),
+    // Only bother hitting the auto-match endpoint if the editor hasn't
+    // hand-picked jobs for this article already (P1 Article -> Job linking).
+    post.linkedJobs?.length ? Promise.resolve([]) : listJobsRelatedToPost(post.id).catch(() => []),
   ]);
+  const relatedJobs = post.linkedJobs?.length ? post.linkedJobs : autoRelatedJobs;
 
   const isOwnPost = viewer?.username === post.author.username;
   let initialFollowing = false;

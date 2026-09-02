@@ -56,11 +56,25 @@ export function HeaderAuthActions() {
               Job alerts
             </Link>
             <Link
+              href="/me/preferences"
+              onClick={() => setOpen(false)}
+              className="block rounded-lg px-3 py-2 text-sm font-medium text-ink-700 hover:bg-ink-50"
+            >
+              Job preferences
+            </Link>
+            <Link
               href="/me/resume"
               onClick={() => setOpen(false)}
               className="block rounded-lg px-3 py-2 text-sm font-medium text-ink-700 hover:bg-ink-50"
             >
               My resume
+            </Link>
+            <Link
+              href="/me/resume-ats"
+              onClick={() => setOpen(false)}
+              className="block rounded-lg px-3 py-2 text-sm font-medium text-ink-700 hover:bg-ink-50"
+            >
+              Resume ATS analysis
             </Link>
             <Link
               href="/me/bookmarks"

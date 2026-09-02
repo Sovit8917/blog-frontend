@@ -13,4 +13,6 @@ export * from './reading-history';
 export * from './collections';
 export * from './growth';
 export * from './resources';
+export * from './learning-paths';
+export * from './resume-ats';
 export * from './analytics';

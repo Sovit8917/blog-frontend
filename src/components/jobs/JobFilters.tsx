@@ -1,10 +1,67 @@
-import { SlidersHorizontal, ChevronDown, Search, MapPin, Briefcase, GraduationCap, Laptop, RotateCcw } from 'lucide-react';
+'use client';
+
+import { useEffect, useState } from 'react';
+import { SlidersHorizontal, ChevronDown, Search, MapPin, Briefcase, GraduationCap, Laptop, RotateCcw, BadgeCheck } from 'lucide-react';
 import type { ListJobsParams } from '@/types';
 import { EMPLOYMENT_TYPE_LABEL, EXPERIENCE_LEVEL_LABEL, REMOTE_TYPE_LABEL } from '@/lib/jobs/format';
+import { suggestJobs } from '@/lib/api/jobs';
 
 const fieldClass =
   'w-full rounded-xl border border-slate-200 bg-slate-50/60 py-2.5 text-sm text-ink-800 outline-none placeholder:text-ink-400 transition focus:border-brand-500 focus:bg-white focus:ring-4 focus:ring-brand-500/10';
 const labelClass = 'mb-1.5 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-ink-500';
+
+/**
+ * Job search UX (P0): a plain <input list="…"> typeahead backed by
+ * GET /jobs/suggest. Deliberately not a full custom dropdown component —
+ * the native <datalist> gets keyboard nav, screen-reader support, and
+ * mobile behavior for free, and this form is a classic GET <form> (no JS
+ * required to submit), so the enhancement stays additive rather than
+ * replacing the input.
+ */
+function SearchSuggestInput({ defaultValue }: { defaultValue?: string }) {
+  const [value, setValue] = useState(defaultValue ?? '');
+  const [options, setOptions] = useState<string[]>([]);
+
+  useEffect(() => {
+    const q = value.trim();
+    if (q.length < 2) {
+      setOptions([]);
+      return;
+    }
+    let cancelled = false;
+    const timer = setTimeout(() => {
+      suggestJobs(q).then((res) => {
+        if (cancelled) return;
+        setOptions([...res.titles, ...res.skills.map((s) => s.name)].slice(0, 8));
+      });
+    }, 200);
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, [value]);
+
+  return (
+    <div className="relative">
+      <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-400 pointer-events-none" />
+      <input
+        id="job-search"
+        type="search"
+        name="search"
+        list="job-search-suggestions"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        placeholder="Job title, skill, or keyword…"
+        className={`${fieldClass} pl-10`}
+      />
+      <datalist id="job-search-suggestions">
+        {options.map((opt) => (
+          <option key={opt} value={opt} />
+        ))}
+      </datalist>
+    </div>
+  );
+}
 
 export function JobFilters({ params }: { params: ListJobsParams }) {
   const activeCount = [
@@ -12,6 +69,8 @@ export function JobFilters({ params }: { params: ListJobsParams }) {
     params.remoteType,
     params.employmentType,
     params.experienceLevel,
+    params.freshersOnly ? true : undefined,
+    params.verifiedOnly ? true : undefined,
     params.sort && params.sort !== 'relevance' ? params.sort : undefined,
   ].filter(Boolean).length;
 
@@ -27,17 +86,7 @@ export function JobFilters({ params }: { params: ListJobsParams }) {
           <label className={labelClass} htmlFor="job-search">
             <Search size={13} className="text-brand-600" /> Search Keyword
           </label>
-          <div className="relative">
-            <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-400 pointer-events-none" />
-            <input
-              id="job-search"
-              type="search"
-              name="search"
-              defaultValue={params.search}
-              placeholder="Job title, skill, or keyword…"
-              className={`${fieldClass} pl-10`}
-            />
-          </div>
+          <SearchSuggestInput defaultValue={params.search} />
         </div>
 
         {/* Mobile toggle button */}
@@ -129,6 +178,38 @@ export function JobFilters({ params }: { params: ListJobsParams }) {
             </select>
           </div>
         </div>
+      </div>
+
+      {/* Quick filter chips (P0 Fresher/Internship filters + Job quality/verification) */}
+      <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-slate-100 pt-4">
+        <label
+          htmlFor="job-freshers-only"
+          className="flex cursor-pointer items-center gap-1.5 rounded-full border border-slate-200 px-3.5 py-1.5 text-xs font-semibold text-ink-600 transition has-[:checked]:border-brand-400 has-[:checked]:bg-brand-50 has-[:checked]:text-brand-700"
+        >
+          <input
+            id="job-freshers-only"
+            type="checkbox"
+            name="freshersOnly"
+            value="true"
+            defaultChecked={!!params.freshersOnly}
+            className="h-3.5 w-3.5 rounded border-slate-300 text-brand-600 focus:ring-brand-500"
+          />
+          <GraduationCap size={13} /> Freshers &amp; Internships
+        </label>
+        <label
+          htmlFor="job-verified-only"
+          className="flex cursor-pointer items-center gap-1.5 rounded-full border border-slate-200 px-3.5 py-1.5 text-xs font-semibold text-ink-600 transition has-[:checked]:border-emerald-400 has-[:checked]:bg-emerald-50 has-[:checked]:text-emerald-700"
+        >
+          <input
+            id="job-verified-only"
+            type="checkbox"
+            name="verifiedOnly"
+            value="true"
+            defaultChecked={!!params.verifiedOnly}
+            className="h-3.5 w-3.5 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+          />
+          <BadgeCheck size={13} /> Verified jobs only
+        </label>
       </div>
 
       {/* Form Action Bar */}

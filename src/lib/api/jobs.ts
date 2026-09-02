@@ -131,3 +131,50 @@ export function deleteJobAlert(id: string) {
 export function previewJobAlert(id: string) {
   return apiFetch<JobCard[]>(`/job-alerts/${id}/preview`, { revalidate: false });
 }
+
+// ---- External Apply tracking (P0) ----
+
+/**
+ * POST /jobs/:slug/external-apply-click — fired right before deep-linking a
+ * seeker out to Job.applyUrl. Fire-and-forget: a tracking failure should
+ * never block the actual navigation to the employer's site.
+ */
+export function trackExternalApplyClick(slug: string) {
+  return apiFetch<{ message: string }>(`/jobs/${slug}/external-apply-click`, {
+    method: 'POST',
+    revalidate: false,
+  }).catch(() => undefined);
+}
+
+// ---- Job quality/verification (P0) ----
+
+export type JobReportReason = 'SPAM' | 'SCAM_OR_FRAUD' | 'EXPIRED_OR_FILLED' | 'MISLEADING' | 'DUPLICATE' | 'OTHER';
+
+export const JOB_REPORT_REASON_LABEL: Record<JobReportReason, string> = {
+  SPAM: 'Spam',
+  SCAM_OR_FRAUD: 'Scam or fraud',
+  EXPIRED_OR_FILLED: 'Expired or already filled',
+  MISLEADING: 'Misleading listing',
+  DUPLICATE: 'Duplicate posting',
+  OTHER: 'Something else',
+};
+
+/** POST /jobs/:slug/report — flag a listing as spam/scam/stale/etc. */
+export function reportJob(slug: string, input: { reason: JobReportReason; note?: string }) {
+  return apiFetch<{ id: string }>(`/jobs/${slug}/report`, {
+    method: 'POST',
+    body: JSON.stringify(input),
+    revalidate: false,
+  });
+}
+
+// ---- Job search UX (P0) ----
+
+/** GET /jobs/suggest?q= — lightweight typeahead for the job search box. */
+export function suggestJobs(q: string, limit = 8) {
+  if (!q || q.trim().length < 2) return Promise.resolve({ titles: [], skills: [] });
+  return apiFetch<{ titles: string[]; skills: { name: string; slug: string }[] }>(
+    `/jobs/suggest${qs({ q, limit })}`,
+    { revalidate: false },
+  ).catch(() => ({ titles: [], skills: [] }));
+}
