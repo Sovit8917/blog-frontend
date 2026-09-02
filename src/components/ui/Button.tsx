@@ -19,12 +19,13 @@ const sizes: Record<Size, string> = {
   lg: 'text-base px-5 py-3',
 };
 
-interface Props extends ButtonHTMLAttributes<HTMLButtonElement>, Pick<AnchorHTMLAttributes<HTMLAnchorElement>, 'onClick'> {
+interface Props extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'onClick'> {
   variant?: Variant;
   size?: Size;
   href?: string;
   target?: string;
   rel?: string;
+  onClick?: (e: React.MouseEvent<HTMLElement>) => void;
 }
 
 export function Button({ variant = 'primary', size = 'md', className, href, target, rel, onClick, children, ...rest }: Props) {

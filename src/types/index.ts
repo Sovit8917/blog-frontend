@@ -451,6 +451,7 @@ export interface Job {
 export type JobCard = Job;
 
 export interface ListJobsParams {
+  page?: number;
   cursor?: string;
   limit?: number;
   search?: string;

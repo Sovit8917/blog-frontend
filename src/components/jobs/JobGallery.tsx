@@ -18,6 +18,8 @@ export function JobGallery({ images, title }: { images: string[]; title: string 
   const hero = images[0];
   const rest = images.slice(1);
 
+  if (!hero) return null;
+
   return (
     <section className="rounded-2xl border border-slate-200/70 bg-white p-6 shadow-sm sm:p-8">
       <h2 className="mb-3 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-brand-600">
@@ -139,7 +141,7 @@ function Lightbox({
         onClick={(e) => e.stopPropagation()}
       >
         <Image
-          src={images[index]}
+          src={images[index] ?? ''}
           alt={`${title} — photo ${index + 1}`}
           fill
           className="object-contain"
