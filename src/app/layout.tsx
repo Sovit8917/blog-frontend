@@ -8,6 +8,7 @@ import { AuthProvider } from '@/lib/auth/AuthProvider';
 import { getCurrentUser } from '@/lib/auth/session';
 import { GoogleAdSenseScript } from '@/components/ads/GoogleAdSenseScript';
 import { ConsentBanner } from '@/components/ads/ConsentBanner';
+import { PopupAd } from '@/components/ads/PopupAd';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -37,6 +38,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <Footer />
         </AuthProvider>
         <ConsentBanner />
+        <PopupAd />
       </body>
     </html>
   );

@@ -65,7 +65,17 @@ export function GoogleAdUnit({
 
     let cancelled = false;
 
-    // Monitor AdSense status attributes and rendered iframe size
+    // Monitor AdSense's own fill signal. `data-ad-status` is the attribute
+    // Google's script sets once a request actually resolves — "filled" only
+    // once a creative is really rendered inside the <ins>, "unfilled" for a
+    // confirmed no-fill/blocked/error response. We used to also treat "the
+    // iframe already has height" as a proxy for "filled", but AdSense (and
+    // most ad blockers that let the script through but still strip the
+    // creative) allocate a same-sized placeholder iframe immediately, before
+    // the request resolves — so that heuristic reported "filled" for ads
+    // that never actually served anything, leaving a blank reserved box with
+    // an "Advertisement" label and nothing inside it. Only data-ad-status is
+    // trustworthy here.
     const checkFillStatus = () => {
       if (cancelled || !insRef.current) return;
 
@@ -82,33 +92,6 @@ export function GoogleAdUnit({
         clearInterval(pollInterval);
         setStatus('filled');
         return;
-      }
-
-      // Check if ins element or its iframe has received real dimensions
-      const iframe = insRef.current.querySelector('iframe');
-      if (iframe) {
-        // If iframe is visible and has height > 0
-        const rect = iframe.getBoundingClientRect();
-        if (rect.height > 10) {
-          cancelled = true;
-          clearInterval(pollInterval);
-          setStatus('filled');
-          return;
-        }
-
-        try {
-          const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
-          if (iframeDoc && iframeDoc.body) {
-            if (iframeDoc.body.children.length > 0 && iframeDoc.body.scrollHeight > 10) {
-              cancelled = true;
-              clearInterval(pollInterval);
-              setStatus('filled');
-              return;
-            }
-          }
-        } catch {
-          // Cross-origin iframe: normal for served ads
-        }
       }
     };
 

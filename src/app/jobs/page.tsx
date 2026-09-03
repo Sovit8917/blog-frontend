@@ -156,13 +156,19 @@ export default async function JobsPage({ searchParams }: Props) {
               </div>
             ) : (
               <div>
-                {page.items.map((job) => (
+                {/* BETWEEN_POSTS sits inline, midway through the list — not
+                    after it — so it actually gets scrolled past while people
+                    are still reading rows, not skipped once they've already
+                    hit the pagination controls. */}
+                {page.items.slice(0, Math.ceil(page.items.length / 2)).map((job) => (
+                  <JobListRow key={job.id} job={job} />
+                ))}
+                {page.items.length > 1 && <AdSlot placement="BETWEEN_POSTS" className="my-6" />}
+                {page.items.slice(Math.ceil(page.items.length / 2)).map((job) => (
                   <JobListRow key={job.id} job={job} />
                 ))}
               </div>
             )}
-
-            <AdSlot placement="BETWEEN_POSTS" />
 
             <Pagination
               basePath="/jobs"
@@ -175,6 +181,7 @@ export default async function JobsPage({ searchParams }: Props) {
           <aside className="flex flex-col gap-6">
             <div className="sticky top-24 space-y-6">
               <RecentJobsWidget jobs={recentJobs.items} />
+              <AdSlot placement="SIDEBAR" />
               <FollowUsWidget />
               <TagCloudWidget tags={tagCloud} />
             </div>

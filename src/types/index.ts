@@ -181,6 +181,8 @@ export interface AffiliateLink {
   program?: string | null;
 }
 
+export type AffiliateRecommendation = AffiliateLink;
+
 export interface Sponsor {
   id: string;
   name: string;

@@ -1,5 +1,5 @@
 import { apiFetch, API_BASE } from './client';
-import type { AdPlacement, Advertisement, Sponsor, NewsletterSponsorSlot } from '@/types';
+import type { AdPlacement, Advertisement, Sponsor, NewsletterSponsorSlot, AffiliateLink } from '@/types';
 
 /**
  * GET /ads?placement=X — active ads for a slot, ranked by priority on the backend.
@@ -26,6 +26,19 @@ export function affiliateHref(slug: string) {
   // Was missing the backend's `/api/v1` route prefix (same bug as the old
   // apiFetch base URL) — the link 404'd instead of redirecting.
   return `${API_BASE}/go/${slug}`;
+}
+
+/**
+ * GET /affiliate-links?postId=X — active affiliate picks for the "Recommended
+ * for you" card on a post. Backend fills any gap under `limit` from the
+ * general active pool, so this can come back non-empty even on posts with
+ * nothing manually attached.
+ */
+export function getAffiliateRecommendations(postId: string, limit = 4) {
+  return apiFetch<AffiliateLink[]>(`/affiliate-links?postId=${postId}&limit=${limit}`, {
+    revalidate: 300,
+    tags: [`affiliate-links:${postId}`],
+  });
 }
 
 /** GET /sponsors — active sponsor roster, e.g. for a "Our partners" strip. */

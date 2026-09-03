@@ -346,6 +346,8 @@ export default async function JobDetailPage({ params }: Props) {
                   the "Recent Posts" widget pattern used on jobcode.in ---- */}
               <RecentJobsWidget jobs={recentJobs.items} excludeJobId={job.id} />
 
+              <AdSlot placement="SIDEBAR" />
+
               {/* ---- Candidate ATS (P2): resume vs. this job's required skills ---- */}
               <ResumeMatchWidget jobSlug={job.slug} isLoggedIn={!!user} />
 

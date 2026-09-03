@@ -12,6 +12,9 @@ import {
   ShieldCheck,
   ArrowRight,
   CheckCircle2,
+  Zap,
+  Rocket,
+  Building2,
 } from "lucide-react";
 import { buildListMetadata } from "@/lib/seo/metadata";
 
@@ -64,6 +67,56 @@ const PRIMARY = [
     desc:
       "Every placement — ad, sponsor, job, or newsletter slot — is measured the same way, so you can compare ROI across channels.",
     points: ["Cross-channel dashboards", "Impression & click tracking", "Attribution you can trust"],
+  },
+];
+
+const PACKAGES = [
+  {
+    icon: Zap,
+    name: "Starter",
+    price: "$299",
+    period: "/mo",
+    desc: "Test the water with a single always-on placement.",
+    features: [
+      "1 display ad placement (your choice of slot)",
+      "Bronze sponsor logo listing",
+      "Monthly performance summary",
+    ],
+    cta: "Start with Starter",
+    highlighted: false,
+  },
+  {
+    icon: Rocket,
+    name: "Growth",
+    price: "$899",
+    period: "/mo",
+    desc: "The most popular mix for teams hiring and building awareness.",
+    features: [
+      "3 display ad placements across the site",
+      "Gold sponsor card on the homepage",
+      "1 sponsored article per quarter",
+      "2 featured job listings",
+      "Live analytics dashboard access",
+    ],
+    cta: "Go with Growth",
+    highlighted: true,
+  },
+  {
+    icon: Building2,
+    name: "Enterprise",
+    price: "Custom",
+    period: "",
+    desc: "Full-funnel presence for teams running always-on campaigns.",
+    features: [
+      "Unlimited display placements",
+      "Platinum sponsor card + homepage strip",
+      "Dedicated newsletter sponsor slot",
+      "Unlimited featured job listings",
+      "Custom affiliate & attribution setup",
+      "Dedicated partnerships contact",
+    ],
+    cta: "Talk to sales",
+    highlighted: false,
   },
 ];
 
@@ -154,6 +207,68 @@ export default function AdvertisePage() {
       </div>
 
       <div className="border-y border-ink-100 bg-ink-50/50">
+        <div className="container-page py-14 sm:py-16">
+          <div className="mb-10 max-w-2xl">
+            <h2 className="text-xl font-bold text-ink-900 sm:text-2xl">Advertiser packages</h2>
+            <p className="mt-2 text-ink-500">
+              Straightforward monthly tiers, or a custom mix for larger campaigns — either way you
+              get the same real-time analytics.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+            {PACKAGES.map(({ icon: Icon, name, price, period, desc, features, cta, highlighted }) => (
+              <div
+                key={name}
+                className={`relative flex flex-col rounded-2xl p-6 shadow-sm transition sm:p-7 ${
+                  highlighted
+                    ? "border-2 border-brand-500 bg-white ring-1 ring-brand-500/20 sm:-translate-y-2"
+                    : "border border-ink-100 bg-white hover:-translate-y-0.5 hover:shadow-md"
+                }`}
+              >
+                {highlighted && (
+                  <span className="absolute -top-3 left-6 rounded-full bg-brand-600 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow-sm">
+                    Most popular
+                  </span>
+                )}
+                <div
+                  className={`flex h-10 w-10 items-center justify-center rounded-lg ${
+                    highlighted ? "bg-brand-600 text-white" : "bg-brand-50 text-brand-600"
+                  }`}
+                >
+                  <Icon size={20} />
+                </div>
+                <h3 className="mt-4 text-base font-bold text-ink-900">{name}</h3>
+                <p className="mt-1 text-sm text-ink-500">{desc}</p>
+                <div className="mt-4 flex items-baseline gap-1">
+                  <span className="text-3xl font-extrabold text-ink-900">{price}</span>
+                  {period && <span className="text-sm font-medium text-ink-400">{period}</span>}
+                </div>
+                <ul className="mt-5 flex-1 space-y-2.5">
+                  {features.map((f) => (
+                    <li key={f} className="flex items-start gap-2 text-sm text-ink-600">
+                      <CheckCircle2 size={15} className="mt-0.5 shrink-0 text-brand-500" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <a
+                  href="mailto:partnerships@devnexa.com"
+                  className={`mt-6 inline-flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold shadow-sm transition ${
+                    highlighted
+                      ? "bg-brand-600 text-white hover:bg-brand-700"
+                      : "bg-slate-950 text-white hover:bg-slate-900"
+                  }`}
+                >
+                  {cta} <ArrowRight size={15} />
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="border-b border-ink-100 bg-white">
         <div className="container-page py-14">
           <h2 className="text-xl font-bold text-ink-900 sm:text-2xl">
             The platform behind every placement

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { NewsletterForm } from "@/components/home/NewsletterForm";
+import { AdSlot } from "@/components/ads/AdSlot";
 import devnexaLogoTransparent from "@/assests/devnexa-logo-transpernet.png";
 
 export function Footer() {
@@ -87,6 +88,8 @@ export function Footer() {
             </ul>
           </div>
         </div>
+
+        <AdSlot placement="FOOTER" className="mt-8" />
 
         {/* Bottom copyright bar */}
         <div className="mt-8 flex flex-col gap-2 border-t border-slate-200/80 pt-4 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">

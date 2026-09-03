@@ -10,7 +10,11 @@ import type { Sponsor } from '@/types';
  * lightweight logo strip rather than being folded into AdSlot.
  */
 export function SponsorStrip({ sponsors }: { sponsors: Sponsor[] }) {
-  if (!Array.isArray(sponsors) || sponsors.length === 0) return null;
+  // Platinum/Gold get the richer PremiumSponsors cards elsewhere on the page —
+  // keep this strip for the lighter-weight Silver/Bronze/Partner tiers so a
+  // sponsor isn't shown twice at two different visual weights.
+  const rest = (sponsors ?? []).filter((s) => s.tier !== 'PLATINUM' && s.tier !== 'GOLD');
+  if (rest.length === 0) return null;
 
   return (
     <section className="rounded-2xl border border-ink-100 bg-ink-50/40 px-5 py-6 sm:px-6">
@@ -18,7 +22,7 @@ export function SponsorStrip({ sponsors }: { sponsors: Sponsor[] }) {
         Supported by
       </p>
       <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-5">
-        {sponsors.slice(0, 8).map((s) => (
+        {rest.slice(0, 8).map((s) => (
           <Link
             key={s.id}
             href={s.website ?? '#'}

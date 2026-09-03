@@ -39,7 +39,17 @@ const SLOT_SIZES: Record<AdPlacement, string> = {
  */
 export async function AdSlot({ placement, className = '' }: { placement: AdPlacement; className?: string }) {
   const [ads, adsense] = await Promise.all([
-    getAdsForPlacement(placement).catch(() => []),
+    getAdsForPlacement(placement).catch((err) => {
+      // Swallowing this to `[]` is intentional — a broken ads request should
+      // never break the page — but doing it silently made a misconfigured
+      // NEXT_PUBLIC_API_URL / API prefix / CORS origin indistinguishable
+      // from "no ad booked for this slot": every placement on every page
+      // would just quietly fall through to the (unfilled) AdSense slot with
+      // no error anywhere. Log it so that failure mode is visible in the
+      // server logs instead of only showing up as "ads don't appear".
+      console.error(`[AdSlot] failed to fetch house ads for placement ${placement}:`, err);
+      return [];
+    }),
     getAdsenseSettings(),
   ]);
   const ad = ads[0];

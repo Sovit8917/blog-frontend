@@ -24,7 +24,9 @@ import { RelatedJobs } from "@/components/jobs/RelatedJobs";
 import { Sidebar } from "@/components/blog/Sidebar";
 import { CommentSection } from "@/components/comments/CommentSection";
 import { SponsoredBanner } from "@/components/ads/SponsoredBanner";
+import { AffiliateRecommendations } from "@/components/ads/AffiliateRecommendations";
 import { AdSlot } from "@/components/ads/AdSlot";
+import { getAffiliateRecommendations } from "@/lib/api/monetization";
 import { Avatar } from "@/components/ui/Avatar";
 import { Badge } from "@/components/ui/Badge";
 import { formatDate, readingTimeLabel } from "@/lib/utils";
@@ -45,9 +47,10 @@ export default async function PostPage({ params }: Props) {
   const post = await getPostBySlug(params.slug).catch(() => null);
   if (!post) notFound();
 
-  const [related, comments] = await Promise.all([
+  const [related, comments, affiliatePicks] = await Promise.all([
     listRelatedPosts(post).catch(() => []),
     listComments(post.id).catch(() => []),
+    getAffiliateRecommendations(post.id).catch(() => []),
   ]);
 
   const [viewer, autoRelatedJobs] = await Promise.all([
@@ -242,6 +245,9 @@ export default async function PostPage({ params }: Props) {
 
                 {/* In-content Ad */}
                 <AdSlot placement="IN_CONTENT" className="my-10" />
+
+                {/* Affiliate product recommendations */}
+                <AffiliateRecommendations links={affiliatePicks} />
 
                 {/* Footer Action Bar */}
                 <div className="w-full overflow-x-auto py-1 max-w-full no-scrollbar border-t border-slate-100 pt-6">

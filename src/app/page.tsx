@@ -22,6 +22,7 @@ import { MostReadWidget } from "@/components/home/MostReadWidget";
 import { Pillars } from "@/components/home/Pillars";
 import { ContinueReading } from "@/components/home/ContinueReading";
 import { SponsorStrip } from "@/components/home/SponsorStrip";
+import { PremiumSponsors } from "@/components/home/PremiumSponsors";
 import { buildListMetadata } from "@/lib/seo/metadata";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
@@ -49,7 +50,14 @@ export default async function HomePage() {
       listCategories().catch(() => []),
       listMostRead(7, 5).catch(() => []),
       listJobs({ limit: 3 }).catch(() => ({ items: [] })),
-      listSponsors().catch(() => []),
+      // Logged (not just swallowed to `[]`) so a broken sponsors fetch — bad
+      // API URL, CORS origin, or a down backend — shows up in the server
+      // logs instead of just silently rendering an empty "Supported by"
+      // strip with no indication anything went wrong.
+      listSponsors().catch((err) => {
+        console.error('[HomePage] failed to fetch sponsors:', err);
+        return [];
+      }),
       getCurrentUser().catch(() => null),
     ]);
   const safeCategories = Array.isArray(categories) ? categories : [];
@@ -153,13 +161,22 @@ export default async function HomePage() {
           {/* RELATED JOBS — inline in the reading flow, not just the sidebar. */}
           <RelatedJobsStrip jobs={jobItems} />
 
-          {latest.items.length > 6 && (
-            <PostGrid posts={latest.items.slice(6)} />
+          {/* MONETIZATION — BETWEEN_POSTS placed between the two post grids
+              so it's actually surrounded by posts (higher-intent scroll
+              depth), not tacked on after the whole feed. Falls back to
+              right after the first grid when there's no second one to sit
+              between. */}
+          {latest.items.length > 6 ? (
+            <>
+              <AdSlot placement="BETWEEN_POSTS" />
+              <PostGrid posts={latest.items.slice(6)} />
+            </>
+          ) : (
+            <AdSlot placement="BETWEEN_POSTS" />
           )}
 
-          {/* MONETIZATION — a second, distinct ad slot deeper in the feed
-              (higher-intent scroll depth) plus the sponsor logo strip. */}
-          <AdSlot placement="BETWEEN_POSTS" />
+          <PremiumSponsors sponsors={safeSponsors} />
+
           <SponsorStrip sponsors={safeSponsors} />
 
           {/* ADVERTISE CTA — surfaces the monetization page to brands/employers
