@@ -64,16 +64,20 @@ export function JobRow({ job }: { job: JobCardType }) {
           )}
           <div className="min-w-0">
             {(job.tags && job.tags.length > 0) || job.isFeatured ? (
-              <div className="mb-1 flex flex-wrap gap-1">
+              <div className="mb-1.5 flex flex-wrap items-center gap-1.5">
                 {job.isFeatured && (
-                  <Badge variant="dark" className="text-[10px]">
+                  <span className="inline-flex items-center gap-1 rounded-md bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/30 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-amber-600">
+                    <span className="h-1 w-1 rounded-full bg-amber-500 animate-pulse" />
                     Featured
-                  </Badge>
+                  </span>
                 )}
                 {job.tags?.slice(0, 2).map((tag) => (
-                  <Badge key={tag} variant="dark" className="text-[10px]">
+                  <span
+                    key={tag}
+                    className="inline-flex items-center rounded-md bg-slate-100/80 border border-slate-200/60 px-1.5 py-0.5 text-[10.5px] font-semibold text-slate-600"
+                  >
                     {tag}
-                  </Badge>
+                  </span>
                 ))}
               </div>
             ) : null}

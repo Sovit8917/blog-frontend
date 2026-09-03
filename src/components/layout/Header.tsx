@@ -18,6 +18,10 @@ const JOB_BOARD_NAV = [
   { href: "/career", label: "Career Content" },
   { href: "/companies", label: "Companies" },
   { href: "/skills", label: "Skills" },
+  { href: "/me/resume-ats", label: "Resume ATS Analysis" },
+  { href: "/me/preferences", label: "Job Preferences" },
+  { href: "/me/job-alerts", label: "Job Alerts" },
+  { href: "/me/saved-jobs", label: "Saved Jobs" },
 ];
 
 /**
@@ -42,7 +46,7 @@ export async function Header() {
               src={devnexaLogoTransparent}
               alt="Devnexa"
               height={56}
-              className="h-11 sm:h-13 max-h-14 w-auto object-contain scale-[1.18] origin-left contrast-125 brightness-95"
+              className="h-10 sm:h-12 w-auto object-contain origin-left contrast-125 drop-shadow-xs"
               priority
             />
           </Link>
@@ -59,14 +63,21 @@ export async function Header() {
             <NavDropdown
               label="More"
               href="#"
-              items={[
+              categories={allTopLevel.slice(3).map((cat) => ({
+                href: `/category/${cat.slug}`,
+                label: cat.name,
+              }))}
+              resources={[
                 { href: "/resources", label: "All Resources" },
                 { href: "/career", label: "Career Content" },
                 { href: "/companies", label: "Companies" },
-                ...allTopLevel.slice(3).map((cat) => ({
-                  href: `/category/${cat.slug}`,
-                  label: cat.name,
-                })),
+              ]}
+              tools={[
+                { href: "/me/resume-ats", label: "Resume ATS Analysis" },
+                { href: "/me/preferences", label: "Job Preferences" },
+                { href: "/me/job-alerts", label: "Job Alerts" },
+                { href: "/me/saved-jobs", label: "Saved Jobs" },
+                { href: "/me/applications", label: "My Applications" },
               ]}
             />
           </nav>

@@ -1,14 +1,29 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { SlidersHorizontal, ChevronDown, Search, MapPin, Briefcase, GraduationCap, Laptop, RotateCcw, BadgeCheck } from 'lucide-react';
-import type { ListJobsParams } from '@/types';
-import { EMPLOYMENT_TYPE_LABEL, EXPERIENCE_LEVEL_LABEL, REMOTE_TYPE_LABEL } from '@/lib/jobs/format';
-import { suggestJobs } from '@/lib/api/jobs';
+import { useEffect, useState } from "react";
+import {
+  SlidersHorizontal,
+  ChevronDown,
+  Search,
+  MapPin,
+  Briefcase,
+  GraduationCap,
+  Laptop,
+  RotateCcw,
+  BadgeCheck,
+} from "lucide-react";
+import type { ListJobsParams } from "@/types";
+import {
+  EMPLOYMENT_TYPE_LABEL,
+  EXPERIENCE_LEVEL_LABEL,
+  REMOTE_TYPE_LABEL,
+} from "@/lib/jobs/format";
+import { suggestJobs } from "@/lib/api/jobs";
 
 const fieldClass =
-  'w-full rounded-xl border border-slate-200 bg-slate-50/60 py-2.5 text-sm text-ink-800 outline-none placeholder:text-ink-400 transition focus:border-brand-500 focus:bg-white focus:ring-4 focus:ring-brand-500/10';
-const labelClass = 'mb-1.5 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-ink-500';
+  "w-full rounded-xl border border-slate-200 bg-slate-50/60 py-2.5 text-sm text-ink-800 outline-none placeholder:text-ink-400 transition focus:border-brand-500 focus:bg-white focus:ring-4 focus:ring-brand-500/10";
+const labelClass =
+  "mb-1.5 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-ink-500";
 
 /**
  * Job search UX (P0): a plain <input list="…"> typeahead backed by
@@ -19,7 +34,7 @@ const labelClass = 'mb-1.5 flex items-center gap-1.5 text-xs font-bold uppercase
  * replacing the input.
  */
 function SearchSuggestInput({ defaultValue }: { defaultValue?: string }) {
-  const [value, setValue] = useState(defaultValue ?? '');
+  const [value, setValue] = useState(defaultValue ?? "");
   const [options, setOptions] = useState<string[]>([]);
 
   useEffect(() => {
@@ -32,7 +47,9 @@ function SearchSuggestInput({ defaultValue }: { defaultValue?: string }) {
     const timer = setTimeout(() => {
       suggestJobs(q).then((res) => {
         if (cancelled) return;
-        setOptions([...res.titles, ...res.skills.map((s) => s.name)].slice(0, 8));
+        setOptions(
+          [...res.titles, ...res.skills.map((s) => s.name)].slice(0, 8),
+        );
       });
     }, 200);
     return () => {
@@ -43,7 +60,10 @@ function SearchSuggestInput({ defaultValue }: { defaultValue?: string }) {
 
   return (
     <div className="relative">
-      <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-400 pointer-events-none" />
+      <Search
+        size={16}
+        className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-400 pointer-events-none"
+      />
       <input
         id="job-search"
         type="search"
@@ -71,7 +91,7 @@ export function JobFilters({ params }: { params: ListJobsParams }) {
     params.experienceLevel,
     params.freshersOnly ? true : undefined,
     params.verifiedOnly ? true : undefined,
-    params.sort && params.sort !== 'relevance' ? params.sort : undefined,
+    params.sort && params.sort !== "relevance" ? params.sort : undefined,
   ].filter(Boolean).length;
 
   return (
@@ -104,7 +124,10 @@ export function JobFilters({ params }: { params: ListJobsParams }) {
               </span>
             )}
           </span>
-          <ChevronDown size={16} className="transition peer-checked:rotate-180" />
+          <ChevronDown
+            size={16}
+            className="transition peer-checked:rotate-180"
+          />
         </label>
 
         {/* Filters Grid */}
@@ -114,7 +137,10 @@ export function JobFilters({ params }: { params: ListJobsParams }) {
               <MapPin size={13} className="text-brand-600" /> Location
             </label>
             <div className="relative">
-              <MapPin size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-400 pointer-events-none" />
+              <MapPin
+                size={16}
+                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-400 pointer-events-none"
+              />
               <input
                 id="job-location"
                 type="text"
@@ -130,7 +156,12 @@ export function JobFilters({ params }: { params: ListJobsParams }) {
             <label className={labelClass} htmlFor="job-remote">
               <Laptop size={13} className="text-brand-600" /> Work Mode
             </label>
-            <select id="job-remote" name="remoteType" defaultValue={params.remoteType ?? ''} className={`${fieldClass} px-3`}>
+            <select
+              id="job-remote"
+              name="remoteType"
+              defaultValue={params.remoteType ?? ""}
+              className={`${fieldClass} px-3`}
+            >
               <option value="">Any Mode</option>
               {Object.entries(REMOTE_TYPE_LABEL).map(([value, label]) => (
                 <option key={value} value={value}>
@@ -147,7 +178,7 @@ export function JobFilters({ params }: { params: ListJobsParams }) {
             <select
               id="job-employment"
               name="employmentType"
-              defaultValue={params.employmentType ?? ''}
+              defaultValue={params.employmentType ?? ""}
               className={`${fieldClass} px-3`}
             >
               <option value="">Any Type</option>
@@ -166,7 +197,7 @@ export function JobFilters({ params }: { params: ListJobsParams }) {
             <select
               id="job-experience"
               name="experienceLevel"
-              defaultValue={params.experienceLevel ?? ''}
+              defaultValue={params.experienceLevel ?? ""}
               className={`${fieldClass} px-3`}
             >
               <option value="">Any Level</option>
@@ -233,11 +264,13 @@ export function JobFilters({ params }: { params: ListJobsParams }) {
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-xs font-semibold uppercase tracking-wider text-ink-400">Sort by:</span>
+          <span className="text-xs font-semibold uppercase tracking-wider text-ink-400">
+            Sort by:
+          </span>
           <select
             id="job-sort"
             name="sort"
-            defaultValue={params.sort ?? 'relevance'}
+            defaultValue={params.sort ?? "relevance"}
             className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-ink-700 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/10"
           >
             <option value="relevance">Most relevant</option>

@@ -57,9 +57,13 @@ export default async function PostPage({ params }: Props) {
     getCurrentUser().catch(() => null),
     // Only bother hitting the auto-match endpoint if the editor hasn't
     // hand-picked jobs for this article already (P1 Article -> Job linking).
-    post.linkedJobs?.length ? Promise.resolve([]) : listJobsRelatedToPost(post.id).catch(() => []),
+    post.linkedJobs?.length
+      ? Promise.resolve([])
+      : listJobsRelatedToPost(post.id).catch(() => []),
   ]);
-  const relatedJobs = post.linkedJobs?.length ? post.linkedJobs : autoRelatedJobs;
+  const relatedJobs = post.linkedJobs?.length
+    ? post.linkedJobs
+    : autoRelatedJobs;
 
   const isOwnPost = viewer?.username === post.author.username;
   let initialFollowing = false;
@@ -155,11 +159,15 @@ export default async function PostPage({ params }: Props) {
                   {post.tags
                     ?.filter((t) => t && (t.name || t.slug))
                     .map((t, idx) => {
-                      const tagSlug = t.slug || t.name?.toLowerCase().replace(/\s+/g, "-");
+                      const tagSlug =
+                        t.slug || t.name?.toLowerCase().replace(/\s+/g, "-");
                       const tagName = t.name || t.slug;
                       if (!tagSlug || !tagName) return null;
                       return (
-                        <Link key={t.id || tagSlug || idx} href={`/tag/${tagSlug}`}>
+                        <Link
+                          key={t.id || tagSlug || idx}
+                          href={`/tag/${tagSlug}`}
+                        >
                           <Badge
                             variant="outline"
                             className="px-2.5 py-1 text-xs font-medium transition hover:border-brand-300 hover:bg-brand-50/50 hover:text-brand-700"

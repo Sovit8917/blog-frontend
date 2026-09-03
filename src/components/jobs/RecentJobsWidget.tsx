@@ -31,25 +31,35 @@ export function RecentJobsWidget({
       <ul className="divide-y divide-slate-100">
         {items.map((job) => {
           const company = getJobCompany(job);
+          const thumb = company.logoUrl || job.images?.[0];
           return (
-            <li key={job.id} className="flex items-start gap-3 py-3 first:pt-0 last:pb-0">
+            <li key={job.id} className="flex items-center gap-4 py-4 first:pt-0 last:pb-0">
               <Link
                 href={`/jobs/${job.slug}`}
-                className="relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-ink-50 ring-1 ring-inset ring-ink-100"
+                className="group/thumb relative flex h-20 w-24 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-slate-50 border border-slate-200/80 shadow-sm transition-all hover:border-brand-300"
               >
-                {company.logoUrl ? (
-                  <Image src={company.logoUrl} alt="" fill className="object-contain p-1.5" />
+                {thumb ? (
+                  <Image
+                    src={thumb}
+                    alt=""
+                    fill
+                    className={
+                      company.logoUrl === thumb
+                        ? 'object-contain p-2.5 transition-transform duration-300 group-hover/thumb:scale-105'
+                        : 'object-cover transition-transform duration-300 group-hover/thumb:scale-105'
+                    }
+                  />
                 ) : (
-                  <Building2 size={18} className="text-ink-300" />
+                  <Building2 size={28} className="text-slate-300 transition-colors group-hover/thumb:text-brand-500" />
                 )}
               </Link>
-              <div className="min-w-0">
+              <div className="min-w-0 flex-1">
                 <Link href={`/jobs/${job.slug}`} className="group">
-                  <p className="line-clamp-2 text-sm font-semibold leading-snug text-ink-900 group-hover:text-brand-600">
+                  <p className="line-clamp-2 text-sm font-bold leading-snug text-ink-900 group-hover:text-brand-600 transition-colors">
                     {job.title}
                   </p>
                 </Link>
-                <p className="mt-1 truncate text-xs text-ink-500">{company.name}</p>
+                <p className="mt-0.5 truncate text-xs font-medium text-ink-500">{company.name}</p>
                 {job.publishedAt && (
                   <p className="mt-0.5 text-[11px] text-ink-400">{formatDate(job.publishedAt)}</p>
                 )}

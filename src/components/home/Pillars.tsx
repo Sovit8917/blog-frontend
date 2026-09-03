@@ -1,27 +1,30 @@
-import Link from 'next/link';
-import { Briefcase, Compass, Code2, ArrowRight } from 'lucide-react';
+import Link from "next/link";
+import { Briefcase, Compass, Code2, ArrowRight } from "lucide-react";
 
 const PILLARS = [
   {
-    href: '/jobs',
+    href: "/jobs",
     icon: Briefcase,
-    title: 'Tech Jobs',
-    description: 'Open roles from real engineering teams — filter by remote, stack, and level.',
-    cta: 'Browse jobs',
+    title: "Tech Jobs",
+    description:
+      "Open roles from real engineering teams — filter by remote, stack, and level.",
+    cta: "Browse jobs",
   },
   {
-    href: '/category/career-growth',
+    href: "/category/career-growth",
     icon: Compass,
-    title: 'Career Content',
-    description: 'Interview prep, resume advice, and stories from engineers who have been there.',
-    cta: 'Read career guides',
+    title: "Career Content",
+    description:
+      "Interview prep, resume advice, and stories from engineers who have been there.",
+    cta: "Read career guides",
   },
   {
-    href: '/resources',
+    href: "/resources",
     icon: Code2,
-    title: 'Developer Resources',
-    description: 'Curated developer tools, libraries, tutorials, courses, and documentation.',
-    cta: 'Browse resources',
+    title: "Developer Resources",
+    description:
+      "Curated developer tools, libraries, tutorials, courses, and documentation.",
+    cta: "Browse resources",
   },
 ];
 
@@ -43,9 +46,15 @@ export function Pillars() {
             <Icon size={19} />
           </div>
           <h3 className="mt-4 text-base font-bold text-ink-900">{title}</h3>
-          <p className="mt-1.5 flex-1 text-sm leading-relaxed text-ink-500">{description}</p>
+          <p className="mt-1.5 flex-1 text-sm leading-relaxed text-ink-500">
+            {description}
+          </p>
           <span className="mt-4 flex items-center gap-1 text-sm font-semibold text-brand-600">
-            {cta} <ArrowRight size={14} className="transition group-hover:translate-x-0.5" />
+            {cta}{" "}
+            <ArrowRight
+              size={14}
+              className="transition group-hover:translate-x-0.5"
+            />
           </span>
         </Link>
       ))}

@@ -344,8 +344,16 @@ export interface ListLearningPathsParams {
 }
 
 // ---- Candidate ATS / resume analysis (P2) ----
+export interface ResumeScoreCategory {
+  key: string;
+  label: string;
+  score: number;
+  max: number;
+}
+
 export interface ResumeAnalysisResult {
   resumeScore: number;
+  scoreBreakdown: ResumeScoreCategory[];
   extractedSkillSlugs: string[];
   suggestions: string[];
   updatedAt: string;
@@ -362,23 +370,20 @@ export interface ResumeJobMatch {
   suggestions: string[];
 }
 
+// Only ever on-site jobs — recommendations are ranked purely by skill
+// overlap with this site's own job board, no external listings mixed in.
 export interface ResumeRecommendedJob {
-  source: 'internal' | 'external';
-  // Internal (on-site) jobs
-  id?: string;
-  slug?: string;
-  company?: { id: string; name: string; slug: string; logoUrl?: string | null; isVerified: boolean } | null;
-  remoteType?: string;
-  matchingSkillCount?: number;
-  requiredSkillCount?: number;
-  // External jobs (from an outside job board)
-  provider?: string;
-  url?: string;
-  companyName?: string | null;
-  // Shared
+  source: 'internal';
+  id: string;
+  slug: string;
   title: string;
+  company?: { id: string; name: string; slug: string; logoUrl?: string | null; isVerified: boolean } | null;
   location?: string | null;
+  remoteType?: string;
   matchScore: number;
+  matchingSkillCount: number;
+  requiredSkillCount: number;
+  matchingSkills: { name: string; slug: string }[];
 }
 
 /** GET /search — one call across every pillar of the ecosystem. */

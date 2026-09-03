@@ -55,7 +55,7 @@ export default async function HomePage() {
       // logs instead of just silently rendering an empty "Supported by"
       // strip with no indication anything went wrong.
       listSponsors().catch((err) => {
-        console.error('[HomePage] failed to fetch sponsors:', err);
+        console.error("[HomePage] failed to fetch sponsors:", err);
         return [];
       }),
       getCurrentUser().catch(() => null),
@@ -96,7 +96,8 @@ export default async function HomePage() {
           </h1>
 
           <p className="mt-3.5 max-w-xl text-base text-ink-500 sm:text-lg leading-relaxed">
-            Discover tech jobs, practical career guidance, and developer resources — all in one place.
+            Discover tech jobs, practical career guidance, and developer
+            resources — all in one place.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link
@@ -128,7 +129,6 @@ export default async function HomePage() {
           <ContinueReading entries={history} />
         </div>
       )}
-
 
       <AdSlot placement="HEADER" className="container-page mt-10" />
 
@@ -193,7 +193,8 @@ export default async function HomePage() {
                 Advertise with us
               </h3>
               <p className="mt-1 text-sm text-ink-500 max-w-xl">
-                Featured jobs, sponsored content, newsletter placements — with real analytics.
+                Featured jobs, sponsored content, newsletter placements — with
+                real analytics.
               </p>
             </div>
             <span className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-slate-950 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-900 group-hover:scale-[1.02]">

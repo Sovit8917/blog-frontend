@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { useAuth } from '@/lib/auth/AuthProvider';
-import { Avatar } from '@/components/ui/Avatar';
+import { useState } from "react";
+import Link from "next/link";
+import { useAuth } from "@/lib/auth/AuthProvider";
+import { Avatar } from "@/components/ui/Avatar";
 
 export function HeaderAuthActions() {
   const { user, logout } = useAuth();
@@ -27,7 +27,9 @@ export function HeaderAuthActions() {
         className="ml-1 flex items-center gap-2 rounded-full p-1 pr-2 transition hover:bg-ink-50"
       >
         <Avatar src={user.avatarUrl} name={user.name} size={30} />
-        <span className="hidden text-sm font-medium text-ink-700 sm:inline">{user.name}</span>
+        <span className="hidden text-sm font-medium text-ink-700 sm:inline">
+          {user.name}
+        </span>
       </button>
 
       {open && (
@@ -84,15 +86,15 @@ export function HeaderAuthActions() {
               Bookmarks
             </Link>
             <div className="my-1 h-px bg-ink-100" />
-            {user.role === 'AUTHOR' ? (
+            {user.role === "AUTHOR" ? (
               <a
-                href={`${process.env.NEXT_PUBLIC_ADMIN_URL ?? 'http://localhost:3001'}/jobs`}
+                href={`${process.env.NEXT_PUBLIC_ADMIN_URL ?? "http://localhost:3001"}/jobs`}
                 onClick={() => setOpen(false)}
                 className="block rounded-lg px-3 py-2 text-sm font-medium text-ink-700 hover:bg-ink-50"
               >
                 Post a job
               </a>
-            ) : user.role === 'USER' ? (
+            ) : user.role === "USER" ? (
               <Link
                 href="/me/employer-access"
                 onClick={() => setOpen(false)}
