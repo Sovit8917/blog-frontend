@@ -110,7 +110,7 @@ export function MobileNav({
             <button
               aria-label="Close menu"
               onClick={() => setOpen(false)}
-              className="rounded-full p-2 text-ink-500 dark:text-ink-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-ink-950 dark:hover:text-ink-50 active:bg-slate-200 dark:active:bg-slate-700 transition"
+              className="flex h-10 w-10 items-center justify-center rounded-full text-ink-500 dark:text-ink-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-ink-950 dark:hover:text-ink-50 active:bg-slate-200 dark:active:bg-slate-700 transition"
             >
               <X size={20} />
             </button>
@@ -314,7 +314,7 @@ export function MobileNav({
         aria-label="Open menu"
         aria-expanded={open}
         onClick={() => setOpen(true)}
-        className="-ml-1.5 rounded-md p-2 text-ink-600 dark:text-ink-400 transition hover:bg-ink-50 dark:hover:bg-ink-800 active:bg-ink-100 dark:active:bg-ink-800"
+        className="-ml-1 flex h-10 w-10 items-center justify-center rounded-md text-ink-600 dark:text-ink-400 transition hover:bg-ink-50 dark:hover:bg-ink-800 active:bg-ink-100 dark:active:bg-ink-800"
       >
         <Menu size={22} />
       </button>

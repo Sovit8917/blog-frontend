@@ -88,14 +88,14 @@ export async function Header() {
           <Link
             href="/search"
             aria-label="Search"
-            className="rounded-md p-2 text-ink-500 dark:text-ink-400 transition hover:bg-ink-50 dark:hover:bg-ink-800 hover:text-ink-900 dark:hover:text-ink-100"
+            className="flex h-10 w-10 items-center justify-center rounded-md text-ink-500 dark:text-ink-400 transition hover:bg-ink-50 dark:hover:bg-ink-800 hover:text-ink-900 dark:hover:text-ink-100 active:bg-ink-100 dark:active:bg-ink-800 sm:h-9 sm:w-9"
           >
             <Search size={19} />
           </Link>
           <Link
             href="/me/bookmarks"
             aria-label="Bookmarks"
-            className="hidden rounded-md p-2 text-ink-500 dark:text-ink-400 transition hover:bg-ink-50 dark:hover:bg-ink-800 hover:text-ink-900 dark:hover:text-ink-100 sm:inline-flex"
+            className="hidden h-9 w-9 items-center justify-center rounded-md text-ink-500 dark:text-ink-400 transition hover:bg-ink-50 dark:hover:bg-ink-800 hover:text-ink-900 dark:hover:text-ink-100 sm:flex"
           >
             <Bookmark size={19} />
           </Link>

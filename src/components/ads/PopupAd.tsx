@@ -98,7 +98,7 @@ export function PopupAd() {
       onClick={dismiss}
     >
       <div
-        className={`relative w-full max-w-[420px] overflow-hidden rounded-2xl bg-white dark:bg-ink-900 shadow-2xl ring-1 ring-black/5 transition-all duration-200 ${
+        className={`relative w-full max-w-[420px] max-h-[85vh] overflow-hidden rounded-2xl bg-white dark:bg-ink-900 shadow-2xl ring-1 ring-black/5 transition-all duration-200 ${
           closing ? 'scale-95 opacity-0' : 'scale-100 opacity-100'
         }`}
         onClick={(e) => e.stopPropagation()}
@@ -106,9 +106,9 @@ export function PopupAd() {
         <button
           onClick={dismiss}
           aria-label="Close advertisement"
-          className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 dark:bg-ink-900 text-ink-600 dark:text-ink-400 shadow-md ring-1 ring-ink-200 dark:ring-ink-700 backdrop-blur transition hover:scale-105 hover:bg-white dark:hover:bg-ink-900"
+          className="absolute right-2.5 top-2.5 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-white/90 dark:bg-ink-900 text-ink-600 dark:text-ink-400 shadow-md ring-1 ring-ink-200 dark:ring-ink-700 backdrop-blur transition hover:scale-105 hover:bg-white dark:hover:bg-ink-900 active:scale-95"
         >
-          <X size={16} />
+          <X size={18} />
         </button>
 
         <AdImpressionTracker adId={ad.id}>

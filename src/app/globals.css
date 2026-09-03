@@ -25,6 +25,17 @@
   }
   ::selection { @apply bg-brand-100 text-brand-900 dark:bg-brand-900/60 dark:text-brand-100; }
   :focus-visible { @apply outline-2 outline-offset-2 outline-brand-500 dark:outline-brand-400; }
+
+  /* iOS Safari auto-zooms the page on focus for any text input under 16px.
+     Most of our fields use text-sm (14px) for visual consistency with the
+     rest of the UI, so instead of bumping every field's type scale (which
+     would look oversized on desktop), we only override the *effective*
+     font-size on small viewports — desktop is untouched. */
+  @media (max-width: 640px) {
+    input, select, textarea {
+      font-size: 16px;
+    }
+  }
 }
 
 @layer components {
