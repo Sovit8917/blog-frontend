@@ -1,5 +1,7 @@
-import { apiFetch } from './client';
+import { apiFetch, ApiRequestError } from './client';
 import type { ResumeAnalysisResult, ResumeJobMatch, ResumeRecommendedJob } from '@/types';
+
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
 
 /**
  * Candidate ATS (P2) — heuristic resume scoring, per-job match scoring, and
@@ -15,6 +17,30 @@ export function analyzeResume(resumeText: string) {
     body: JSON.stringify({ resumeText }),
     revalidate: false,
   });
+}
+
+/** POST /me/resume-ats/analyze-file — upload a PDF/DOCX/TXT resume, get an instant score + tips. */
+export async function analyzeResumeFile(file: File): Promise<ResumeAnalysisResult> {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const res = await fetch(`${API_BASE}/me/resume-ats/analyze-file`, {
+    method: 'POST',
+    body: formData,
+    credentials: 'include',
+  });
+
+  if (!res.ok) {
+    let payload;
+    try {
+      payload = await res.json();
+    } catch {
+      payload = { statusCode: res.status, message: res.statusText };
+    }
+    throw new ApiRequestError(payload);
+  }
+
+  return res.json();
 }
 
 /** GET /me/resume-ats — the latest saved analysis, if one exists (404 if not analyzed yet). */

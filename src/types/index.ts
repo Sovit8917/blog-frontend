@@ -363,15 +363,22 @@ export interface ResumeJobMatch {
 }
 
 export interface ResumeRecommendedJob {
-  id: string;
-  slug: string;
+  source: 'internal' | 'external';
+  // Internal (on-site) jobs
+  id?: string;
+  slug?: string;
+  company?: { id: string; name: string; slug: string; logoUrl?: string | null; isVerified: boolean } | null;
+  remoteType?: string;
+  matchingSkillCount?: number;
+  requiredSkillCount?: number;
+  // External jobs (from an outside job board)
+  provider?: string;
+  url?: string;
+  companyName?: string | null;
+  // Shared
   title: string;
-  company: { id: string; name: string; slug: string; logoUrl?: string | null; isVerified: boolean } | null;
   location?: string | null;
-  remoteType: string;
   matchScore: number;
-  matchingSkillCount: number;
-  requiredSkillCount: number;
 }
 
 /** GET /search — one call across every pillar of the ecosystem. */
