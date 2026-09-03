@@ -35,11 +35,12 @@ export function GoogleAdUnit({
   style?: React.CSSProperties;
 }) {
   const insRef = useRef<HTMLModElement>(null);
-  // Three-state lifecycle:
-  //  - 'loading': request just went out, fill status unknown yet. Shown with minimal space.
-  //  - 'filled': AdSense actually rendered something with real height — show full dimensions.
-  //  - 'unfilled': confirmed no-fill, blocked, or errored — collapses to 0 height / null.
+  const pushedRef = useRef(false);
   const [status, setStatus] = useState<'loading' | 'filled' | 'unfilled'>('loading');
+
+  useEffect(() => {
+    pushedRef.current = false;
+  }, [clientId, slot]);
 
   useEffect(() => {
     if (!clientId || !slot) {
@@ -47,80 +48,91 @@ export function GoogleAdUnit({
       return;
     }
 
-    setStatus('loading');
-
-    // Attempt to push to AdSense for this unit
-    let pushSucceeded = false;
-    try {
-      window.adsbygoogle = window.adsbygoogle || [];
-      window.adsbygoogle.push({});
-      pushSucceeded = true;
-    } catch {
-      // adsbygoogle script may not have loaded yet or ad blocker active
-      setStatus('unfilled');
-      return;
-    }
-
-    if (!pushSucceeded) return;
-
     let cancelled = false;
+    let pollInterval: NodeJS.Timeout | null = null;
+    let timeout: NodeJS.Timeout | null = null;
 
-    // Monitor AdSense's own fill signal. `data-ad-status` is the attribute
-    // Google's script sets once a request actually resolves — "filled" only
-    // once a creative is really rendered inside the <ins>, "unfilled" for a
-    // confirmed no-fill/blocked/error response. We used to also treat "the
-    // iframe already has height" as a proxy for "filled", but AdSense (and
-    // most ad blockers that let the script through but still strip the
-    // creative) allocate a same-sized placeholder iframe immediately, before
-    // the request resolves — so that heuristic reported "filled" for ads
-    // that never actually served anything, leaving a blank reserved box with
-    // an "Advertisement" label and nothing inside it. Only data-ad-status is
-    // trustworthy here.
-    const checkFillStatus = () => {
-      if (cancelled || !insRef.current) return;
+    const tryPush = () => {
+      if (cancelled || !insRef.current || pushedRef.current) return;
 
-      const adStatus = insRef.current.getAttribute('data-ad-status');
-      if (adStatus === 'unfilled') {
-        cancelled = true;
-        clearInterval(pollInterval);
+      // Google AdSense throws "TagError: adsbygoogle.push() error: No slot size for availableWidth=0"
+      // if the container is hidden or has 0 offsetWidth/clientWidth at push time.
+      const width = insRef.current.offsetWidth || insRef.current.parentElement?.offsetWidth || 0;
+      if (width === 0) {
+        // Wait until next animation frame / layout pass
+        requestAnimationFrame(tryPush);
+        return;
+      }
+
+      // Check if this ins element already has ad content or was already processed
+      if (
+        insRef.current.getAttribute('data-adsbygoogle-status') ||
+        insRef.current.innerHTML.trim() !== ''
+      ) {
+        pushedRef.current = true;
+        return;
+      }
+
+      try {
+        window.adsbygoogle = window.adsbygoogle || [];
+        window.adsbygoogle.push({});
+        pushedRef.current = true;
+      } catch (e) {
+        // Catch Adsbygoogle TagError or adblocker errors gracefully without crashing the UI
+        console.warn('AdSense push error suppressed:', e);
         setStatus('unfilled');
         return;
       }
 
-      if (adStatus === 'filled') {
-        cancelled = true;
-        clearInterval(pollInterval);
-        setStatus('filled');
-        return;
-      }
+      // Monitor AdSense's fill signal
+      const checkFillStatus = () => {
+        if (cancelled || !insRef.current) return;
+
+        const adStatus = insRef.current.getAttribute('data-ad-status');
+        if (adStatus === 'unfilled') {
+          cancelled = true;
+          if (pollInterval) clearInterval(pollInterval);
+          setStatus('unfilled');
+          return;
+        }
+
+        if (adStatus === 'filled') {
+          cancelled = true;
+          if (pollInterval) clearInterval(pollInterval);
+          setStatus('filled');
+          return;
+        }
+      };
+
+      pollInterval = setInterval(checkFillStatus, 200);
+
+      // Timeout fallback
+      timeout = setTimeout(() => {
+        if (pollInterval) clearInterval(pollInterval);
+        if (!cancelled) {
+          const adStatus = insRef.current?.getAttribute('data-ad-status');
+          if (adStatus === 'filled') {
+            setStatus('filled');
+          } else {
+            setStatus('unfilled');
+          }
+        }
+      }, 3500);
     };
 
-    const pollInterval = setInterval(checkFillStatus, 200);
-
-    // Hard cap: if AdSense does not confirm fill within 3.5s, collapse completely to avoid blank space
-    const timeout = setTimeout(() => {
-      clearInterval(pollInterval);
-      if (!cancelled) {
-        const adStatus = insRef.current?.getAttribute('data-ad-status');
-        if (adStatus === 'filled') {
-          setStatus('filled');
-        } else {
-          setStatus('unfilled');
-        }
-      }
-    }, 3500);
+    // Delay initial push attempt slightly to allow React layout and CSS rendering
+    const rafId = requestAnimationFrame(tryPush);
 
     return () => {
       cancelled = true;
-      clearInterval(pollInterval);
-      clearTimeout(timeout);
+      cancelAnimationFrame(rafId);
+      if (pollInterval) clearInterval(pollInterval);
+      if (timeout) clearTimeout(timeout);
     };
   }, [clientId, slot]);
 
   if (!clientId || !slot || status === 'unfilled') return null;
 
-  // Use a unique key combining clientId and slot on the ins element to guarantee
-  // a clean DOM node and reliable re-push whenever slot or clientId changes.
   const adUnitKey = `${clientId}-${slot}`;
 
   return (
@@ -138,9 +150,10 @@ export function GoogleAdUnit({
         <div className="mx-auto my-1 h-[6px] w-full max-w-[80px] animate-pulse rounded-full bg-ink-100 dark:bg-ink-800" />
       )}
       <div
+        className="w-full"
         style={
           status === 'loading'
-            ? { height: 0, maxHeight: 0, overflow: 'hidden', opacity: 0 }
+            ? { minHeight: '1px', opacity: 0 }
             : undefined
         }
       >
@@ -148,7 +161,7 @@ export function GoogleAdUnit({
           key={adUnitKey}
           ref={insRef}
           className="adsbygoogle"
-          style={{ display: 'block', ...style }}
+          style={{ display: 'block', minWidth: '250px', ...style }}
           data-ad-client={clientId}
           data-ad-slot={slot}
           data-ad-format={format}
