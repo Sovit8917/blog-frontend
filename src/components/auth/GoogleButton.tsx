@@ -19,7 +19,7 @@ export function GoogleButton({ redirectTo = '/' }: { redirectTo?: string }) {
           setLoading(false);
         }
       }}
-      className="flex w-full items-center justify-center gap-2.5 rounded-lg border border-ink-200 bg-white px-4 py-2.5 text-sm font-medium text-ink-700 transition hover:bg-ink-50 disabled:opacity-50"
+      className="flex w-full items-center justify-center gap-2.5 rounded-lg border border-ink-200 dark:border-ink-700 bg-white dark:bg-ink-900 px-4 py-2.5 text-sm font-medium text-ink-700 dark:text-ink-300 transition hover:bg-ink-50 dark:hover:bg-ink-800 disabled:opacity-50"
     >
       <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
         <path

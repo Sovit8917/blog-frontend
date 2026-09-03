@@ -67,36 +67,36 @@ export function Pagination({
     <nav
       role="navigation"
       aria-label="Pagination Navigation"
-      className="mt-8 flex items-center justify-between border-t border-ink-100 pt-6"
+      className="mt-8 flex items-center justify-between border-t border-ink-100 dark:border-ink-800 pt-6"
     >
       {/* Mobile controls */}
       <div className="flex w-full items-center justify-between sm:hidden">
         {page > 1 ? (
           <Link
             href={createPageUrl(page - 1)}
-            className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-ink-700 hover:bg-slate-50 transition"
+            className="inline-flex items-center gap-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-ink-900 px-3 py-2 text-sm font-medium text-ink-700 dark:text-ink-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition"
           >
             <ChevronLeft size={16} /> Previous
           </Link>
         ) : (
-          <span className="inline-flex items-center gap-1 rounded-lg border border-slate-100 bg-slate-50 px-3 py-2 text-sm font-medium text-ink-300 cursor-not-allowed">
+          <span className="inline-flex items-center gap-1 rounded-lg border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-3 py-2 text-sm font-medium text-ink-300 dark:text-ink-600 cursor-not-allowed">
             <ChevronLeft size={16} /> Previous
           </span>
         )}
 
-        <span className="text-xs text-ink-500 font-medium">
+        <span className="text-xs text-ink-500 dark:text-ink-400 font-medium">
           Page {page} of {totalPages}
         </span>
 
         {page < totalPages ? (
           <Link
             href={createPageUrl(page + 1)}
-            className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-ink-700 hover:bg-slate-50 transition"
+            className="inline-flex items-center gap-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-ink-900 px-3 py-2 text-sm font-medium text-ink-700 dark:text-ink-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition"
           >
             Next <ChevronRight size={16} />
           </Link>
         ) : (
-          <span className="inline-flex items-center gap-1 rounded-lg border border-slate-100 bg-slate-50 px-3 py-2 text-sm font-medium text-ink-300 cursor-not-allowed">
+          <span className="inline-flex items-center gap-1 rounded-lg border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-3 py-2 text-sm font-medium text-ink-300 dark:text-ink-600 cursor-not-allowed">
             Next <ChevronRight size={16} />
           </span>
         )}
@@ -104,9 +104,9 @@ export function Pagination({
 
       {/* Desktop controls */}
       <div className="hidden sm:flex sm:w-full sm:items-center sm:justify-between">
-        <div className="text-sm text-ink-500">
-          Page <span className="font-semibold text-ink-800">{page}</span> of{' '}
-          <span className="font-semibold text-ink-800">{totalPages}</span>
+        <div className="text-sm text-ink-500 dark:text-ink-400">
+          Page <span className="font-semibold text-ink-800 dark:text-ink-200">{page}</span> of{' '}
+          <span className="font-semibold text-ink-800 dark:text-ink-200">{totalPages}</span>
         </div>
 
         <div className="flex items-center gap-1.5">
@@ -114,14 +114,14 @@ export function Pagination({
           {page > 1 ? (
             <Link
               href={createPageUrl(page - 1)}
-              className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-ink-700 hover:bg-slate-50 hover:border-slate-300 transition shadow-xs"
+              className="inline-flex items-center gap-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-ink-900 px-3 py-2 text-sm font-medium text-ink-700 dark:text-ink-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-600 transition shadow-xs"
               aria-label="Go to previous page"
             >
               <ChevronLeft size={16} /> Previous
             </Link>
           ) : (
             <span
-              className="inline-flex items-center gap-1 rounded-lg border border-slate-100 bg-slate-50 px-3 py-2 text-sm font-medium text-ink-300 cursor-not-allowed"
+              className="inline-flex items-center gap-1 rounded-lg border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-3 py-2 text-sm font-medium text-ink-300 dark:text-ink-600 cursor-not-allowed"
               aria-disabled="true"
             >
               <ChevronLeft size={16} /> Previous
@@ -135,7 +135,7 @@ export function Pagination({
                 return (
                   <span
                     key={`ellipsis-${i}`}
-                    className="px-2 py-1.5 text-sm text-ink-400 font-medium"
+                    className="px-2 py-1.5 text-sm text-ink-400 dark:text-ink-500 font-medium"
                   >
                     …
                   </span>
@@ -155,7 +155,7 @@ export function Pagination({
                 <Link
                   key={num}
                   href={createPageUrl(num as number)}
-                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-sm font-medium text-ink-700 hover:bg-slate-50 hover:border-slate-300 transition"
+                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-ink-900 text-sm font-medium text-ink-700 dark:text-ink-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-600 transition"
                   aria-label={`Go to page ${num}`}
                 >
                   {num}
@@ -168,14 +168,14 @@ export function Pagination({
           {page < totalPages ? (
             <Link
               href={createPageUrl(page + 1)}
-              className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-ink-700 hover:bg-slate-50 hover:border-slate-300 transition shadow-xs"
+              className="inline-flex items-center gap-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-ink-900 px-3 py-2 text-sm font-medium text-ink-700 dark:text-ink-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-600 transition shadow-xs"
               aria-label="Go to next page"
             >
               Next <ChevronRight size={16} />
             </Link>
           ) : (
             <span
-              className="inline-flex items-center gap-1 rounded-lg border border-slate-100 bg-slate-50 px-3 py-2 text-sm font-medium text-ink-300 cursor-not-allowed"
+              className="inline-flex items-center gap-1 rounded-lg border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-3 py-2 text-sm font-medium text-ink-300 dark:text-ink-600 cursor-not-allowed"
               aria-disabled="true"
             >
               Next <ChevronRight size={16} />

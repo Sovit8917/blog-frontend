@@ -63,9 +63,9 @@ export default async function SkillDetailPage({ params, searchParams }: Props) {
   return (
     <div className="container-page py-10">
       <header className="mb-10 max-w-2xl">
-        <p className="text-sm font-semibold uppercase tracking-wider text-brand-600">Skills &amp; Technologies</p>
-        <h1 className="mt-1 text-3xl font-bold text-ink-900 sm:text-4xl">{skill.name}</h1>
-        <p className="mt-3 text-ink-500">
+        <p className="text-sm font-semibold uppercase tracking-wider text-brand-600 dark:text-brand-400">Skills &amp; Technologies</p>
+        <h1 className="mt-1 text-3xl font-bold text-ink-900 dark:text-ink-100 sm:text-4xl">{skill.name}</h1>
+        <p className="mt-3 text-ink-500 dark:text-ink-400">
           Learn {skill.name} from our articles below, then browse{' '}
           {skill._count?.jobs ?? page.items.length} open role
           {(skill._count?.jobs ?? page.items.length) === 1 ? '' : 's'} that use it.
@@ -74,13 +74,13 @@ export default async function SkillDetailPage({ params, searchParams }: Props) {
 
       <section className="mb-12">
         <div className="mb-6 flex items-center gap-2">
-          <BookOpen size={18} className="text-brand-600" />
-          <h2 className="text-xl font-bold text-ink-900">Learn {skill.name}</h2>
+          <BookOpen size={18} className="text-brand-600 dark:text-brand-400" />
+          <h2 className="text-xl font-bold text-ink-900 dark:text-ink-100">Learn {skill.name}</h2>
         </div>
         {articles.length === 0 ? (
-          <div className="rounded-xl border border-dashed border-ink-200 py-10 text-center text-ink-400">
+          <div className="rounded-xl border border-dashed border-ink-200 dark:border-ink-700 py-10 text-center text-ink-400 dark:text-ink-500">
             No {skill.name} articles yet.{' '}
-            <Link href="/blog" className="link-underline text-ink-700">
+            <Link href="/blog" className="link-underline text-ink-700 dark:text-ink-300">
               Browse all articles
             </Link>{' '}
             or check back soon.
@@ -96,12 +96,12 @@ export default async function SkillDetailPage({ params, searchParams }: Props) {
         <section className="mb-12">
           <div className="mb-6 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Wrench size={18} className="text-brand-600" />
-              <h2 className="text-xl font-bold text-ink-900">{skill.name} tools &amp; resources</h2>
+              <Wrench size={18} className="text-brand-600 dark:text-brand-400" />
+              <h2 className="text-xl font-bold text-ink-900 dark:text-ink-100">{skill.name} tools &amp; resources</h2>
             </div>
             <Link
               href="/resources"
-              className="flex items-center gap-1 text-sm font-semibold text-brand-600 hover:text-brand-700"
+              className="flex items-center gap-1 text-sm font-semibold text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-400"
             >
               Browse all resources <ArrowRight size={14} />
             </Link>
@@ -117,12 +117,12 @@ export default async function SkillDetailPage({ params, searchParams }: Props) {
       <section>
         <div className="mb-6 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Briefcase size={18} className="text-brand-600" />
-            <h2 className="text-xl font-bold text-ink-900">{skill.name} jobs</h2>
+            <Briefcase size={18} className="text-brand-600 dark:text-brand-400" />
+            <h2 className="text-xl font-bold text-ink-900 dark:text-ink-100">{skill.name} jobs</h2>
           </div>
           <Link
             href={`/jobs?skill=${skill.slug}`}
-            className="flex items-center gap-1 text-sm font-semibold text-brand-600 hover:text-brand-700"
+            className="flex items-center gap-1 text-sm font-semibold text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-400"
           >
             Search jobs <ArrowRight size={14} />
           </Link>

@@ -24,11 +24,11 @@ export function RecentJobsWidget({
   if (items.length === 0) return null;
 
   return (
-    <div className="rounded-2xl border border-slate-200/70 bg-white p-6 shadow-sm">
-      <h3 className="mb-4 text-center text-xs font-bold uppercase tracking-wider text-brand-600">
+    <div className="rounded-2xl border border-slate-200/70 dark:border-slate-700 bg-white dark:bg-ink-900 p-6 shadow-sm">
+      <h3 className="mb-4 text-center text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">
         Recent Jobs
       </h3>
-      <ul className="divide-y divide-slate-100">
+      <ul className="divide-y divide-slate-100 dark:divide-slate-800">
         {items.map((job) => {
           const company = getJobCompany(job);
           const thumb = company.logoUrl || job.images?.[0];
@@ -36,7 +36,7 @@ export function RecentJobsWidget({
             <li key={job.id} className="flex items-center gap-4 py-4 first:pt-0 last:pb-0">
               <Link
                 href={`/jobs/${job.slug}`}
-                className="group/thumb relative flex h-20 w-24 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-slate-50 border border-slate-200/80 shadow-sm transition-all hover:border-brand-300"
+                className="group/thumb relative flex h-20 w-24 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-700 shadow-sm transition-all hover:border-brand-300 dark:hover:border-brand-700"
               >
                 {thumb ? (
                   <Image
@@ -50,18 +50,18 @@ export function RecentJobsWidget({
                     }
                   />
                 ) : (
-                  <Building2 size={28} className="text-slate-300 transition-colors group-hover/thumb:text-brand-500" />
+                  <Building2 size={28} className="text-slate-300 dark:text-slate-600 transition-colors group-hover/thumb:text-brand-500 dark:group-hover/thumb:text-brand-400" />
                 )}
               </Link>
               <div className="min-w-0 flex-1">
                 <Link href={`/jobs/${job.slug}`} className="group">
-                  <p className="line-clamp-2 text-sm font-bold leading-snug text-ink-900 group-hover:text-brand-600 transition-colors">
+                  <p className="line-clamp-2 text-sm font-bold leading-snug text-ink-900 dark:text-ink-100 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
                     {job.title}
                   </p>
                 </Link>
-                <p className="mt-0.5 truncate text-xs font-medium text-ink-500">{company.name}</p>
+                <p className="mt-0.5 truncate text-xs font-medium text-ink-500 dark:text-ink-400">{company.name}</p>
                 {job.publishedAt && (
-                  <p className="mt-0.5 text-[11px] text-ink-400">{formatDate(job.publishedAt)}</p>
+                  <p className="mt-0.5 text-[11px] text-ink-400 dark:text-ink-500">{formatDate(job.publishedAt)}</p>
                 )}
               </div>
             </li>

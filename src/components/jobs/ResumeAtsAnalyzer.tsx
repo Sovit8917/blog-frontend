@@ -11,7 +11,7 @@ function ScoreBar({ score }: { score?: number }) {
   const safeScore = typeof score === 'number' && !isNaN(score) ? Math.min(100, Math.max(0, score)) : 0;
   const color = safeScore >= 70 ? 'bg-emerald-500' : safeScore >= 40 ? 'bg-amber-500' : 'bg-red-500';
   return (
-    <div className="mt-2 h-2.5 w-full overflow-hidden rounded-full bg-slate-100">
+    <div className="mt-2 h-2.5 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
       <div className={`h-full ${color} transition-all`} style={{ width: `${safeScore}%` }} />
     </div>
   );
@@ -21,7 +21,7 @@ function MiniBar({ score, max }: { score: number; max: number }) {
   const pct = max > 0 ? Math.min(100, Math.max(0, (score / max) * 100)) : 0;
   const color = pct >= 70 ? 'bg-emerald-500' : pct >= 40 ? 'bg-amber-500' : 'bg-red-400';
   return (
-    <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
+    <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
       <div className={`h-full ${color}`} style={{ width: `${pct}%` }} />
     </div>
   );
@@ -30,10 +30,10 @@ function MiniBar({ score, max }: { score: number; max: number }) {
 function MatchBadge({ score }: { score: number }) {
   const color =
     score >= 70
-      ? 'bg-emerald-50 text-emerald-700'
+      ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400'
       : score >= 40
-      ? 'bg-amber-50 text-amber-700'
-      : 'bg-slate-100 text-slate-600';
+      ? 'bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400'
+      : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400';
   return (
     <span className={`flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold ${color}`}>
       <CheckCircle2 size={12} /> {score}% match
@@ -96,8 +96,8 @@ export function ResumeAtsAnalyzer() {
   return (
     <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_380px]">
       <div>
-        <div className="rounded-2xl border border-slate-200/70 bg-white p-6 shadow-sm">
-          <label className="mb-3 block text-sm font-semibold text-slate-900">Upload your resume</label>
+        <div className="rounded-2xl border border-slate-200/70 dark:border-slate-700 bg-white dark:bg-ink-900 p-6 shadow-sm">
+          <label className="mb-3 block text-sm font-semibold text-slate-900 dark:text-slate-100">Upload your resume</label>
           <input
             ref={fileInputRef}
             type="file"
@@ -117,29 +117,29 @@ export function ResumeAtsAnalyzer() {
             tabIndex={0}
             aria-disabled={uploading}
             className={`flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed p-10 text-center transition-colors ${
-              dragActive ? 'border-slate-400 bg-slate-50' : 'border-slate-200 hover:border-slate-300'
+              dragActive ? 'border-slate-400 dark:border-slate-500 bg-slate-50 dark:bg-slate-900' : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
             } ${uploading ? 'pointer-events-none opacity-70' : 'cursor-pointer'}`}
           >
             {uploading ? (
-              <Loader2 size={28} className="animate-spin text-slate-400" />
+              <Loader2 size={28} className="animate-spin text-slate-400 dark:text-slate-500" />
             ) : (
-              <Upload size={28} className="text-slate-400" />
+              <Upload size={28} className="text-slate-400 dark:text-slate-500" />
             )}
-            <p className="text-sm font-medium text-slate-700">
+            <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
               {uploading ? 'Reading your resume…' : 'Drag & drop your resume here, or click to browse'}
             </p>
-            <p className="flex items-center gap-1 text-xs text-slate-400">
+            <p className="flex items-center gap-1 text-xs text-slate-400 dark:text-slate-500">
               <FileText size={12} /> PDF, DOCX, or TXT — up to 10MB
             </p>
           </div>
-          {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
+          {error && <p className="mt-2 text-sm text-red-600 dark:text-red-400">{error}</p>}
         </div>
 
         {analysis && (
-          <div className="mt-6 rounded-2xl border border-slate-200/70 bg-white p-6 shadow-sm">
+          <div className="mt-6 rounded-2xl border border-slate-200/70 dark:border-slate-700 bg-white dark:bg-ink-900 p-6 shadow-sm">
             <div className="flex items-baseline justify-between">
-              <h2 className="text-sm font-semibold text-slate-900">ATS resume score</h2>
-              <span className="text-2xl font-bold text-slate-900">{analysis.resumeScore}/100</span>
+              <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-100">ATS resume score</h2>
+              <span className="text-2xl font-bold text-slate-900 dark:text-slate-100">{analysis.resumeScore}/100</span>
             </div>
             <ScoreBar score={analysis.resumeScore} />
 
@@ -148,8 +148,8 @@ export function ResumeAtsAnalyzer() {
                 {analysis.scoreBreakdown.map((c) => (
                   <div key={c.key}>
                     <div className="mb-1 flex items-center justify-between text-xs">
-                      <span className="font-medium text-slate-600">{c.label}</span>
-                      <span className="text-slate-400">
+                      <span className="font-medium text-slate-600 dark:text-slate-400">{c.label}</span>
+                      <span className="text-slate-400 dark:text-slate-500">
                         {c.score}/{c.max}
                       </span>
                     </div>
@@ -161,12 +161,12 @@ export function ResumeAtsAnalyzer() {
 
             {(analysis.extractedSkillSlugs?.length ?? 0) > 0 && (
               <div className="mt-5">
-                <h3 className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-slate-400">
+                <h3 className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">
                   Skills detected
                 </h3>
                 <div className="flex flex-wrap gap-1.5">
                   {analysis.extractedSkillSlugs?.map((s) => (
-                    <span key={s} className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700">
+                    <span key={s} className="rounded-full bg-slate-100 dark:bg-slate-800 px-2.5 py-1 text-xs font-medium text-slate-700 dark:text-slate-300">
                       {s}
                     </span>
                   ))}
@@ -176,12 +176,12 @@ export function ResumeAtsAnalyzer() {
 
             {(analysis.suggestions?.length ?? 0) > 0 && (
               <div className="mt-5">
-                <h3 className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-slate-400">
+                <h3 className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">
                   Suggestions to improve
                 </h3>
                 <ul className="space-y-1.5">
                   {analysis.suggestions?.map((s, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm text-slate-600">
+                    <li key={i} className="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-400">
                       <AlertCircle size={14} className="mt-0.5 shrink-0 text-amber-500" /> {s}
                     </li>
                   ))}
@@ -193,12 +193,12 @@ export function ResumeAtsAnalyzer() {
       </div>
 
       <aside>
-        <div className="sticky top-24 rounded-2xl border border-slate-200/70 bg-white p-6 shadow-sm">
-          <h2 className="mb-3 text-sm font-semibold text-slate-900">Recommended jobs for you</h2>
-          {!analysis && <p className="text-sm text-slate-500">Upload your resume to see matching open roles.</p>}
-          {analysis && loadingJobs && <Loader2 size={16} className="animate-spin text-slate-400" />}
+        <div className="sticky top-24 rounded-2xl border border-slate-200/70 dark:border-slate-700 bg-white dark:bg-ink-900 p-6 shadow-sm">
+          <h2 className="mb-3 text-sm font-semibold text-slate-900 dark:text-slate-100">Recommended jobs for you</h2>
+          {!analysis && <p className="text-sm text-slate-500 dark:text-slate-400">Upload your resume to see matching open roles.</p>}
+          {analysis && loadingJobs && <Loader2 size={16} className="animate-spin text-slate-400 dark:text-slate-500" />}
           {analysis && !loadingJobs && recommended?.length === 0 && (
-            <p className="text-sm text-slate-500">
+            <p className="text-sm text-slate-500 dark:text-slate-400">
               No matching roles yet — add more of your specific skills to your resume so we can match you to open jobs.
             </p>
           )}
@@ -208,13 +208,13 @@ export function ResumeAtsAnalyzer() {
                 <li key={j.id}>
                   <Link
                     href={`/jobs/${j.slug}`}
-                    className="block rounded-lg border border-slate-100 p-3 transition-colors hover:border-slate-300"
+                    className="block rounded-lg border border-slate-100 dark:border-slate-800 p-3 transition-colors hover:border-slate-300 dark:hover:border-slate-600"
                   >
                     <div className="flex items-start justify-between gap-2">
-                      <span className="text-sm font-medium text-slate-900">{j.title}</span>
+                      <span className="text-sm font-medium text-slate-900 dark:text-slate-100">{j.title}</span>
                       <MatchBadge score={j.matchScore} />
                     </div>
-                    <p className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-slate-500">
+                    <p className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-slate-500 dark:text-slate-400">
                       {j.company?.name && (
                         <span className="flex items-center gap-1">
                           <Building2 size={12} /> {j.company.name}
@@ -231,13 +231,13 @@ export function ResumeAtsAnalyzer() {
                         {j.matchingSkills.slice(0, 4).map((s) => (
                           <span
                             key={s.slug}
-                            className="rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] font-medium text-emerald-700"
+                            className="rounded-full bg-emerald-50 dark:bg-emerald-900/30 px-2 py-0.5 text-[11px] font-medium text-emerald-700 dark:text-emerald-400"
                           >
                             {s.name}
                           </span>
                         ))}
                         {j.matchingSkillCount > 4 && (
-                          <span className="rounded-full bg-slate-50 px-2 py-0.5 text-[11px] font-medium text-slate-500">
+                          <span className="rounded-full bg-slate-50 dark:bg-slate-900 px-2 py-0.5 text-[11px] font-medium text-slate-500 dark:text-slate-400">
                             +{j.matchingSkillCount - 4} more
                           </span>
                         )}

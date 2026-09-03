@@ -105,26 +105,26 @@ export default async function PostPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(postJsonLd(post)) }}
       />
 
-      <div className="bg-slate-50/50 py-8 lg:py-12">
+      <div className="py-8 lg:py-12">
         <article className="container-page">
           {/* Breadcrumb */}
-          <nav className="mb-6 flex items-center gap-2 text-xs font-medium text-ink-400">
-            <Link href="/" className="transition hover:text-brand-600">
+          <nav className="mb-6 flex items-center gap-2 text-xs font-medium text-ink-400 dark:text-ink-500">
+            <Link href="/" className="transition hover:text-brand-600 dark:hover:text-brand-400">
               Home
             </Link>
             {post.category && (
               <>
-                <span className="text-ink-300">/</span>
+                <span className="text-ink-300 dark:text-ink-600">/</span>
                 <Link
                   href={`/category/${post.category.slug}`}
-                  className="transition hover:text-brand-600"
+                  className="transition hover:text-brand-600 dark:hover:text-brand-400"
                 >
                   {post.category.name}
                 </Link>
               </>
             )}
-            <span className="text-ink-300">/</span>
-            <span className="truncate max-w-[250px] text-ink-600">
+            <span className="text-ink-300 dark:text-ink-600">/</span>
+            <span className="truncate max-w-[250px] text-ink-600 dark:text-ink-400">
               {post.title}
             </span>
           </nav>
@@ -139,7 +139,7 @@ export default async function PostPage({ params }: Props) {
 
             {/* Middle Main Column: Blog Article */}
             <div className="mx-auto w-full max-w-4xl min-w-0">
-              <div className="rounded-2xl border border-slate-200/70 bg-white p-6 sm:p-10 lg:p-12 shadow-sm">
+              <div className="rounded-2xl border border-slate-200/70 dark:border-slate-700 bg-white dark:bg-ink-900 p-6 sm:p-10 lg:p-12 shadow-sm">
                 {post.sponsoredContent && (
                   <SponsoredBanner sponsored={post.sponsoredContent} />
                 )}
@@ -170,7 +170,7 @@ export default async function PostPage({ params }: Props) {
                         >
                           <Badge
                             variant="outline"
-                            className="px-2.5 py-1 text-xs font-medium transition hover:border-brand-300 hover:bg-brand-50/50 hover:text-brand-700"
+                            className="px-2.5 py-1 text-xs font-medium transition hover:border-brand-300 dark:hover:border-brand-700 hover:bg-brand-50/50 dark:hover:bg-brand-900/40 hover:text-brand-700 dark:hover:text-brand-400"
                           >
                             #{tagName}
                           </Badge>
@@ -180,17 +180,17 @@ export default async function PostPage({ params }: Props) {
                 </div>
 
                 {/* Title & Excerpt */}
-                <h1 className="mt-5 font-serif text-3xl font-extrabold tracking-tight text-ink-950 sm:text-4xl lg:text-5xl lg:leading-[1.18]">
+                <h1 className="mt-5 font-serif text-3xl font-extrabold tracking-tight text-ink-950 dark:text-ink-50 sm:text-4xl lg:text-5xl lg:leading-[1.18]">
                   {post.title}
                 </h1>
                 {post.excerpt && (
-                  <p className="mt-4 text-lg leading-relaxed text-ink-600 sm:text-xl font-normal border-l-4 border-brand-400 pl-4 py-0.5 bg-slate-50/50 rounded-r-lg">
+                  <p className="mt-4 text-lg leading-relaxed text-ink-600 dark:text-ink-400 sm:text-xl font-normal border-l-4 border-brand-400 dark:border-brand-600 pl-4 py-0.5 bg-slate-50/50 dark:bg-slate-900 rounded-r-lg">
                     {post.excerpt}
                   </p>
                 )}
 
-                {/* Author & Action Bar */}
-                <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-y border-slate-100 py-4">
+                {/* Author row */}
+                <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-slate-100 dark:border-slate-800 pt-5">
                   <Link
                     href={`/author/${post.author.username}`}
                     className="group flex items-center gap-3.5"
@@ -201,10 +201,10 @@ export default async function PostPage({ params }: Props) {
                       size={44}
                     />
                     <div>
-                      <p className="text-sm font-bold text-ink-900 transition group-hover:text-brand-600">
+                      <p className="text-sm font-bold text-ink-900 dark:text-ink-100 transition group-hover:text-brand-600 dark:group-hover:text-brand-400">
                         {post.author.name}
                       </p>
-                      <p className="text-xs font-medium text-ink-400">
+                      <p className="text-xs font-medium text-ink-400 dark:text-ink-500">
                         {post.publishedAt && formatDate(post.publishedAt)} ·{" "}
                         {readingTimeLabel(post.readingTimeMins)}
                       </p>
@@ -220,21 +220,22 @@ export default async function PostPage({ params }: Props) {
                       hideCount
                     />
                   )}
-                  <div className="w-full sm:w-auto overflow-x-auto py-1 max-w-full no-scrollbar">
-                    <div className="flex items-center gap-3 rounded-full bg-white/90 backdrop-blur-md px-4 py-2 border border-slate-200/80 shadow-md shadow-slate-900/5 w-max">
-                      <LikeBookmarkBar
-                        postId={post.id}
-                        initialLikes={post.likeCount}
-                      />
-                      <div className="h-4 w-px bg-slate-200 shrink-0" />
-                      <ShareBar url={url} title={post.title} postId={post.id} />
-                    </div>
+                </div>
+
+                {/* Separated Action Toolbar: Left (Likes/Bookmark) & Right (Share Buttons) */}
+                <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-y border-slate-100 dark:border-slate-800 py-3">
+                  <LikeBookmarkBar
+                    postId={post.id}
+                    initialLikes={post.likeCount}
+                  />
+                  <div className="overflow-x-auto max-w-full no-scrollbar">
+                    <ShareBar url={url} title={post.title} postId={post.id} />
                   </div>
                 </div>
 
                 {/* Optional Cover Image */}
                 {post.coverImageUrl && (
-                  <div className="relative mt-8 aspect-[16/9] overflow-hidden rounded-2xl bg-slate-100 shadow-md">
+                  <div className="relative mt-8 aspect-[16/9] overflow-hidden rounded-2xl bg-slate-100 dark:bg-slate-800 shadow-md">
                     <Image
                       src={post.coverImageUrl}
                       alt={post.title}
@@ -258,7 +259,7 @@ export default async function PostPage({ params }: Props) {
                 <AffiliateRecommendations links={affiliatePicks} />
 
                 {/* Footer Action Bar */}
-                <div className="w-full overflow-x-auto py-1 max-w-full no-scrollbar border-t border-slate-100 pt-6">
+                <div className="w-full overflow-x-auto py-1 max-w-full no-scrollbar border-t border-slate-100 dark:border-slate-800 pt-6">
                   <div className="flex flex-wrap items-center justify-between gap-4 min-w-0">
                     <LikeBookmarkBar
                       postId={post.id}

@@ -33,7 +33,7 @@ export function DeleteCollectionButton({
     <button
       onClick={onClick}
       disabled={pending}
-      className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-red-600 transition hover:bg-red-50 disabled:opacity-50"
+      className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-red-600 dark:text-red-400 transition hover:bg-red-50 dark:hover:bg-red-900/30 disabled:opacity-50"
     >
       <Trash2 size={14} /> Delete
     </button>

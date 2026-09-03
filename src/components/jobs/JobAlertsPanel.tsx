@@ -25,9 +25,9 @@ export function JobAlertsPanel({ initialAlerts }: { initialAlerts: JobAlert[] })
 
   if (alerts.length === 0) {
     return (
-      <div className="rounded-xl border border-dashed border-ink-200 py-16 text-center text-ink-400">
+      <div className="rounded-xl border border-dashed border-ink-200 dark:border-ink-700 py-16 text-center text-ink-400 dark:text-ink-500">
         No saved alerts yet.{' '}
-        <Link href="/jobs" className="link-underline text-ink-700">
+        <Link href="/jobs" className="link-underline text-ink-700 dark:text-ink-300">
           Search jobs
         </Link>{' '}
         and use &quot;Get alerts for this search&quot; to create one.
@@ -110,10 +110,10 @@ function AlertRow({
   };
 
   return (
-    <li className="rounded-xl border border-ink-100 p-4">
+    <li className="rounded-xl border border-ink-100 dark:border-ink-800 p-4">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="font-semibold text-ink-900">{alert.name}</p>
+          <p className="font-semibold text-ink-900 dark:text-ink-100">{alert.name}</p>
           <div className="mt-1.5 flex flex-wrap gap-1.5">
             {alert.keywords && <Badge variant="outline">&quot;{alert.keywords}&quot;</Badge>}
             {alert.location && <Badge variant="outline">{alert.location}</Badge>}
@@ -132,7 +132,7 @@ function AlertRow({
             value={alert.frequency}
             onChange={(e) => changeFrequency(e.target.value as AlertFrequency)}
             disabled={busy}
-            className="rounded-lg border border-ink-200 px-2.5 py-1.5 text-xs font-medium text-ink-700 outline-none focus:border-brand-400"
+            className="rounded-lg border border-ink-200 dark:border-ink-700 px-2.5 py-1.5 text-xs font-medium text-ink-700 dark:text-ink-300 outline-none focus:border-brand-400 dark:focus:border-brand-600"
           >
             {Object.entries(FREQUENCY_LABEL).map(([value, label]) => (
               <option key={value} value={value}>
@@ -145,7 +145,7 @@ function AlertRow({
             onClick={toggleActive}
             disabled={busy}
             className={`rounded-full px-3 py-1.5 text-xs font-semibold transition ${
-              alert.isActive ? 'bg-emerald-50 text-emerald-700' : 'bg-ink-100 text-ink-500'
+              alert.isActive ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400' : 'bg-ink-100 dark:bg-ink-800 text-ink-500 dark:text-ink-400'
             }`}
           >
             {alert.isActive ? 'Active' : 'Paused'}
@@ -155,35 +155,35 @@ function AlertRow({
             onClick={remove}
             disabled={busy}
             aria-label="Delete alert"
-            className="rounded-lg p-2 text-ink-400 hover:bg-red-50 hover:text-red-600"
+            className="rounded-lg p-2 text-ink-400 dark:text-ink-500 hover:bg-red-50 dark:hover:bg-red-900/30 hover:text-red-600 dark:hover:text-red-400"
           >
             <Trash2 size={15} />
           </button>
         </div>
       </div>
 
-      {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
+      {error && <p className="mt-2 text-sm text-red-600 dark:text-red-400">{error}</p>}
 
-      <div className="mt-3 border-t border-ink-100 pt-3">
+      <div className="mt-3 border-t border-ink-100 dark:border-ink-800 pt-3">
         {preview === null ? (
           <button
             onClick={runPreview}
             disabled={previewing}
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:text-brand-700"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-400"
           >
             {previewing ? <Loader2 size={14} className="animate-spin" /> : <Search size={14} />}
             See what currently matches
           </button>
         ) : preview.length === 0 ? (
-          <p className="text-sm text-ink-400">Nothing matches this alert right now.</p>
+          <p className="text-sm text-ink-400 dark:text-ink-500">Nothing matches this alert right now.</p>
         ) : (
           <ul className="flex flex-col gap-1.5">
             {preview.map((job) => (
               <li key={job.id}>
-                <Link href={`/jobs/${job.slug}`} className="text-sm font-medium text-ink-700 hover:text-brand-600">
+                <Link href={`/jobs/${job.slug}`} className="text-sm font-medium text-ink-700 dark:text-ink-300 hover:text-brand-600 dark:hover:text-brand-400">
                   {job.title}
                 </Link>{' '}
-                <span className="text-sm text-ink-400">— {getJobCompany(job).name}</span>
+                <span className="text-sm text-ink-400 dark:text-ink-500">— {getJobCompany(job).name}</span>
               </li>
             ))}
           </ul>

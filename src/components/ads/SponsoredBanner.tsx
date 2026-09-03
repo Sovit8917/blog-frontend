@@ -4,7 +4,7 @@ import type { SponsoredContent } from '@/types';
 /** Disclosure banner shown at the top of sponsored posts — required, not optional. */
 export function SponsoredBanner({ sponsored }: { sponsored: SponsoredContent }) {
   return (
-    <div className="mb-6 flex items-center gap-3 rounded-xl bg-amber-50 px-4 py-3 ring-1 ring-amber-200">
+    <div className="mb-6 flex items-center gap-3 rounded-xl bg-amber-50 dark:bg-amber-900/30 px-4 py-3 ring-1 ring-amber-200 dark:ring-amber-800">
       {sponsored.sponsor.logoUrl && (
         <Image
           src={sponsored.sponsor.logoUrl}

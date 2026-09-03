@@ -53,11 +53,11 @@ export default async function CompanyDetailPage({ params }: Props) {
   }>;
 
   return (
-    <div className="bg-slate-50/50 py-8 lg:py-12">
+    <div className="bg-slate-50/50 dark:bg-slate-900 py-8 lg:py-12">
       <div className="container-page space-y-8">
-        <header className="rounded-2xl border border-slate-200/70 bg-white p-6 sm:p-10 shadow-sm flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
+        <header className="rounded-2xl border border-slate-200/70 dark:border-slate-700 bg-white dark:bg-ink-900 p-6 sm:p-10 shadow-sm flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center">
-            <div className="relative flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-slate-100 border border-slate-200">
+            <div className="relative flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
               {company.logoUrl ? (
                 <Image
                   src={company.logoUrl}
@@ -66,19 +66,19 @@ export default async function CompanyDetailPage({ params }: Props) {
                   className="object-cover"
                 />
               ) : (
-                <span className="text-3xl font-serif font-bold text-brand-600">
+                <span className="text-3xl font-serif font-bold text-brand-600 dark:text-brand-400">
                   {company.name[0]}
                 </span>
               )}
             </div>
             <div>
-              <h1 className="flex items-center gap-2 font-serif text-3xl font-extrabold text-ink-950">
+              <h1 className="flex items-center gap-2 font-serif text-3xl font-extrabold text-ink-950 dark:text-ink-50">
                 {company.name}
                 {company.isVerified && (
-                  <BadgeCheck size={22} className="text-brand-500" />
+                  <BadgeCheck size={22} className="text-brand-500 dark:text-brand-400" />
                 )}
               </h1>
-              <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-sm text-ink-500">
+              <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-sm text-ink-500 dark:text-ink-400">
                 {company.location && (
                   <span className="flex items-center gap-1.5">
                     <MapPin size={15} /> {company.location}
@@ -89,14 +89,14 @@ export default async function CompanyDetailPage({ params }: Props) {
                     href={company.website}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 link-underline text-brand-600 font-medium"
+                    className="flex items-center gap-1.5 link-underline text-brand-600 dark:text-brand-400 font-medium"
                   >
                     <Globe size={15} /> Website
                   </a>
                 )}
               </div>
               {company.description && (
-                <p className="mt-3 max-w-2xl text-base leading-relaxed text-ink-600">
+                <p className="mt-3 max-w-2xl text-base leading-relaxed text-ink-600 dark:text-ink-400">
                   {company.description}
                 </p>
               )}
@@ -112,19 +112,19 @@ export default async function CompanyDetailPage({ params }: Props) {
 
         <AdSlot placement="HEADER" />
 
-        <section className="rounded-2xl border border-slate-200/70 bg-white p-6 sm:p-8 shadow-sm">
-          <h2 className="mb-6 text-xl font-bold text-ink-900">
+        <section className="rounded-2xl border border-slate-200/70 dark:border-slate-700 bg-white dark:bg-ink-900 p-6 sm:p-8 shadow-sm">
+          <h2 className="mb-6 text-xl font-bold text-ink-900 dark:text-ink-100">
             Open roles{" "}
             {jobs.length > 0 && (
-              <span className="text-ink-400">({jobs.length})</span>
+              <span className="text-ink-400 dark:text-ink-500">({jobs.length})</span>
             )}
           </h2>
           {jobs.length === 0 ? (
-            <div className="rounded-xl border border-dashed border-slate-200 py-16 text-center text-ink-400">
+            <div className="rounded-xl border border-dashed border-slate-200 dark:border-slate-700 py-16 text-center text-ink-400 dark:text-ink-500">
               No open roles right now.{" "}
               <Link
                 href="/jobs"
-                className="link-underline text-brand-600 font-semibold"
+                className="link-underline text-brand-600 dark:text-brand-400 font-semibold"
               >
                 Browse all jobs
               </Link>
@@ -136,16 +136,16 @@ export default async function CompanyDetailPage({ params }: Props) {
                 <li key={job.id}>
                   <Link
                     href={`/jobs/${job.slug}`}
-                    className="group flex flex-col gap-2 rounded-xl border border-slate-200/80 p-5 transition hover:border-brand-300 hover:bg-slate-50/50 hover:shadow-sm"
+                    className="group flex flex-col gap-2 rounded-xl border border-slate-200/80 dark:border-slate-700 p-5 transition hover:border-brand-300 dark:hover:border-brand-700 hover:bg-slate-50/50 dark:hover:bg-slate-900 hover:shadow-sm"
                   >
-                    <h3 className="text-lg font-bold text-ink-900 transition group-hover:text-brand-600">
+                    <h3 className="text-lg font-bold text-ink-900 dark:text-ink-100 transition group-hover:text-brand-600 dark:group-hover:text-brand-400">
                       {job.title}
                     </h3>
-                    <div className="flex flex-wrap items-center gap-2 text-xs text-ink-500">
-                      <span className="rounded-full bg-slate-100 px-2.5 py-1 font-medium">
+                    <div className="flex flex-wrap items-center gap-2 text-xs text-ink-500 dark:text-ink-400">
+                      <span className="rounded-full bg-slate-100 dark:bg-slate-800 px-2.5 py-1 font-medium">
                         {EMPLOYMENT_TYPE_LABEL[job.employmentType]}
                       </span>
-                      <span className="rounded-full bg-slate-100 px-2.5 py-1 font-medium">
+                      <span className="rounded-full bg-slate-100 dark:bg-slate-800 px-2.5 py-1 font-medium">
                         {REMOTE_TYPE_LABEL[job.remoteType]}
                       </span>
                       {formatSalaryRange(
@@ -153,7 +153,7 @@ export default async function CompanyDetailPage({ params }: Props) {
                         job.salaryMax,
                         job.salaryCurrency,
                       ) && (
-                        <span className="rounded-full bg-emerald-50 px-2.5 py-1 font-semibold text-emerald-700">
+                        <span className="rounded-full bg-emerald-50 dark:bg-emerald-900/30 px-2.5 py-1 font-semibold text-emerald-700 dark:text-emerald-400">
                           {formatSalaryRange(
                             job.salaryMin,
                             job.salaryMax,

@@ -35,22 +35,22 @@ export default async function SearchPage({ searchParams }: Props) {
   const results = q ? await unifiedSearch(q, 6) : null;
 
   return (
-    <div className="bg-slate-50/50 py-8 lg:py-12">
+    <div className="bg-slate-50/50 dark:bg-slate-900 py-8 lg:py-12">
       <div className="container-page space-y-6">
-        <form action="/search" className="mx-auto max-w-2xl rounded-2xl border border-slate-200/70 bg-white p-6 shadow-sm">
+        <form action="/search" className="mx-auto max-w-2xl rounded-2xl border border-slate-200/70 dark:border-slate-700 bg-white dark:bg-ink-900 p-6 shadow-sm">
           <input
             type="search"
             name="q"
             defaultValue={q}
             placeholder="Search articles, jobs, companies, skills, resources, and authors…"
             autoFocus
-            className="w-full rounded-full border border-slate-200 px-6 py-3.5 text-base outline-none placeholder:text-ink-400 focus:border-brand-400 focus:ring-2 focus:ring-brand-100"
+            className="w-full rounded-full border border-slate-200 dark:border-slate-700 px-6 py-3.5 text-base outline-none placeholder:text-ink-400 dark:placeholder:text-ink-500 focus:border-brand-400 dark:focus:border-brand-600 focus:ring-2 focus:ring-brand-100 dark:focus:ring-brand-900/40"
           />
         </form>
 
         {!q ? (
-          <div className="rounded-2xl border border-slate-200/70 bg-white p-6 sm:p-8 shadow-sm">
-            <p className="py-12 text-center text-base text-ink-400">
+          <div className="rounded-2xl border border-slate-200/70 dark:border-slate-700 bg-white dark:bg-ink-900 p-6 sm:p-8 shadow-sm">
+            <p className="py-12 text-center text-base text-ink-400 dark:text-ink-500">
               Start typing to search everything — articles, jobs, companies, skills, resources, and authors.
             </p>
           </div>
@@ -65,12 +65,12 @@ export default async function SearchPage({ searchParams }: Props) {
                     <Link
                       key={author.id}
                       href={`/author/${author.username}`}
-                      className="flex items-center gap-3 rounded-xl border border-slate-200/70 p-3 transition hover:border-brand-200 hover:bg-brand-50/30"
+                      className="flex items-center gap-3 rounded-xl border border-slate-200/70 dark:border-slate-700 p-3 transition hover:border-brand-200 dark:hover:border-brand-700 hover:bg-brand-50/30 dark:hover:bg-brand-900/40"
                     >
                       <Avatar src={author.avatarUrl} name={author.name} size={40} />
                       <div className="min-w-0">
-                        <p className="truncate text-sm font-bold text-ink-900">{author.name}</p>
-                        <p className="truncate text-xs font-medium text-ink-400">
+                        <p className="truncate text-sm font-bold text-ink-900 dark:text-ink-100">{author.name}</p>
+                        <p className="truncate text-xs font-medium text-ink-400 dark:text-ink-500">
                           @{author.username} · {author._count.posts} article{author._count.posts === 1 ? '' : 's'}
                         </p>
                       </div>
@@ -111,10 +111,10 @@ export default async function SearchPage({ searchParams }: Props) {
                     <Link
                       key={skill.id}
                       href={`/skills/${skill.slug}`}
-                      className="flex items-center gap-2 rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-ink-700 transition hover:border-brand-300 hover:text-brand-700"
+                      className="flex items-center gap-2 rounded-full border border-slate-200 dark:border-slate-700 px-4 py-2 text-sm font-semibold text-ink-700 dark:text-ink-300 transition hover:border-brand-300 dark:hover:border-brand-700 hover:text-brand-700 dark:hover:text-brand-400"
                     >
                       {skill.name}
-                      {skill._count && <span className="text-xs font-normal text-ink-400">{skill._count.jobs}</span>}
+                      {skill._count && <span className="text-xs font-normal text-ink-400 dark:text-ink-500">{skill._count.jobs}</span>}
                     </Link>
                   ))}
                 </div>
@@ -131,8 +131,8 @@ export default async function SearchPage({ searchParams }: Props) {
               </Section>
             )}
 
-            <div className="rounded-2xl border border-slate-200/70 bg-white p-6 sm:p-8 shadow-sm">
-              <p className="mb-6 text-sm font-semibold text-ink-600">
+            <div className="rounded-2xl border border-slate-200/70 dark:border-slate-700 bg-white dark:bg-ink-900 p-6 sm:p-8 shadow-sm">
+              <p className="mb-6 text-sm font-semibold text-ink-600 dark:text-ink-400">
                 {results!.posts.length} article{results!.posts.length === 1 ? '' : 's'} for &ldquo;{q}&rdquo;
               </p>
               <PostGrid posts={results!.posts} />
@@ -140,7 +140,7 @@ export default async function SearchPage({ searchParams }: Props) {
                 <div className="mt-6 text-center">
                   <Link
                     href={`/blog?search=${encodeURIComponent(q)}`}
-                    className="inline-flex items-center gap-1 text-sm font-semibold text-brand-600 hover:text-brand-700"
+                    className="inline-flex items-center gap-1 text-sm font-semibold text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-400"
                   >
                     See all matching articles <ArrowRight size={14} />
                   </Link>
@@ -154,8 +154,8 @@ export default async function SearchPage({ searchParams }: Props) {
               results!.skills.length === 0 &&
               results!.developerResources.length === 0 &&
               results!.authors.length === 0 && (
-                <div className="rounded-2xl border border-slate-200/70 bg-white p-6 sm:p-8 shadow-sm">
-                  <p className="py-12 text-center text-base text-ink-400">
+                <div className="rounded-2xl border border-slate-200/70 dark:border-slate-700 bg-white dark:bg-ink-900 p-6 sm:p-8 shadow-sm">
+                  <p className="py-12 text-center text-base text-ink-400 dark:text-ink-500">
                     Nothing matched &ldquo;{q}&rdquo; anywhere on the platform.
                   </p>
                 </div>
@@ -179,15 +179,15 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <div className="rounded-2xl border border-slate-200/70 bg-white p-6 shadow-sm sm:p-8">
+    <div className="rounded-2xl border border-slate-200/70 dark:border-slate-700 bg-white dark:bg-ink-900 p-6 shadow-sm sm:p-8">
       <div className="mb-5 flex items-center justify-between">
-        <h2 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-ink-500">
-          <span className="text-brand-600">{icon}</span> {title}
+        <h2 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-ink-500 dark:text-ink-400">
+          <span className="text-brand-600 dark:text-brand-400">{icon}</span> {title}
         </h2>
         {seeAllHref && (
           <Link
             href={seeAllHref}
-            className="flex items-center gap-1 text-xs font-semibold text-brand-600 hover:text-brand-700"
+            className="flex items-center gap-1 text-xs font-semibold text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-400"
           >
             See all <ArrowRight size={13} />
           </Link>

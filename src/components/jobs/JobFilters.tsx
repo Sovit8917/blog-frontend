@@ -21,9 +21,9 @@ import {
 import { suggestJobs } from "@/lib/api/jobs";
 
 const fieldClass =
-  "w-full rounded-xl border border-slate-200 bg-slate-50/60 py-2.5 text-sm text-ink-800 outline-none placeholder:text-ink-400 transition focus:border-brand-500 focus:bg-white focus:ring-4 focus:ring-brand-500/10";
+  "w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/60 dark:bg-slate-900 py-2.5 text-sm text-ink-800 dark:text-ink-200 outline-none placeholder:text-ink-400 dark:placeholder:text-ink-500 transition focus:border-brand-500 focus:bg-white dark:focus:bg-ink-900 focus:ring-4 focus:ring-brand-500/10";
 const labelClass =
-  "mb-1.5 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-ink-500";
+  "mb-1.5 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-ink-500 dark:text-ink-400";
 
 /**
  * Job search UX (P0): a plain <input list="…"> typeahead backed by
@@ -62,7 +62,7 @@ function SearchSuggestInput({ defaultValue }: { defaultValue?: string }) {
     <div className="relative">
       <Search
         size={16}
-        className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-400 pointer-events-none"
+        className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-400 dark:text-ink-500 pointer-events-none"
       />
       <input
         id="job-search"
@@ -98,13 +98,13 @@ export function JobFilters({ params }: { params: ListJobsParams }) {
     <form
       action="/jobs"
       method="GET"
-      className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm sm:p-6"
+      className="space-y-4"
     >
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-6">
         {/* Search Query Input */}
         <div className="lg:col-span-2">
           <label className={labelClass} htmlFor="job-search">
-            <Search size={13} className="text-brand-600" /> Search Keyword
+            <Search size={13} className="text-brand-600 dark:text-brand-400" /> Search Keyword
           </label>
           <SearchSuggestInput defaultValue={params.search} />
         </div>
@@ -113,13 +113,13 @@ export function JobFilters({ params }: { params: ListJobsParams }) {
         <input type="checkbox" id="job-more-filters" className="peer hidden" />
         <label
           htmlFor="job-more-filters"
-          className="flex cursor-pointer items-center justify-between rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm font-semibold text-ink-700 lg:hidden"
+          className="flex cursor-pointer items-center justify-between rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-4 py-2.5 text-sm font-semibold text-ink-700 dark:text-ink-300 lg:hidden"
         >
           <span className="flex items-center gap-2">
-            <SlidersHorizontal size={16} className="text-brand-600" />
+            <SlidersHorizontal size={16} className="text-brand-600 dark:text-brand-400" />
             Filter Options
             {activeCount > 0 && (
-              <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-brand-600 px-1.5 text-xs font-bold text-white">
+              <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-brand-600 dark:bg-brand-500 px-1.5 text-xs font-bold text-white">
                 {activeCount}
               </span>
             )}
@@ -134,12 +134,12 @@ export function JobFilters({ params }: { params: ListJobsParams }) {
         <div className="hidden grid-cols-1 gap-4 peer-checked:grid sm:grid-cols-2 lg:col-span-4 lg:!grid lg:grid-cols-4">
           <div>
             <label className={labelClass} htmlFor="job-location">
-              <MapPin size={13} className="text-brand-600" /> Location
+              <MapPin size={13} className="text-brand-600 dark:text-brand-400" /> Location
             </label>
             <div className="relative">
               <MapPin
                 size={16}
-                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-400 pointer-events-none"
+                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-400 dark:text-ink-500 pointer-events-none"
               />
               <input
                 id="job-location"
@@ -154,7 +154,7 @@ export function JobFilters({ params }: { params: ListJobsParams }) {
 
           <div>
             <label className={labelClass} htmlFor="job-remote">
-              <Laptop size={13} className="text-brand-600" /> Work Mode
+              <Laptop size={13} className="text-brand-600 dark:text-brand-400" /> Work Mode
             </label>
             <select
               id="job-remote"
@@ -173,7 +173,7 @@ export function JobFilters({ params }: { params: ListJobsParams }) {
 
           <div>
             <label className={labelClass} htmlFor="job-employment">
-              <Briefcase size={13} className="text-brand-600" /> Employment
+              <Briefcase size={13} className="text-brand-600 dark:text-brand-400" /> Employment
             </label>
             <select
               id="job-employment"
@@ -192,7 +192,7 @@ export function JobFilters({ params }: { params: ListJobsParams }) {
 
           <div>
             <label className={labelClass} htmlFor="job-experience">
-              <GraduationCap size={13} className="text-brand-600" /> Experience
+              <GraduationCap size={13} className="text-brand-600 dark:text-brand-400" /> Experience
             </label>
             <select
               id="job-experience"
@@ -212,10 +212,10 @@ export function JobFilters({ params }: { params: ListJobsParams }) {
       </div>
 
       {/* Quick filter chips (P0 Fresher/Internship filters + Job quality/verification) */}
-      <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-slate-100 pt-4">
+      <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-slate-100 dark:border-slate-800 pt-4">
         <label
           htmlFor="job-freshers-only"
-          className="flex cursor-pointer items-center gap-1.5 rounded-full border border-slate-200 px-3.5 py-1.5 text-xs font-semibold text-ink-600 transition has-[:checked]:border-brand-400 has-[:checked]:bg-brand-50 has-[:checked]:text-brand-700"
+          className="flex cursor-pointer items-center gap-1.5 rounded-full border border-slate-200 dark:border-slate-700 px-3.5 py-1.5 text-xs font-semibold text-ink-600 dark:text-ink-400 transition has-[:checked]:border-brand-400 dark:has-[:checked]:border-brand-600 has-[:checked]:bg-brand-50 dark:has-[:checked]:bg-brand-900/40 has-[:checked]:text-brand-700 dark:has-[:checked]:text-brand-400"
         >
           <input
             id="job-freshers-only"
@@ -223,13 +223,13 @@ export function JobFilters({ params }: { params: ListJobsParams }) {
             name="freshersOnly"
             value="true"
             defaultChecked={!!params.freshersOnly}
-            className="h-3.5 w-3.5 rounded border-slate-300 text-brand-600 focus:ring-brand-500"
+            className="h-3.5 w-3.5 rounded border-slate-300 dark:border-slate-600 text-brand-600 dark:text-brand-400 focus:ring-brand-500"
           />
           <GraduationCap size={13} /> Freshers &amp; Internships
         </label>
         <label
           htmlFor="job-verified-only"
-          className="flex cursor-pointer items-center gap-1.5 rounded-full border border-slate-200 px-3.5 py-1.5 text-xs font-semibold text-ink-600 transition has-[:checked]:border-emerald-400 has-[:checked]:bg-emerald-50 has-[:checked]:text-emerald-700"
+          className="flex cursor-pointer items-center gap-1.5 rounded-full border border-slate-200 dark:border-slate-700 px-3.5 py-1.5 text-xs font-semibold text-ink-600 dark:text-ink-400 transition has-[:checked]:border-emerald-400 dark:has-[:checked]:border-emerald-600 has-[:checked]:bg-emerald-50 dark:has-[:checked]:bg-emerald-900/30 has-[:checked]:text-emerald-700 dark:has-[:checked]:text-emerald-400"
         >
           <input
             id="job-verified-only"
@@ -237,14 +237,14 @@ export function JobFilters({ params }: { params: ListJobsParams }) {
             name="verifiedOnly"
             value="true"
             defaultChecked={!!params.verifiedOnly}
-            className="h-3.5 w-3.5 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+            className="h-3.5 w-3.5 rounded border-slate-300 dark:border-slate-600 text-emerald-600 dark:text-emerald-400 focus:ring-emerald-500"
           />
           <BadgeCheck size={13} /> Verified jobs only
         </label>
       </div>
 
       {/* Form Action Bar */}
-      <div className="mt-5 flex flex-wrap items-center justify-between gap-4 border-t border-slate-100 pt-4">
+      <div className="mt-5 flex flex-wrap items-center justify-between gap-4 border-t border-slate-100 dark:border-slate-800 pt-4">
         <div className="flex items-center gap-3">
           <button
             type="submit"
@@ -256,7 +256,7 @@ export function JobFilters({ params }: { params: ListJobsParams }) {
           {activeCount > 0 && (
             <a
               href="/jobs"
-              className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-medium text-ink-600 transition hover:bg-slate-50 hover:text-ink-900"
+              className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 dark:border-slate-700 px-4 py-2.5 text-sm font-medium text-ink-600 dark:text-ink-400 transition hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-ink-900 dark:hover:text-ink-100"
             >
               <RotateCcw size={14} /> Reset
             </a>
@@ -264,14 +264,14 @@ export function JobFilters({ params }: { params: ListJobsParams }) {
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-xs font-semibold uppercase tracking-wider text-ink-400">
+          <span className="text-xs font-semibold uppercase tracking-wider text-ink-400 dark:text-ink-500">
             Sort by:
           </span>
           <select
             id="job-sort"
             name="sort"
             defaultValue={params.sort ?? "relevance"}
-            className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-ink-700 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/10"
+            className="rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-ink-900 px-3 py-1.5 text-xs font-semibold text-ink-700 dark:text-ink-300 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/10"
           >
             <option value="relevance">Most relevant</option>
             <option value="newest">Newest first</option>

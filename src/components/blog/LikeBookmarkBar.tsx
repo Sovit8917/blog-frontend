@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Heart, Bookmark } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { apiFetch } from '@/lib/api/client';
-import { CollectionPicker } from './CollectionPicker';
+import { useState } from "react";
+import { Heart, Bookmark } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { apiFetch } from "@/lib/api/client";
+import { CollectionPicker } from "./CollectionPicker";
 
 /**
  * Optimistic like/bookmark control. Talks to POST /posts/:id/like and
@@ -32,7 +32,10 @@ export function LikeBookmarkBar({
     // apiFetch throws on a non-2xx response (a plain fetch() would not — it only
     // rejects on a network error — so a 404/401 here used to fail silently
     // while the UI still showed the optimistic "liked" state).
-    apiFetch(`/posts/${postId}/like`, { method: 'POST', revalidate: false }).catch(() => {
+    apiFetch(`/posts/${postId}/like`, {
+      method: "POST",
+      revalidate: false,
+    }).catch(() => {
       setLiked((v) => !v);
       setLikes((n) => (liked ? n + 1 : n - 1));
     });
@@ -40,9 +43,10 @@ export function LikeBookmarkBar({
 
   const onBookmark = () => {
     setBookmarked((v) => !v);
-    apiFetch(`/posts/${postId}/bookmark`, { method: 'POST', revalidate: false }).catch(() =>
-      setBookmarked((v) => !v),
-    );
+    apiFetch(`/posts/${postId}/bookmark`, {
+      method: "POST",
+      revalidate: false,
+    }).catch(() => setBookmarked((v) => !v));
   };
 
   return (
@@ -50,22 +54,33 @@ export function LikeBookmarkBar({
       <button
         onClick={onLike}
         className={cn(
-          'flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-medium ring-1 transition',
-          liked ? 'bg-red-50 text-red-600 ring-red-200' : 'text-ink-600 ring-ink-200 hover:bg-ink-50',
+          "flex h-10 items-center gap-1.5 rounded-2xl px-3.5 text-xs font-bold border shadow-xs transition hover:opacity-90",
+          liked
+            ? "bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 border-red-200 dark:border-red-800 ring-1 ring-red-200 dark:ring-red-800"
+            : "text-ink-600 dark:text-ink-400 border-slate-200/90 dark:border-slate-700 bg-white dark:bg-ink-900 hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-ink-800",
         )}
       >
-        <Heart size={16} className={liked ? 'fill-red-500 text-red-500' : ''} />
+        <Heart size={16} className={liked ? "fill-red-500 text-red-500" : ""} />
         {likes}
       </button>
       <button
         onClick={onBookmark}
         aria-label="Bookmark"
         className={cn(
-          'flex items-center gap-1.5 rounded-full p-2 ring-1 transition',
-          bookmarked ? 'bg-brand-50 text-brand-600 ring-brand-200' : 'text-ink-600 ring-ink-200 hover:bg-ink-50',
+          "flex h-10 w-10 items-center justify-center rounded-2xl text-xs font-semibold border shadow-xs transition hover:opacity-90",
+          bookmarked
+            ? "bg-brand-50 dark:bg-brand-950/40 text-brand-600 dark:text-brand-400 border-brand-200 dark:border-brand-800 ring-1 ring-brand-200 dark:ring-brand-800"
+            : "text-ink-600 dark:text-ink-400 border-slate-200/90 dark:border-slate-700 bg-white dark:bg-ink-900 hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-ink-800",
         )}
       >
-        <Bookmark size={16} className={bookmarked ? 'fill-brand-500 text-brand-500' : ''} />
+        <Bookmark
+          size={16}
+          className={
+            bookmarked
+              ? "fill-brand-500 text-brand-500 dark:text-brand-400"
+              : ""
+          }
+        />
       </button>
       <CollectionPicker postId={postId} />
     </div>

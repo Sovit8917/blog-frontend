@@ -20,9 +20,9 @@ export default async function SkillsPage() {
   return (
     <div className="container-page py-10">
       <header className="mb-10 max-w-2xl">
-        <p className="text-sm font-semibold uppercase tracking-wider text-brand-600">Skills &amp; Technologies</p>
-        <h1 className="mt-1 text-3xl font-bold text-ink-900 sm:text-4xl">Learn a skill, then find the job</h1>
-        <p className="mt-3 text-ink-500">
+        <p className="text-sm font-semibold uppercase tracking-wider text-brand-600 dark:text-brand-400">Skills &amp; Technologies</p>
+        <h1 className="mt-1 text-3xl font-bold text-ink-900 dark:text-ink-100 sm:text-4xl">Learn a skill, then find the job</h1>
+        <p className="mt-3 text-ink-500 dark:text-ink-400">
           Each technology below has its own hub: tutorials and articles to learn it, plus the
           open roles currently hiring for it.
         </p>
@@ -31,7 +31,7 @@ export default async function SkillsPage() {
       <AdSlot placement="HEADER" className="mb-10" />
 
       {sorted.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-ink-200 py-16 text-center text-ink-400">
+        <div className="rounded-xl border border-dashed border-ink-200 dark:border-ink-700 py-16 text-center text-ink-400 dark:text-ink-500">
           No skills listed yet.
         </div>
       ) : (
@@ -40,13 +40,13 @@ export default async function SkillsPage() {
             <Link
               key={skill.id}
               href={`/skills/${skill.slug}`}
-              className="group flex items-center justify-between gap-2 rounded-xl border border-ink-100 px-4 py-3.5 transition hover:border-brand-200 hover:shadow-sm"
+              className="group flex items-center justify-between gap-2 rounded-xl border border-ink-100 dark:border-ink-800 px-4 py-3.5 transition hover:border-brand-200 dark:hover:border-brand-700 hover:shadow-sm"
             >
-              <span className="flex items-center gap-2 font-medium text-ink-800 group-hover:text-brand-600">
-                <Code2 size={15} className="text-ink-300 group-hover:text-brand-400" />
+              <span className="flex items-center gap-2 font-medium text-ink-800 dark:text-ink-200 group-hover:text-brand-600 dark:group-hover:text-brand-400">
+                <Code2 size={15} className="text-ink-300 dark:text-ink-600 group-hover:text-brand-400" />
                 {skill.name}
               </span>
-              <span className="text-xs font-medium text-ink-400">{skill._count?.jobs ?? 0}</span>
+              <span className="text-xs font-medium text-ink-400 dark:text-ink-500">{skill._count?.jobs ?? 0}</span>
             </Link>
           ))}
         </div>

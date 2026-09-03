@@ -32,7 +32,7 @@ export function AdBox({
 
   return (
     <div className="flex w-full flex-col items-center justify-center">
-      <p className="mb-1.5 text-center text-[10px] font-medium uppercase tracking-wider text-ink-300">
+      <p className="mb-1.5 text-center text-[10px] font-medium uppercase tracking-wider text-ink-300 dark:text-ink-600">
         Advertisement
       </p>
       {/*
@@ -45,7 +45,7 @@ export function AdBox({
         were on the <a> itself with an unstyled div between it and here,
         which collapsed to height 0 and rendered the ad invisible.
       */}
-      <div className={`relative w-full overflow-hidden rounded-xl ring-1 ring-ink-100 ${slotClassName}`}>
+      <div className={`relative w-full overflow-hidden rounded-xl ring-1 ring-ink-100 dark:ring-ink-800 ${slotClassName}`}>
         <AdImpressionTracker adId={adId}>
           <AdClickLink adId={adId} targetUrl={targetUrl} className="block h-full w-full">
             <Image

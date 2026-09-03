@@ -7,11 +7,11 @@ import { Sparkles, Rss } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="relative mt-4 bg-transparent text-slate-700">
+    <footer className="relative mt-4 bg-transparent text-slate-700 dark:text-slate-300">
       {/* Subtle sleek wave shape divider */}
       <div className="w-full overflow-hidden leading-none pointer-events-none -mb-px">
         <svg
-          className="relative block w-full h-6 sm:h-9 md:h-11 text-[#eff6ff] fill-current"
+          className="relative block w-full h-6 sm:h-9 md:h-11 text-[#eff6ff] dark:text-ink-900 fill-current"
           viewBox="0 0 1200 60"
           preserveAspectRatio="none"
         >
@@ -19,19 +19,19 @@ export function Footer() {
         </svg>
       </div>
 
-      <div className="bg-[#eff6ff]">
+      <div className="bg-[#eff6ff] dark:bg-ink-900 border-t border-transparent dark:border-ink-800">
         <div className="container-page pb-8 pt-1">
           {/* Top Highlight Banner: Follow Us On Social Media */}
-          <div className="mb-7 rounded-2xl border border-blue-200/80 bg-white/90 p-4 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="mb-7 rounded-2xl border border-blue-200/80 dark:border-ink-700 bg-white/90 dark:bg-ink-950 p-4 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3.5 text-center sm:text-left">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-tr from-brand-600 to-cyan-500 text-white shadow-md shadow-brand-500/25">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-tr from-brand-600 dark:from-brand-700 to-cyan-500 text-white shadow-md shadow-brand-500/25">
                 <Rss size={20} />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-slate-900 tracking-tight leading-tight">
+                <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100 tracking-tight leading-tight">
                   Follow Us On Social Media
                 </h3>
-                <p className="text-xs text-slate-500 font-normal">
+                <p className="text-xs text-slate-500 dark:text-slate-400 font-normal">
                   Stay connected for daily tech jobs, interview prep & updates
                 </p>
               </div>
@@ -131,7 +131,7 @@ export function Footer() {
                   className="h-10 sm:h-12 w-auto object-contain origin-left filter drop-shadow-xs contrast-125"
                 />
               </Link>
-              <p className="text-xs leading-relaxed text-slate-600 max-w-sm font-normal">
+              <p className="text-xs leading-relaxed text-slate-600 dark:text-slate-400 max-w-sm font-normal">
                 Empowering developers and tech professionals with curated career
                 guidance, tech job opportunities, and developer resources.
               </p>
@@ -139,14 +139,14 @@ export function Footer() {
 
             {/* Quick Links Column 1: Explore */}
             <div className="lg:col-span-2 sm:col-span-1">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-slate-100">
                 Explore
               </h3>
-              <ul className="mt-2.5 space-y-1.5 text-xs text-slate-600">
+              <ul className="mt-2.5 space-y-1.5 text-xs text-slate-600 dark:text-slate-400">
                 <li>
                   <Link
                     href="/"
-                    className="transition-colors hover:text-brand-600 hover:font-medium"
+                    className="transition-colors hover:text-brand-600 dark:hover:text-brand-400 hover:font-medium"
                   >
                     Articles & Stories
                   </Link>
@@ -154,7 +154,7 @@ export function Footer() {
                 <li>
                   <Link
                     href="/jobs"
-                    className="transition-colors hover:text-brand-600 hover:font-medium"
+                    className="transition-colors hover:text-brand-600 dark:hover:text-brand-400 hover:font-medium"
                   >
                     Tech Jobs
                   </Link>
@@ -162,15 +162,15 @@ export function Footer() {
                 <li>
                   <Link
                     href="/me/resume-ats"
-                    className="inline-flex items-center gap-1 transition-colors hover:text-brand-600 font-semibold text-slate-900"
+                    className="inline-flex items-center gap-1 transition-colors hover:text-brand-600 dark:hover:text-brand-400 font-semibold text-slate-900 dark:text-slate-100"
                   >
-                    <Sparkles size={11} className="text-brand-600" /> Resume ATS
+                    <Sparkles size={11} className="text-brand-600 dark:text-brand-400" /> Resume ATS
                   </Link>
                 </li>
                 <li>
                   <Link
                     href="/resources"
-                    className="transition-colors hover:text-brand-600 hover:font-medium"
+                    className="transition-colors hover:text-brand-600 dark:hover:text-brand-400 hover:font-medium"
                   >
                     Dev Resources
                   </Link>
@@ -180,14 +180,14 @@ export function Footer() {
 
             {/* Quick Links Column 2: Partner */}
             <div className="lg:col-span-2 sm:col-span-1">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-slate-100">
                 Partner
               </h3>
-              <ul className="mt-2.5 space-y-1.5 text-xs text-slate-600">
+              <ul className="mt-2.5 space-y-1.5 text-xs text-slate-600 dark:text-slate-400">
                 <li>
                   <Link
                     href="/advertise"
-                    className="transition-colors hover:text-brand-600 hover:font-medium"
+                    className="transition-colors hover:text-brand-600 dark:hover:text-brand-400 hover:font-medium"
                   >
                     Advertise with us
                   </Link>
@@ -195,7 +195,7 @@ export function Footer() {
                 <li>
                   <Link
                     href="/me/employer-access"
-                    className="transition-colors hover:text-brand-600 hover:font-medium"
+                    className="transition-colors hover:text-brand-600 dark:hover:text-brand-400 hover:font-medium"
                   >
                     Post a Job Listing
                   </Link>
@@ -203,7 +203,7 @@ export function Footer() {
                 <li>
                   <Link
                     href="/for-you"
-                    className="transition-colors hover:text-brand-600 hover:font-medium"
+                    className="transition-colors hover:text-brand-600 dark:hover:text-brand-400 hover:font-medium"
                   >
                     Personalized Feed
                   </Link>
@@ -213,10 +213,10 @@ export function Footer() {
 
             {/* Newsletter Column */}
             <div className="space-y-2 lg:col-span-4 sm:col-span-2">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-slate-100">
                 Stay in the loop
               </h3>
-              <p className="text-xs text-slate-600">
+              <p className="text-xs text-slate-600 dark:text-slate-400">
                 Get our weekly digest of tech trends, career opportunities, and
                 tools.
               </p>
@@ -229,20 +229,20 @@ export function Footer() {
           <AdSlot placement="FOOTER" className="mt-6" />
 
           {/* Bottom copyright bar */}
-          <div className="mt-6 flex flex-col gap-2 border-t border-slate-300/70 pt-4 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+          <div className="mt-6 flex flex-col gap-2 border-t border-slate-300/70 dark:border-slate-600 pt-4 text-xs text-slate-500 dark:text-slate-400 sm:flex-row sm:items-center sm:justify-between">
             <p>© {new Date().getFullYear()} Devnexa. All rights reserved.</p>
-            <div className="flex flex-wrap items-center gap-4 text-slate-600">
-              <Link href="/about" className="transition hover:text-slate-900">
+            <div className="flex flex-wrap items-center gap-4 text-slate-600 dark:text-slate-400">
+              <Link href="/about" className="transition hover:text-slate-900 dark:hover:text-slate-100">
                 About
               </Link>
               <span>·</span>
-              <Link href="/privacy" className="transition hover:text-slate-900">
+              <Link href="/privacy" className="transition hover:text-slate-900 dark:hover:text-slate-100">
                 Privacy Policy
               </Link>
               <span>·</span>
               <Link
                 href="/disclosure"
-                className="transition hover:text-slate-900"
+                className="transition hover:text-slate-900 dark:hover:text-slate-100"
               >
                 Disclosure
               </Link>

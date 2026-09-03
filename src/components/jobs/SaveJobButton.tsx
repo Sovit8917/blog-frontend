@@ -36,10 +36,10 @@ export function SaveJobButton({ jobId, initialSaved = false }: { jobId: string; 
       aria-label={saved ? 'Unsave job' : 'Save job'}
       className={cn(
         'flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-medium ring-1 transition',
-        saved ? 'bg-brand-50 text-brand-700 ring-brand-200' : 'text-ink-600 ring-ink-200 hover:bg-ink-50',
+        saved ? 'bg-brand-50 dark:bg-brand-900/40 text-brand-700 dark:text-brand-400 ring-brand-200 dark:ring-brand-800' : 'text-ink-600 dark:text-ink-400 ring-ink-200 dark:ring-ink-700 hover:bg-ink-50 dark:hover:bg-ink-800',
       )}
     >
-      <Bookmark size={16} className={saved ? 'fill-brand-500 text-brand-500' : ''} />
+      <Bookmark size={16} className={saved ? 'fill-brand-500 text-brand-500 dark:text-brand-400' : ''} />
       {saved ? 'Saved' : 'Save'}
     </button>
   );

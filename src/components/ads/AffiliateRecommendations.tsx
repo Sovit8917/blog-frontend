@@ -3,9 +3,9 @@ import { affiliateHref } from '@/lib/api/monetization';
 import type { AffiliateLink } from '@/types';
 
 const ACCENTS = [
-  'from-brand-500/10 to-brand-500/0 text-brand-600',
-  'from-amber-500/10 to-amber-500/0 text-amber-600',
-  'from-emerald-500/10 to-emerald-500/0 text-emerald-600',
+  'from-brand-500/10 dark:from-brand-600 to-brand-500/0 dark:to-brand-700 text-brand-600 dark:text-brand-400',
+  'from-amber-500/10 to-amber-500/0 text-amber-600 dark:text-amber-400',
+  'from-emerald-500/10 to-emerald-500/0 text-emerald-600 dark:text-emerald-400',
   'from-sky-500/10 to-sky-500/0 text-sky-600',
 ];
 
@@ -21,13 +21,13 @@ export function AffiliateRecommendations({ links }: { links: AffiliateLink[] }) 
   if (!Array.isArray(links) || links.length === 0) return null;
 
   return (
-    <section className="my-10 rounded-2xl border border-ink-100 bg-white p-5 sm:p-6" aria-label="Recommended products">
+    <section className="my-10 rounded-2xl border border-ink-100 dark:border-ink-800 bg-white dark:bg-ink-900 p-5 sm:p-6" aria-label="Recommended products">
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Sparkles size={16} className="text-brand-500" />
-          <h2 className="text-sm font-bold text-ink-900">Recommended for you</h2>
+          <Sparkles size={16} className="text-brand-500 dark:text-brand-400" />
+          <h2 className="text-sm font-bold text-ink-900 dark:text-ink-100">Recommended for you</h2>
         </div>
-        <span className="text-[10px] font-medium uppercase tracking-wider text-ink-300">Affiliate</span>
+        <span className="text-[10px] font-medium uppercase tracking-wider text-ink-300 dark:text-ink-600">Affiliate</span>
       </div>
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -37,7 +37,7 @@ export function AffiliateRecommendations({ links }: { links: AffiliateLink[] }) 
             href={affiliateHref(link.slug)}
             target="_blank"
             rel="sponsored nofollow noopener noreferrer"
-            className="group flex items-center gap-3 rounded-xl border border-ink-100 bg-gradient-to-br p-3.5 transition hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-sm"
+            className="group flex items-center gap-3 rounded-xl border border-ink-100 dark:border-ink-800 bg-gradient-to-br p-3.5 transition hover:-translate-y-0.5 hover:border-brand-200 dark:hover:border-brand-700 hover:shadow-sm"
             data-accent={i}
           >
             <span
@@ -46,19 +46,19 @@ export function AffiliateRecommendations({ links }: { links: AffiliateLink[] }) 
               <ShoppingBag size={18} />
             </span>
             <span className="min-w-0 flex-1">
-              <span className="block truncate text-sm font-semibold text-ink-900 group-hover:text-brand-700">
+              <span className="block truncate text-sm font-semibold text-ink-900 dark:text-ink-100 group-hover:text-brand-700 dark:group-hover:text-brand-400">
                 {link.title}
               </span>
               {link.program && (
-                <span className="block truncate text-xs text-ink-400">{link.program}</span>
+                <span className="block truncate text-xs text-ink-400 dark:text-ink-500">{link.program}</span>
               )}
             </span>
-            <ExternalLink size={14} className="shrink-0 text-ink-300 transition group-hover:text-brand-500" />
+            <ExternalLink size={14} className="shrink-0 text-ink-300 dark:text-ink-600 transition group-hover:text-brand-500 dark:group-hover:text-brand-400" />
           </a>
         ))}
       </div>
 
-      <p className="mt-3 text-[11px] leading-relaxed text-ink-300">
+      <p className="mt-3 text-[11px] leading-relaxed text-ink-300 dark:text-ink-600">
         We may earn a commission if you buy through these links, at no extra cost to you.
       </p>
     </section>

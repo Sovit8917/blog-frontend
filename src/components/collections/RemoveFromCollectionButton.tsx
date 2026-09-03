@@ -30,7 +30,7 @@ export function RemoveFromCollectionButton({
       onClick={onClick}
       disabled={pending}
       aria-label="Remove from collection"
-      className="rounded-lg p-2 text-ink-400 transition hover:bg-ink-50 hover:text-red-600 disabled:opacity-50"
+      className="rounded-lg p-2 text-ink-400 dark:text-ink-500 transition hover:bg-ink-50 dark:hover:bg-ink-800 hover:text-red-600 dark:hover:text-red-400 disabled:opacity-50"
     >
       <X size={15} />
     </button>

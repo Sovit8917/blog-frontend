@@ -18,14 +18,14 @@ export default async function BookmarksPage() {
   return (
     <div className="container-page py-10">
       <header className="mb-8">
-        <h1 className="text-3xl font-bold text-ink-900">Bookmarks</h1>
-        <p className="mt-2 text-ink-500">Posts you&apos;ve bookmarked to read later.</p>
+        <h1 className="text-3xl font-bold text-ink-900 dark:text-ink-100">Bookmarks</h1>
+        <p className="mt-2 text-ink-500 dark:text-ink-400">Posts you&apos;ve bookmarked to read later.</p>
       </header>
 
       {bookmarks.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-ink-200 py-16 text-center text-ink-400">
+        <div className="rounded-xl border border-dashed border-ink-200 dark:border-ink-700 py-16 text-center text-ink-400 dark:text-ink-500">
           You haven&apos;t bookmarked any posts yet.{' '}
-          <Link href="/blog" className="link-underline text-ink-700">
+          <Link href="/blog" className="link-underline text-ink-700 dark:text-ink-300">
             Browse the blog
           </Link>
           .
@@ -33,20 +33,20 @@ export default async function BookmarksPage() {
       ) : (
         <ul className="flex flex-col gap-4">
           {bookmarks.map((b) => (
-            <li key={b.id} className="flex items-center gap-4 rounded-xl border border-ink-100 p-4">
-              <div className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-ink-100">
+            <li key={b.id} className="flex items-center gap-4 rounded-xl border border-ink-100 dark:border-ink-800 p-4">
+              <div className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-ink-100 dark:bg-ink-800">
                 {b.post.coverImageUrl ? (
                   <Image src={b.post.coverImageUrl} alt={b.post.title} fill className="object-cover" />
                 ) : (
-                  <span className="text-sm font-bold text-ink-400">{b.post.title[0]}</span>
+                  <span className="text-sm font-bold text-ink-400 dark:text-ink-500">{b.post.title[0]}</span>
                 )}
               </div>
               <div className="flex-1">
-                <Link href={`/blog/${b.post.slug}`} className="font-semibold text-ink-900 hover:text-brand-600">
+                <Link href={`/blog/${b.post.slug}`} className="font-semibold text-ink-900 dark:text-ink-100 hover:text-brand-600 dark:hover:text-brand-400">
                   {b.post.title}
                 </Link>
-                <p className="text-sm text-ink-500">{b.post.author?.name}</p>
-                <p className="mt-0.5 text-xs text-ink-400">Bookmarked {timeAgo(b.createdAt)}</p>
+                <p className="text-sm text-ink-500 dark:text-ink-400">{b.post.author?.name}</p>
+                <p className="mt-0.5 text-xs text-ink-400 dark:text-ink-500">Bookmarked {timeAgo(b.createdAt)}</p>
               </div>
             </li>
           ))}

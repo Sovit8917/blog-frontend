@@ -65,38 +65,38 @@ export function SaveSearchAlertButton({ params }: { params: ListJobsParams }) {
 
       {open && (
         <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/40 p-4">
-          <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl">
+          <div className="w-full max-w-sm rounded-2xl bg-white dark:bg-ink-900 p-6 shadow-xl">
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-lg font-bold text-ink-900">Save this search as an alert</h2>
+              <h2 className="text-lg font-bold text-ink-900 dark:text-ink-100">Save this search as an alert</h2>
               <button
                 onClick={() => setOpen(false)}
                 aria-label="Close"
-                className="rounded-md p-1.5 text-ink-400 hover:bg-ink-50"
+                className="rounded-md p-1.5 text-ink-400 dark:text-ink-500 hover:bg-ink-50 dark:hover:bg-ink-800"
               >
                 <X size={18} />
               </button>
             </div>
             {done ? (
-              <p className="text-sm text-emerald-600">
+              <p className="text-sm text-emerald-600 dark:text-emerald-400">
                 Saved! We&apos;ll email you when new matching jobs go live.
               </p>
             ) : (
               <form onSubmit={onSubmit} className="flex flex-col gap-4">
                 <label className="flex flex-col gap-1.5">
-                  <span className="text-sm font-medium text-ink-700">Alert name</span>
+                  <span className="text-sm font-medium text-ink-700 dark:text-ink-300">Alert name</span>
                   <input
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="e.g. Remote React roles"
-                    className="rounded-lg border border-ink-200 px-3.5 py-2.5 text-sm outline-none placeholder:text-ink-400 focus:border-brand-400 focus:ring-2 focus:ring-brand-100"
+                    className="rounded-lg border border-ink-200 dark:border-ink-700 px-3.5 py-2.5 text-sm outline-none placeholder:text-ink-400 dark:placeholder:text-ink-500 focus:border-brand-400 dark:focus:border-brand-600 focus:ring-2 focus:ring-brand-100 dark:focus:ring-brand-900/40"
                   />
                 </label>
-                <p className="text-xs text-ink-400">
+                <p className="text-xs text-ink-400 dark:text-ink-500">
                   Uses your current filters. Manage or delete alerts anytime under{' '}
                   <span className="font-medium">My resume &amp; alerts</span>.
                 </p>
-                {error && <p className="text-sm text-red-600">{error}</p>}
+                {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
                 <Button type="submit" disabled={submitting} className="w-full">
                   {submitting ? 'Saving…' : 'Save alert'}
                 </Button>

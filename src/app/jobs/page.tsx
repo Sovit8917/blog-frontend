@@ -92,16 +92,16 @@ export default async function JobsPage({ searchParams }: Props) {
   );
 
   return (
-    <div className="bg-slate-50/50 py-8 lg:py-12">
+    <div className="py-8 lg:py-12">
       <div className="container-page space-y-8">
-        <header className="rounded-2xl border border-slate-200/70 bg-white p-6 sm:p-8 shadow-sm">
-          <p className="text-xs font-bold uppercase tracking-wider text-brand-600">
+        <header className="rounded-2xl border border-slate-200/70 dark:border-slate-700 bg-white dark:bg-ink-900 p-6 sm:p-8 shadow-sm">
+          <p className="text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">
             Job board
           </p>
-          <h1 className="mt-1 font-serif text-3xl font-extrabold text-ink-950 sm:text-4xl">
+          <h1 className="mt-1 font-serif text-3xl font-extrabold text-ink-950 dark:text-ink-50 sm:text-4xl">
             Find your next role
           </h1>
-          <p className="mt-2 text-base leading-relaxed text-ink-600">
+          <p className="mt-2 text-base leading-relaxed text-ink-600 dark:text-ink-400">
             Open positions from companies building interesting things.
           </p>
         </header>
@@ -115,23 +115,23 @@ export default async function JobsPage({ searchParams }: Props) {
         )}
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_320px]">
-          <div className="rounded-2xl border border-slate-200/70 bg-white p-6 sm:p-8 shadow-sm space-y-6">
+          <div className="rounded-2xl border border-slate-200/70 dark:border-slate-700 bg-white dark:bg-ink-900 p-6 sm:p-8 shadow-sm space-y-6">
             <JobFilters params={params} />
 
             {/* Result count — sits right above the list so it's the first thing
                 read after adjusting filters, confirming the search "took". */}
-            <div className="flex flex-wrap items-center justify-between gap-3 border-t border-ink-100 pt-6">
-              <p className="text-sm text-ink-500">
+            <div className="flex flex-wrap items-center justify-between gap-3 border-t border-ink-100 dark:border-ink-800 pt-6">
+              <p className="text-sm text-ink-500 dark:text-ink-400">
                 {total !== undefined ? (
                   <>
-                    <span className="font-semibold text-ink-800">
+                    <span className="font-semibold text-ink-800 dark:text-ink-200">
                       {total.toLocaleString()}
                     </span>{" "}
                     {total === 1 ? "job" : "jobs"} found
                   </>
                 ) : (
                   <>
-                    <span className="font-semibold text-ink-800">
+                    <span className="font-semibold text-ink-800 dark:text-ink-200">
                       {page.items.length}
                     </span>{" "}
                     jobs on this page
@@ -145,15 +145,15 @@ export default async function JobsPage({ searchParams }: Props) {
                 title + excerpt + author/date right, matching the
                 jobcode.in layout ---- */}
             {page.items.length === 0 ? (
-              <div className="flex flex-col items-center gap-4 rounded-xl border border-dashed border-ink-200 px-6 py-16 text-center">
-                <span className="flex h-12 w-12 items-center justify-center rounded-full bg-ink-50 text-ink-400">
+              <div className="flex flex-col items-center gap-4 rounded-xl border border-dashed border-ink-200 dark:border-ink-700 px-6 py-16 text-center">
+                <span className="flex h-12 w-12 items-center justify-center rounded-full bg-ink-50 dark:bg-ink-900 text-ink-400 dark:text-ink-500">
                   <SearchX size={22} />
                 </span>
                 <div>
-                  <p className="font-semibold text-ink-800">
+                  <p className="font-semibold text-ink-800 dark:text-ink-200">
                     No jobs match your filters
                   </p>
-                  <p className="mx-auto mt-1 max-w-sm text-sm text-ink-500">
+                  <p className="mx-auto mt-1 max-w-sm text-sm text-ink-500 dark:text-ink-400">
                     {hasActiveFilters
                       ? "Try removing a filter or broadening your search — location and keyword tend to narrow results the most."
                       : "There aren't any open roles right now. Check back soon."}

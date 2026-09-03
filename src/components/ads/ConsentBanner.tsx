@@ -37,22 +37,22 @@ export function ConsentBanner() {
   }
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-50 border-t border-ink-100 bg-white/95 px-4 py-4 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] backdrop-blur">
+    <div className="fixed inset-x-0 bottom-0 z-50 border-t border-ink-100 dark:border-ink-800 bg-white/95 dark:bg-ink-900 px-4 py-4 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] backdrop-blur">
       <div className="mx-auto flex max-w-4xl flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-[13px] leading-relaxed text-ink-600">
+        <p className="text-[13px] leading-relaxed text-ink-600 dark:text-ink-400">
           We use cookies to run ads and measure how the site is used. You can accept or decline —
           the site works either way.
         </p>
         <div className="flex shrink-0 gap-2">
           <button
             onClick={() => choose('denied')}
-            className="rounded-lg px-3.5 py-2 text-[13px] font-medium text-ink-500 ring-1 ring-ink-200 transition hover:bg-ink-50"
+            className="rounded-lg px-3.5 py-2 text-[13px] font-medium text-ink-500 dark:text-ink-400 ring-1 ring-ink-200 dark:ring-ink-700 transition hover:bg-ink-50 dark:hover:bg-ink-800"
           >
             Decline
           </button>
           <button
             onClick={() => choose('granted')}
-            className="rounded-lg bg-brand-600 px-3.5 py-2 text-[13px] font-medium text-white transition hover:bg-brand-700"
+            className="rounded-lg bg-brand-600 dark:bg-brand-500 px-3.5 py-2 text-[13px] font-medium text-white transition hover:bg-brand-700 dark:hover:bg-brand-600"
           >
             Accept
           </button>

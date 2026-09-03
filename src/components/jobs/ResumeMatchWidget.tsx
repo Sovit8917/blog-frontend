@@ -8,11 +8,11 @@ import { Button } from '@/components/ui/Button';
 import type { ResumeJobMatch } from '@/types';
 
 function ScoreRing({ score }: { score: number }) {
-  const color = score >= 70 ? 'text-emerald-600' : score >= 40 ? 'text-amber-600' : 'text-red-600';
+  const color = score >= 70 ? 'text-emerald-600 dark:text-emerald-400' : score >= 40 ? 'text-amber-600 dark:text-amber-400' : 'text-red-600 dark:text-red-400';
   return (
     <div className={`text-3xl font-bold ${color}`}>
       {score}
-      <span className="text-base font-medium text-slate-400">/100</span>
+      <span className="text-base font-medium text-slate-400 dark:text-slate-500">/100</span>
     </div>
   );
 }
@@ -68,26 +68,26 @@ export function ResumeMatchWidget({ jobSlug, isLoggedIn }: { jobSlug: string; is
 
   if (!isLoggedIn) {
     return (
-      <div className="rounded-2xl border border-slate-200/70 bg-white p-6 shadow-sm">
-        <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-slate-900">
-          <Sparkles size={16} className="text-brand-600" /> Resume match score
+      <div className="rounded-2xl border border-slate-200/70 dark:border-slate-700 bg-white dark:bg-ink-900 p-6 shadow-sm">
+        <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-slate-900 dark:text-slate-100">
+          <Sparkles size={16} className="text-brand-600 dark:text-brand-400" /> Resume match score
         </div>
-        <p className="text-sm text-slate-500">Sign in to see how your resume matches this job&apos;s required skills.</p>
+        <p className="text-sm text-slate-500 dark:text-slate-400">Sign in to see how your resume matches this job&apos;s required skills.</p>
       </div>
     );
   }
 
   if (match) {
     return (
-      <div className="rounded-2xl border border-slate-200/70 bg-white p-6 shadow-sm">
-        <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-slate-900">
-          <Sparkles size={16} className="text-brand-600" /> Your match for this job
+      <div className="rounded-2xl border border-slate-200/70 dark:border-slate-700 bg-white dark:bg-ink-900 p-6 shadow-sm">
+        <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-slate-900 dark:text-slate-100">
+          <Sparkles size={16} className="text-brand-600 dark:text-brand-400" /> Your match for this job
         </div>
         <ScoreRing score={match.jobMatchScore} />
         {match.matchingSkills.length > 0 && (
           <div className="mt-3 space-y-1">
             {match.matchingSkills.map((s) => (
-              <div key={s.slug} className="flex items-center gap-2 text-sm text-emerald-700">
+              <div key={s.slug} className="flex items-center gap-2 text-sm text-emerald-700 dark:text-emerald-400">
                 <CheckCircle2 size={14} /> {s.name}
               </div>
             ))}
@@ -96,46 +96,46 @@ export function ResumeMatchWidget({ jobSlug, isLoggedIn }: { jobSlug: string; is
         {match.missingSkills.length > 0 && (
           <div className="mt-1 space-y-1">
             {match.missingSkills.map((s) => (
-              <div key={s.slug} className="flex items-center gap-2 text-sm text-red-600">
+              <div key={s.slug} className="flex items-center gap-2 text-sm text-red-600 dark:text-red-400">
                 <XCircle size={14} /> {s.name}
               </div>
             ))}
           </div>
         )}
-        {match.suggestions[0] && <p className="mt-3 text-xs text-slate-500">{match.suggestions[0]}</p>}
+        {match.suggestions[0] && <p className="mt-3 text-xs text-slate-500 dark:text-slate-400">{match.suggestions[0]}</p>}
       </div>
     );
   }
 
   return (
-    <div className="rounded-2xl border border-slate-200/70 bg-white p-6 shadow-sm">
-      <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-slate-900">
-        <Sparkles size={16} className="text-brand-600" /> Resume match score
+    <div className="rounded-2xl border border-slate-200/70 dark:border-slate-700 bg-white dark:bg-ink-900 p-6 shadow-sm">
+      <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-slate-900 dark:text-slate-100">
+        <Sparkles size={16} className="text-brand-600 dark:text-brand-400" /> Resume match score
       </div>
 
       {!needsResume ? (
         <>
-          <p className="mb-3 text-sm text-slate-500">See how your resume matches this job&apos;s required skills.</p>
+          <p className="mb-3 text-sm text-slate-500 dark:text-slate-400">See how your resume matches this job&apos;s required skills.</p>
           <Button size="sm" variant="outline" onClick={checkExisting} disabled={loading}>
             {loading ? <Loader2 size={14} className="animate-spin" /> : null} Check my match
           </Button>
         </>
       ) : (
         <>
-          <p className="mb-2 text-sm text-slate-500">Paste your resume text to get a match score for this job.</p>
+          <p className="mb-2 text-sm text-slate-500 dark:text-slate-400">Paste your resume text to get a match score for this job.</p>
           <textarea
             value={resumeText}
             onChange={(e) => setResumeText(e.target.value)}
             rows={6}
             placeholder="Paste your resume text here…"
-            className="mb-2 w-full rounded-lg border border-slate-200 p-2.5 text-sm"
+            className="mb-2 w-full rounded-lg border border-slate-200 dark:border-slate-700 p-2.5 text-sm"
           />
           <Button size="sm" onClick={submitResume} disabled={loading}>
             {loading ? <Loader2 size={14} className="animate-spin" /> : null} Analyze & match
           </Button>
         </>
       )}
-      {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
+      {error && <p className="mt-2 text-sm text-red-600 dark:text-red-400">{error}</p>}
     </div>
   );
 }

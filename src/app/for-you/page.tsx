@@ -28,13 +28,13 @@ export default async function ForYouPage() {
   return (
     <div className="container-page py-10">
       <header className="mb-8 max-w-2xl">
-        <p className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-brand-600">
+        <p className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-brand-600 dark:text-brand-400">
           <Sparkles size={15} /> For You
         </p>
-        <h1 className="mt-1 text-3xl font-bold text-ink-900 sm:text-4xl">
+        <h1 className="mt-1 text-3xl font-bold text-ink-900 dark:text-ink-100 sm:text-4xl">
           {user ? 'Picked for you' : "What's popular right now"}
         </h1>
-        <p className="mt-3 text-ink-500">
+        <p className="mt-3 text-ink-500 dark:text-ink-400">
           {user
             ? "Ranked from the authors and topics you follow, plus what you've been reading lately."
             : 'Sign in and this feed becomes tailored to the authors, topics, and jobs you actually care about.'}
@@ -42,8 +42,8 @@ export default async function ForYouPage() {
       </header>
 
       {!user && (
-        <div className="mb-8 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-brand-100 bg-brand-50/60 px-5 py-4">
-          <p className="text-sm font-medium text-ink-700">
+        <div className="mb-8 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-brand-100 dark:border-brand-800 bg-brand-50/60 dark:bg-brand-900/40 px-5 py-4">
+          <p className="text-sm font-medium text-ink-700 dark:text-ink-300">
             Follow topics and authors to get a feed built around your career goals.
           </p>
           <Link

@@ -16,15 +16,15 @@ export function MostReadWidget({ posts }: { posts: MostReadPost[] }) {
   if (!Array.isArray(posts) || posts.length === 0) return null;
 
   return (
-    <section className="rounded-2xl border border-ink-100 bg-white p-5 sm:p-6">
+    <section className="rounded-2xl border border-ink-100 dark:border-ink-800 bg-white dark:bg-ink-900 p-5 sm:p-6">
       <div className="mb-5 flex items-center gap-2">
         <Flame size={16} className="text-orange-500" />
-        <h2 className="text-sm font-bold uppercase tracking-wide text-ink-700">Most read this week</h2>
+        <h2 className="text-sm font-bold uppercase tracking-wide text-ink-700 dark:text-ink-300">Most read this week</h2>
       </div>
       <div className="grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2 lg:grid-cols-5">
         {posts.slice(0, 5).map((post, i) => (
           <Link key={post.id} href={`/blog/${post.slug}`} className="group flex gap-3 lg:flex-col">
-            <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-ink-100 lg:h-28 lg:w-full">
+            <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-ink-100 dark:bg-ink-800 lg:h-28 lg:w-full">
               {post.coverImageUrl ? (
                 <Image
                   src={post.coverImageUrl}
@@ -34,7 +34,7 @@ export function MostReadWidget({ posts }: { posts: MostReadPost[] }) {
                   className="object-cover transition duration-300 group-hover:scale-105"
                 />
               ) : (
-                <span className="flex h-full w-full items-center justify-center text-lg font-extrabold text-ink-300">
+                <span className="flex h-full w-full items-center justify-center text-lg font-extrabold text-ink-300 dark:text-ink-600">
                   {String(i + 1).padStart(2, '0')}
                 </span>
               )}
@@ -48,10 +48,10 @@ export function MostReadWidget({ posts }: { posts: MostReadPost[] }) {
                   {post.category.name}
                 </Badge>
               )}
-              <h3 className="line-clamp-2 text-sm font-semibold leading-snug text-ink-900 transition group-hover:text-brand-600">
+              <h3 className="line-clamp-2 text-sm font-semibold leading-snug text-ink-900 dark:text-ink-100 transition group-hover:text-brand-600 dark:group-hover:text-brand-400">
                 {post.title}
               </h3>
-              <p className="mt-1 text-[11px] font-medium text-ink-400">
+              <p className="mt-1 text-[11px] font-medium text-ink-400 dark:text-ink-500">
                 {readingTimeLabel(post.readingTimeMins)}
                 {typeof post.weeklyViews === 'number' && post.weeklyViews > 0 && (
                   <> · {post.weeklyViews.toLocaleString()} reads</>

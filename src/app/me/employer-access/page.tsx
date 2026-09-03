@@ -17,8 +17,8 @@ export default async function EmployerAccessPage() {
     <div className="container-page flex min-h-[60vh] flex-col items-center py-16">
       <div className="w-full max-w-md">
         <header className="mb-8 text-center">
-          <h1 className="text-2xl font-bold text-ink-900">Employer access</h1>
-          <p className="mt-1.5 text-sm text-ink-500">
+          <h1 className="text-2xl font-bold text-ink-900 dark:text-ink-100">Employer access</h1>
+          <p className="mt-1.5 text-sm text-ink-500 dark:text-ink-400">
             Request permission to post jobs. An admin reviews every request.
           </p>
         </header>

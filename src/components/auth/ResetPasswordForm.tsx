@@ -19,10 +19,10 @@ export function ResetPasswordForm() {
   if (!token) {
     return (
       <div className="w-full max-w-sm text-center">
-        <p className="text-sm text-red-600">
+        <p className="text-sm text-red-600 dark:text-red-400">
           This reset link is missing or invalid. Request a new one below.
         </p>
-        <Link href="/forgot-password" className="link-underline mt-5 inline-block text-sm font-medium text-ink-900">
+        <Link href="/forgot-password" className="link-underline mt-5 inline-block text-sm font-medium text-ink-900 dark:text-ink-100">
           Request a new link
         </Link>
       </div>
@@ -32,7 +32,7 @@ export function ResetPasswordForm() {
   if (done) {
     return (
       <div className="w-full max-w-sm text-center">
-        <p className="text-sm text-ink-600">Your password has been reset.</p>
+        <p className="text-sm text-ink-600 dark:text-ink-400">Your password has been reset.</p>
         <Button href="/login" className="mt-5 w-full">
           Sign in
         </Button>
@@ -59,7 +59,7 @@ export function ResetPasswordForm() {
   return (
     <form onSubmit={onSubmit} className="w-full max-w-sm">
       <label className="flex flex-col gap-1.5">
-        <span className="text-sm font-medium text-ink-700">New password</span>
+        <span className="text-sm font-medium text-ink-700 dark:text-ink-300">New password</span>
         <input
           required
           minLength={8}
@@ -67,11 +67,11 @@ export function ResetPasswordForm() {
           autoComplete="new-password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="rounded-lg border border-ink-200 px-3.5 py-2.5 text-sm outline-none placeholder:text-ink-400 focus:border-brand-400 focus:ring-2 focus:ring-brand-100"
+          className="rounded-lg border border-ink-200 dark:border-ink-700 px-3.5 py-2.5 text-sm outline-none placeholder:text-ink-400 dark:placeholder:text-ink-500 focus:border-brand-400 dark:focus:border-brand-600 focus:ring-2 focus:ring-brand-100 dark:focus:ring-brand-900/40"
         />
       </label>
 
-      {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
+      {error && <p className="mt-4 text-sm text-red-600 dark:text-red-400">{error}</p>}
 
       <Button type="submit" disabled={submitting} className="mt-6 w-full">
         {submitting ? 'Saving…' : 'Reset password'}

@@ -32,11 +32,11 @@ export function ForgotPasswordForm() {
   if (sent) {
     return (
       <div className="w-full max-w-sm text-center">
-        <p className="text-sm text-ink-600">
-          If an account exists for <span className="font-medium text-ink-900">{email}</span>, we&apos;ve sent a
+        <p className="text-sm text-ink-600 dark:text-ink-400">
+          If an account exists for <span className="font-medium text-ink-900 dark:text-ink-100">{email}</span>, we&apos;ve sent a
           link to reset your password.
         </p>
-        <Link href="/login" className="link-underline mt-5 inline-block text-sm font-medium text-ink-900">
+        <Link href="/login" className="link-underline mt-5 inline-block text-sm font-medium text-ink-900 dark:text-ink-100">
           Back to sign in
         </Link>
       </div>
@@ -46,25 +46,25 @@ export function ForgotPasswordForm() {
   return (
     <form onSubmit={onSubmit} className="w-full max-w-sm">
       <label className="flex flex-col gap-1.5">
-        <span className="text-sm font-medium text-ink-700">Email</span>
+        <span className="text-sm font-medium text-ink-700 dark:text-ink-300">Email</span>
         <input
           required
           type="email"
           autoComplete="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="rounded-lg border border-ink-200 px-3.5 py-2.5 text-sm outline-none placeholder:text-ink-400 focus:border-brand-400 focus:ring-2 focus:ring-brand-100"
+          className="rounded-lg border border-ink-200 dark:border-ink-700 px-3.5 py-2.5 text-sm outline-none placeholder:text-ink-400 dark:placeholder:text-ink-500 focus:border-brand-400 dark:focus:border-brand-600 focus:ring-2 focus:ring-brand-100 dark:focus:ring-brand-900/40"
         />
       </label>
 
-      {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
+      {error && <p className="mt-4 text-sm text-red-600 dark:text-red-400">{error}</p>}
 
       <Button type="submit" disabled={submitting} className="mt-6 w-full">
         {submitting ? 'Sending…' : 'Send reset link'}
       </Button>
 
-      <p className="mt-5 text-center text-sm text-ink-500">
-        <Link href="/login" className="link-underline font-medium text-ink-900">
+      <p className="mt-5 text-center text-sm text-ink-500 dark:text-ink-400">
+        <Link href="/login" className="link-underline font-medium text-ink-900 dark:text-ink-100">
           Back to sign in
         </Link>
       </p>

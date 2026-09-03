@@ -17,8 +17,8 @@ export function SponsorStrip({ sponsors }: { sponsors: Sponsor[] }) {
   if (rest.length === 0) return null;
 
   return (
-    <section className="rounded-2xl border border-ink-100 bg-ink-50/40 px-5 py-6 sm:px-6">
-      <p className="mb-4 text-center text-xs font-bold uppercase tracking-wider text-ink-400">
+    <section className="rounded-2xl border border-ink-100 dark:border-ink-800 bg-ink-50/40 dark:bg-ink-900 px-5 py-6 sm:px-6">
+      <p className="mb-4 text-center text-xs font-bold uppercase tracking-wider text-ink-400 dark:text-ink-500">
         Supported by
       </p>
       <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-5">
@@ -36,7 +36,7 @@ export function SponsorStrip({ sponsors }: { sponsors: Sponsor[] }) {
                 <Image src={s.logoUrl} alt={s.name} fill className="object-contain" />
               </div>
             ) : (
-              <span className="text-sm font-semibold text-ink-600">{s.name}</span>
+              <span className="text-sm font-semibold text-ink-600 dark:text-ink-400">{s.name}</span>
             )}
           </Link>
         ))}

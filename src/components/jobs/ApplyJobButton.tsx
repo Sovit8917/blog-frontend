@@ -139,31 +139,31 @@ export function ApplyJobButton({
 
       {open && (
         <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/40 p-4">
-          <div className="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-2xl bg-white p-6 shadow-xl">
+          <div className="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-2xl bg-white dark:bg-ink-900 p-6 shadow-xl">
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-lg font-bold text-ink-900">Apply for this role</h2>
+              <h2 className="text-lg font-bold text-ink-900 dark:text-ink-100">Apply for this role</h2>
               <button
                 onClick={() => setOpen(false)}
                 aria-label="Close"
-                className="rounded-md p-1.5 text-ink-400 hover:bg-ink-50"
+                className="rounded-md p-1.5 text-ink-400 dark:text-ink-500 hover:bg-ink-50 dark:hover:bg-ink-800"
               >
                 <X size={18} />
               </button>
             </div>
             <form onSubmit={onSubmit} className="flex flex-col gap-4">
               <div className="flex flex-col gap-1.5">
-                <span className="text-sm font-medium text-ink-700">Resume</span>
+                <span className="text-sm font-medium text-ink-700 dark:text-ink-300">Resume</span>
                 {resumeLoading ? (
-                  <div className="flex items-center gap-2 rounded-lg border border-ink-200 px-3.5 py-2.5 text-sm text-ink-400">
+                  <div className="flex items-center gap-2 rounded-lg border border-ink-200 dark:border-ink-700 px-3.5 py-2.5 text-sm text-ink-400 dark:text-ink-500">
                     <Loader2 size={15} className="animate-spin" /> Checking your profile…
                   </div>
                 ) : resume?.resumeUrl ? (
-                  <div className="flex items-center justify-between gap-3 rounded-lg border border-ink-200 bg-ink-50/60 px-3.5 py-2.5 text-sm">
-                    <span className="flex min-w-0 items-center gap-2 text-ink-700">
-                      <FileText size={15} className="shrink-0 text-ink-400" />
+                  <div className="flex items-center justify-between gap-3 rounded-lg border border-ink-200 dark:border-ink-700 bg-ink-50/60 dark:bg-ink-900 px-3.5 py-2.5 text-sm">
+                    <span className="flex min-w-0 items-center gap-2 text-ink-700 dark:text-ink-300">
+                      <FileText size={15} className="shrink-0 text-ink-400 dark:text-ink-500" />
                       <span className="truncate">{resume.resumeFileName || 'Saved resume'}</span>
                     </span>
-                    <label className="shrink-0 cursor-pointer font-medium text-brand-600 hover:text-brand-700">
+                    <label className="shrink-0 cursor-pointer font-medium text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-400">
                       {resumeUploading ? 'Uploading…' : 'Replace'}
                       <input
                         type="file"
@@ -175,7 +175,7 @@ export function ApplyJobButton({
                     </label>
                   </div>
                 ) : (
-                  <label className="flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-dashed border-ink-300 px-3.5 py-3 text-sm text-ink-500 hover:border-brand-400 hover:text-brand-600">
+                  <label className="flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-dashed border-ink-300 dark:border-ink-600 px-3.5 py-3 text-sm text-ink-500 dark:text-ink-400 hover:border-brand-400 dark:hover:border-brand-600 hover:text-brand-600 dark:hover:text-brand-400">
                     {resumeUploading ? (
                       <>
                         <Loader2 size={15} className="animate-spin" /> Uploading…
@@ -194,24 +194,24 @@ export function ApplyJobButton({
                     />
                   </label>
                 )}
-                {resumeError && <p className="text-sm text-red-600">{resumeError}</p>}
+                {resumeError && <p className="text-sm text-red-600 dark:text-red-400">{resumeError}</p>}
                 {!resumeLoading && (
-                  <span className="text-xs text-ink-400">
+                  <span className="text-xs text-ink-400 dark:text-ink-500">
                     Optional — you can still submit without one. Saved to your profile for next time.
                   </span>
                 )}
               </div>
               <label className="flex flex-col gap-1.5">
-                <span className="text-sm font-medium text-ink-700">Cover letter (optional)</span>
+                <span className="text-sm font-medium text-ink-700 dark:text-ink-300">Cover letter (optional)</span>
                 <textarea
                   value={coverLetter}
                   onChange={(e) => setCoverLetter(e.target.value)}
                   rows={5}
                   placeholder="Tell them why you're a great fit…"
-                  className="resize-none rounded-lg border border-ink-200 px-3.5 py-2.5 text-sm outline-none placeholder:text-ink-400 focus:border-brand-400 focus:ring-2 focus:ring-brand-100"
+                  className="resize-none rounded-lg border border-ink-200 dark:border-ink-700 px-3.5 py-2.5 text-sm outline-none placeholder:text-ink-400 dark:placeholder:text-ink-500 focus:border-brand-400 dark:focus:border-brand-600 focus:ring-2 focus:ring-brand-100 dark:focus:ring-brand-900/40"
                 />
               </label>
-              {error && <p className="text-sm text-red-600">{error}</p>}
+              {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
               <Button type="submit" disabled={submitting || resumeUploading} className="w-full">
                 {submitting ? 'Submitting…' : 'Submit application'}
               </Button>

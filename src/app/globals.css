@@ -20,11 +20,11 @@
     scrollbar-width: none;
   }
   body {
-    @apply bg-white text-ink-800 antialiased;
+    @apply bg-white text-ink-900 antialiased dark:bg-ink-950 dark:text-ink-200;
     font-feature-settings: "kern", "liga", "calt";
   }
-  ::selection { @apply bg-brand-100 text-brand-900; }
-  :focus-visible { @apply outline-2 outline-offset-2 outline-brand-500; }
+  ::selection { @apply bg-brand-100 text-brand-900 dark:bg-brand-900/60 dark:text-brand-100; }
+  :focus-visible { @apply outline-2 outline-offset-2 outline-brand-500 dark:outline-brand-400; }
 }
 
 @layer components {
@@ -35,8 +35,8 @@
      viewport instead of jumping straight to lg:px-8. */
   .container-page { @apply mx-auto w-full max-w-[1440px] px-4 sm:px-6 md:px-8 xl:px-10; }
   .container-prose { @apply mx-auto w-full max-w-[72ch] px-4 sm:px-6; }
-  .link-underline { @apply underline decoration-ink-300 underline-offset-4 transition hover:decoration-brand-500; }
-  .skeleton { @apply animate-pulse rounded-md bg-ink-100; }
+  .link-underline { @apply underline decoration-ink-300 dark:decoration-ink-600 underline-offset-4 transition hover:decoration-brand-500 dark:hover:decoration-brand-400; }
+  .skeleton { @apply animate-pulse rounded-md bg-ink-100 dark:bg-ink-800; }
 }
 
 /* Heading deep-link icon injected by rehype-autolink-headings (see
@@ -49,7 +49,11 @@
   vertical-align: middle;
   opacity: 0;
   color: theme('colors.ink.300');
-  transition: opacity 0.15s ease;
+  transition: opacity 0.15s ease, color 0.15s ease;
+}
+.dark .prose h2 .anchor-link,
+.dark .prose h3 .anchor-link {
+  color: theme('colors.ink.600');
 }
 .prose h2:hover .anchor-link,
 .prose h3:hover .anchor-link,

@@ -21,8 +21,8 @@ export function JobGallery({ images, title }: { images: string[]; title: string 
   if (!hero) return null;
 
   return (
-    <section className="rounded-2xl border border-slate-200/70 bg-white p-6 shadow-sm sm:p-8">
-      <h2 className="mb-3 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-brand-600">
+    <section className="rounded-2xl border border-slate-200/70 dark:border-slate-700 bg-white dark:bg-ink-900 p-6 shadow-sm sm:p-8">
+      <h2 className="mb-3 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">
         <ImageIcon size={13} /> Photos
       </h2>
 
@@ -30,7 +30,7 @@ export function JobGallery({ images, title }: { images: string[]; title: string 
         <button
           type="button"
           onClick={() => setOpenIndex(0)}
-          className="group relative col-span-1 row-span-2 aspect-[16/10] overflow-hidden rounded-xl bg-ink-100 sm:col-span-3 sm:aspect-auto"
+          className="group relative col-span-1 row-span-2 aspect-[16/10] overflow-hidden rounded-xl bg-ink-100 dark:bg-ink-800 sm:col-span-3 sm:aspect-auto"
         >
           <Image
             src={hero}
@@ -48,7 +48,7 @@ export function JobGallery({ images, title }: { images: string[]; title: string 
               key={src + i}
               type="button"
               onClick={() => setOpenIndex(i + 1)}
-              className="group relative aspect-[16/10] overflow-hidden rounded-xl bg-ink-100 sm:aspect-auto"
+              className="group relative aspect-[16/10] overflow-hidden rounded-xl bg-ink-100 dark:bg-ink-800 sm:aspect-auto"
             >
               <Image
                 src={src}
@@ -103,7 +103,7 @@ function Lightbox({
       <button
         type="button"
         onClick={onClose}
-        className="absolute right-4 top-4 rounded-full bg-white/10 p-2 text-white hover:bg-white/20"
+        className="absolute right-4 top-4 rounded-full bg-white/10 dark:bg-ink-900 p-2 text-white hover:bg-white/20 dark:hover:bg-ink-900"
         aria-label="Close"
       >
         <X size={20} />
@@ -117,7 +117,7 @@ function Lightbox({
               e.stopPropagation();
               go(-1);
             }}
-            className="absolute left-3 rounded-full bg-white/10 p-2 text-white hover:bg-white/20 sm:left-6"
+            className="absolute left-3 rounded-full bg-white/10 dark:bg-ink-900 p-2 text-white hover:bg-white/20 dark:hover:bg-ink-900 sm:left-6"
             aria-label="Previous photo"
           >
             <ChevronLeft size={22} />
@@ -128,7 +128,7 @@ function Lightbox({
               e.stopPropagation();
               go(1);
             }}
-            className="absolute right-3 rounded-full bg-white/10 p-2 text-white hover:bg-white/20 sm:right-6"
+            className="absolute right-3 rounded-full bg-white/10 dark:bg-ink-900 p-2 text-white hover:bg-white/20 dark:hover:bg-ink-900 sm:right-6"
             aria-label="Next photo"
           >
             <ChevronRight size={22} />

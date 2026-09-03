@@ -13,10 +13,10 @@ export function ForYou({ posts, isLoggedIn }: { posts: PostCardType[]; isLoggedI
   if (posts.length === 0) return null;
 
   return (
-    <section className="rounded-2xl border border-brand-100 bg-gradient-to-br from-brand-50/60 to-white p-5 sm:p-6">
+    <section className="rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-ink-900 p-5 sm:p-6 shadow-sm">
       <div className="mb-5 flex items-center gap-2">
-        <Sparkles size={16} className="text-brand-600" />
-        <h2 className="text-sm font-bold uppercase tracking-wide text-brand-700">
+        <Sparkles size={16} className="text-brand-600 dark:text-brand-400" />
+        <h2 className="text-sm font-bold uppercase tracking-wide text-brand-600 dark:text-brand-400">
           {isLoggedIn ? 'Picked for you' : 'Popular right now — sign in for picks tailored to you'}
         </h2>
       </div>

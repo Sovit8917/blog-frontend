@@ -20,9 +20,9 @@ export function EmployerAccessPanel({ initialRequest }: { initialRequest: Employ
   if (user?.role === 'AUTHOR') {
     const adminUrl = process.env.NEXT_PUBLIC_ADMIN_URL ?? 'http://localhost:3001';
     return (
-      <div className="rounded-xl border border-ink-100 p-5 text-center">
+      <div className="rounded-xl border border-ink-100 dark:border-ink-800 p-5 text-center">
         <Badge variant="brand">Approved</Badge>
-        <p className="mt-3 text-sm text-ink-600">
+        <p className="mt-3 text-sm text-ink-600 dark:text-ink-400">
           You already have employer access. Post and manage jobs from the admin console.
         </p>
         <Button href={`${adminUrl}/jobs`} className="mt-4 w-full">
@@ -34,7 +34,7 @@ export function EmployerAccessPanel({ initialRequest }: { initialRequest: Employ
 
   if (user && user.role !== 'USER') {
     return (
-      <div className="rounded-xl border border-ink-100 p-5 text-center text-sm text-ink-500">
+      <div className="rounded-xl border border-ink-100 dark:border-ink-800 p-5 text-center text-sm text-ink-500 dark:text-ink-400">
         Staff accounts already have the access they need.
       </div>
     );
@@ -56,10 +56,10 @@ export function EmployerAccessPanel({ initialRequest }: { initialRequest: Employ
 
   if (request?.status === 'PENDING') {
     return (
-      <div className="rounded-xl border border-ink-100 p-5 text-center">
+      <div className="rounded-xl border border-ink-100 dark:border-ink-800 p-5 text-center">
         <Badge variant="outline">Pending review</Badge>
-        <p className="mt-3 text-sm text-ink-600">
-          Your request to post jobs for <span className="font-medium text-ink-900">{request.companyName}</span>{' '}
+        <p className="mt-3 text-sm text-ink-600 dark:text-ink-400">
+          Your request to post jobs for <span className="font-medium text-ink-900 dark:text-ink-100">{request.companyName}</span>{' '}
           is waiting on admin approval. We&apos;ll update this page once it&apos;s reviewed.
         </p>
       </div>
@@ -69,42 +69,42 @@ export function EmployerAccessPanel({ initialRequest }: { initialRequest: Employ
   return (
     <div>
       {request?.status === 'REJECTED' && (
-        <div className="mb-5 rounded-xl border border-red-100 bg-red-50 p-4 text-sm text-red-700">
+        <div className="mb-5 rounded-xl border border-red-100 bg-red-50 dark:bg-red-900/30 p-4 text-sm text-red-700 dark:text-red-400">
           Your previous request wasn&apos;t approved
           {request.reviewNote ? `: ${request.reviewNote}` : '.'} You can submit a new one below.
         </div>
       )}
       <form onSubmit={onSubmit} className="flex flex-col gap-4">
         <label className="flex flex-col gap-1.5">
-          <span className="text-sm font-medium text-ink-700">Company name</span>
+          <span className="text-sm font-medium text-ink-700 dark:text-ink-300">Company name</span>
           <input
             required
             type="text"
             value={companyName}
             onChange={(e) => setCompanyName(e.target.value)}
-            className="rounded-lg border border-ink-200 px-3.5 py-2.5 text-sm outline-none placeholder:text-ink-400 focus:border-brand-400 focus:ring-2 focus:ring-brand-100"
+            className="rounded-lg border border-ink-200 dark:border-ink-700 px-3.5 py-2.5 text-sm outline-none placeholder:text-ink-400 dark:placeholder:text-ink-500 focus:border-brand-400 dark:focus:border-brand-600 focus:ring-2 focus:ring-brand-100 dark:focus:ring-brand-900/40"
           />
         </label>
         <label className="flex flex-col gap-1.5">
-          <span className="text-sm font-medium text-ink-700">Message (optional)</span>
+          <span className="text-sm font-medium text-ink-700 dark:text-ink-300">Message (optional)</span>
           <textarea
             rows={3}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             placeholder="Anything the reviewer should know"
-            className="rounded-lg border border-ink-200 px-3.5 py-2.5 text-sm outline-none placeholder:text-ink-400 focus:border-brand-400 focus:ring-2 focus:ring-brand-100"
+            className="rounded-lg border border-ink-200 dark:border-ink-700 px-3.5 py-2.5 text-sm outline-none placeholder:text-ink-400 dark:placeholder:text-ink-500 focus:border-brand-400 dark:focus:border-brand-600 focus:ring-2 focus:ring-brand-100 dark:focus:ring-brand-900/40"
           />
         </label>
 
-        {error && <p className="text-sm text-red-600">{error}</p>}
+        {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
 
         <Button type="submit" disabled={submitting} className="w-full">
           {submitting ? 'Submitting…' : 'Request employer access'}
         </Button>
 
         {!user && (
-          <p className="text-center text-sm text-ink-500">
-            <Link href="/login?redirect=/me/employer-access" className="link-underline font-medium text-ink-900">
+          <p className="text-center text-sm text-ink-500 dark:text-ink-400">
+            <Link href="/login?redirect=/me/employer-access" className="link-underline font-medium text-ink-900 dark:text-ink-100">
               Sign in
             </Link>{' '}
             first to request access.

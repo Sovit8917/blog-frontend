@@ -37,11 +37,11 @@ export function JobCard({ job }: { job: JobCardType }) {
   const bannerImage = job.images?.[0];
 
   return (
-    <article className="group relative flex flex-col gap-3 overflow-hidden rounded-xl border border-ink-100 bg-white transition hover:border-brand-200 hover:shadow-md hover:shadow-ink-100/50">
+    <article className="group relative flex flex-col gap-3 overflow-hidden rounded-xl border border-ink-100 dark:border-ink-800 bg-white dark:bg-ink-900 transition hover:border-brand-200 dark:hover:border-brand-700 hover:shadow-md hover:shadow-ink-100/50">
       {bannerImage && (
         <Link
           href={`/jobs/${job.slug}`}
-          className="relative block aspect-[16/7] w-full overflow-hidden bg-ink-100"
+          className="relative block aspect-[16/7] w-full overflow-hidden bg-ink-100 dark:bg-ink-800"
         >
           <Image
             src={bannerImage}
@@ -63,7 +63,7 @@ export function JobCard({ job }: { job: JobCardType }) {
 
       <div className={`flex flex-col gap-3 p-5 ${bannerImage ? "pt-0" : ""}`}>
         <div className="flex items-start gap-3">
-          <div className="relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-ink-100 ring-1 ring-ink-100">
+          <div className="relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-ink-100 dark:bg-ink-800 ring-1 ring-ink-100 dark:ring-ink-800">
             {company.logoUrl ? (
               <Image
                 src={company.logoUrl}
@@ -72,7 +72,7 @@ export function JobCard({ job }: { job: JobCardType }) {
                 className="object-cover"
               />
             ) : (
-              <span className="text-base font-bold text-ink-400">
+              <span className="text-base font-bold text-ink-400 dark:text-ink-500">
                 {company.name[0]}
               </span>
             )}
@@ -92,9 +92,9 @@ export function JobCard({ job }: { job: JobCardType }) {
                 {job.verificationStatus === "VERIFIED" && (
                   <Badge
                     variant="outline"
-                    className="!ring-emerald-200/80 !text-emerald-700 bg-emerald-50/70"
+                    className="!ring-emerald-200/80 dark:ring-emerald-800 !text-emerald-700 dark:text-emerald-400 bg-emerald-50/70 dark:bg-emerald-900/30"
                   >
-                    <BadgeCheck size={11} className="text-emerald-600" />{" "}
+                    <BadgeCheck size={11} className="text-emerald-600 dark:text-emerald-400" />{" "}
                     Verified
                   </Badge>
                 )}
@@ -102,7 +102,7 @@ export function JobCard({ job }: { job: JobCardType }) {
                   <Link
                     key={tag}
                     href={`/jobs?search=${encodeURIComponent(tag)}`}
-                    className="inline-flex items-center rounded-md border border-slate-200/80 bg-slate-50 px-2 py-0.5 text-[11px] font-semibold text-slate-700 transition-all hover:border-slate-300 hover:bg-slate-100 active:scale-95 shadow-[0_1px_2px_rgba(0,0,0,0.03)]"
+                    className="inline-flex items-center rounded-md border border-slate-200/80 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-2 py-0.5 text-[11px] font-semibold text-slate-700 dark:text-slate-300 transition-all hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 active:scale-95 shadow-[0_1px_2px_rgba(0,0,0,0.03)]"
                   >
                     {tag}
                   </Link>
@@ -111,7 +111,7 @@ export function JobCard({ job }: { job: JobCardType }) {
             ) : null}
 
             <Link href={`/jobs/${job.slug}`}>
-              <h3 className="text-lg font-bold leading-snug text-ink-900 transition group-hover:text-brand-600">
+              <h3 className="text-lg font-bold leading-snug text-ink-900 dark:text-ink-100 transition group-hover:text-brand-600 dark:group-hover:text-brand-400">
                 {job.title}
               </h3>
             </Link>
@@ -119,15 +119,15 @@ export function JobCard({ job }: { job: JobCardType }) {
             {company.slug ? (
               <Link
                 href={`/companies/${company.slug}`}
-                className="mt-1 inline-flex items-center gap-1 text-sm font-medium text-ink-600 hover:text-ink-900"
+                className="mt-1 inline-flex items-center gap-1 text-sm font-medium text-ink-600 dark:text-ink-400 hover:text-ink-900 dark:hover:text-ink-100"
               >
                 {company.name}
                 {company.isVerified && (
-                  <BadgeCheck size={13} className="text-brand-500" />
+                  <BadgeCheck size={13} className="text-brand-500 dark:text-brand-400" />
                 )}
               </Link>
             ) : (
-              <span className="mt-1 inline-flex items-center gap-1 text-sm font-medium text-ink-600">
+              <span className="mt-1 inline-flex items-center gap-1 text-sm font-medium text-ink-600 dark:text-ink-400">
                 {company.name}
               </span>
             )}
@@ -135,7 +135,7 @@ export function JobCard({ job }: { job: JobCardType }) {
         </div>
 
         {excerpt && (
-          <p className="line-clamp-2 text-sm leading-relaxed text-ink-500">
+          <p className="line-clamp-2 text-sm leading-relaxed text-ink-500 dark:text-ink-400">
             {excerpt}
           </p>
         )}
@@ -143,21 +143,21 @@ export function JobCard({ job }: { job: JobCardType }) {
         {/* Salary is the single most decision-relevant field, so it's the
           largest, boldest text on the card after the title. */}
         {salary && (
-          <p className="text-base font-bold text-emerald-700">{salary}</p>
+          <p className="text-base font-bold text-emerald-700 dark:text-emerald-400">{salary}</p>
         )}
 
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-ink-500">
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-ink-500 dark:text-ink-400">
           {job.location && (
             <span className="flex items-center gap-1">
-              <MapPin size={12} className="text-ink-400" /> {job.location}
+              <MapPin size={12} className="text-ink-400 dark:text-ink-500" /> {job.location}
             </span>
           )}
           <span className="flex items-center gap-1">
-            <Laptop size={12} className="text-ink-400" />{" "}
+            <Laptop size={12} className="text-ink-400 dark:text-ink-500" />{" "}
             {REMOTE_TYPE_LABEL[job.remoteType]}
           </span>
           <span className="flex items-center gap-1">
-            <Briefcase size={12} className="text-ink-400" />{" "}
+            <Briefcase size={12} className="text-ink-400 dark:text-ink-500" />{" "}
             {EMPLOYMENT_TYPE_LABEL[job.employmentType]}
           </span>
         </div>
@@ -170,16 +170,16 @@ export function JobCard({ job }: { job: JobCardType }) {
               </Link>
             ))}
             {job.skills.length > 4 && (
-              <span className="flex items-center px-1 text-xs font-medium text-ink-400">
+              <span className="flex items-center px-1 text-xs font-medium text-ink-400 dark:text-ink-500">
                 +{job.skills.length - 4} more
               </span>
             )}
           </div>
         )}
 
-        <div className="mt-1 flex items-center justify-between gap-3 border-t border-ink-50 pt-3">
+        <div className="mt-1 flex items-center justify-between gap-3 border-t border-ink-50 dark:border-ink-900 pt-3">
           {job.publishedAt ? (
-            <p className="flex items-center gap-1 text-xs text-ink-400">
+            <p className="flex items-center gap-1 text-xs text-ink-400 dark:text-ink-500">
               <Clock size={12} /> Posted {timeAgo(job.publishedAt)}
             </p>
           ) : (

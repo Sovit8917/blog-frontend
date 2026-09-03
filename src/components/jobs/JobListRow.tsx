@@ -9,26 +9,29 @@ import { getJobCompany } from "@/lib/jobs/format";
 const TECH_TAG_STYLES: Record<string, string> = {
   REACT: "bg-cyan-50 text-cyan-700 border-cyan-200/80 hover:bg-cyan-100/70",
   TYPESCRIPT:
-    "bg-blue-50 text-blue-700 border-blue-200/80 hover:bg-blue-100/70",
-  "NEXT.JS": "bg-slate-900 text-white border-slate-800 hover:bg-slate-800",
-  NEXTJS: "bg-slate-900 text-white border-slate-800 hover:bg-slate-800",
+    "bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 border-blue-200/80 dark:border-blue-800 hover:bg-blue-100/70 dark:hover:bg-blue-900/30",
+  "NEXT.JS":
+    "bg-slate-900 text-white border-slate-800 dark:border-slate-200 hover:bg-slate-800",
+  NEXTJS:
+    "bg-slate-900 text-white border-slate-800 dark:border-slate-200 hover:bg-slate-800",
   JAVASCRIPT:
-    "bg-amber-50 text-amber-800 border-amber-200/80 hover:bg-amber-100/70",
+    "bg-amber-50 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300 border-amber-200/80 dark:border-amber-800 hover:bg-amber-100/70 dark:hover:bg-amber-900/30",
   PYTHON:
-    "bg-emerald-50 text-emerald-800 border-emerald-200/80 hover:bg-emerald-100/70",
+    "bg-emerald-50 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-300 border-emerald-200/80 dark:border-emerald-800 hover:bg-emerald-100/70 dark:hover:bg-emerald-900/30",
   JAVA: "bg-orange-50 text-orange-800 border-orange-200/80 hover:bg-orange-100/70",
   "NODE.JS":
-    "bg-green-50 text-green-800 border-green-200/80 hover:bg-green-100/70",
+    "bg-green-50 dark:bg-green-900/30 text-green-800 dark:text-green-300 border-green-200/80 dark:border-green-800 hover:bg-green-100/70 dark:hover:bg-green-900/30",
   NODEJS:
-    "bg-green-50 text-green-800 border-green-200/80 hover:bg-green-100/70",
+    "bg-green-50 dark:bg-green-900/30 text-green-800 dark:text-green-300 border-green-200/80 dark:border-green-800 hover:bg-green-100/70 dark:hover:bg-green-900/30",
   "C++":
     "bg-indigo-50 text-indigo-700 border-indigo-200/80 hover:bg-indigo-100/70",
-  AWS: "bg-amber-500/10 text-amber-700 border-amber-300/80 hover:bg-amber-500/20",
+  AWS: "bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-300/80 dark:border-amber-700 hover:bg-amber-500/20",
   SQL: "bg-violet-50 text-violet-700 border-violet-200/80 hover:bg-violet-100/70",
   LINUX: "bg-zinc-100 text-zinc-800 border-zinc-300 hover:bg-zinc-200",
   GOLANG: "bg-sky-50 text-sky-700 border-sky-200/80 hover:bg-sky-100/70",
   GO: "bg-sky-50 text-sky-700 border-sky-200/80 hover:bg-sky-100/70",
-  DOCKER: "bg-blue-50 text-blue-700 border-blue-200/80 hover:bg-blue-100/70",
+  DOCKER:
+    "bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 border-blue-200/80 dark:border-blue-800 hover:bg-blue-100/70 dark:hover:bg-blue-900/30",
   KUBERNETES:
     "bg-indigo-50 text-indigo-700 border-indigo-200/80 hover:bg-indigo-100/70",
 };
@@ -37,7 +40,7 @@ function getTagStyle(tag: string) {
   const normalized = tag.toUpperCase().trim();
   return (
     TECH_TAG_STYLES[normalized] ||
-    "bg-slate-50 text-slate-700 border-slate-200/90 hover:bg-slate-100/80 hover:text-slate-900"
+    "bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border-slate-200/90 dark:border-slate-700 hover:bg-slate-100/80 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-100"
   );
 }
 
@@ -54,10 +57,10 @@ export function JobListRow({ job }: { job: JobCardType }) {
   const banner = job.images?.[0] || company.logoUrl;
 
   return (
-    <article className="flex flex-col gap-4 border-b border-slate-100 py-6 first:pt-0 last:border-0 last:pb-0 sm:flex-row">
+    <article className="flex flex-col gap-4 border-b border-slate-100 dark:border-slate-800 py-6 first:pt-0 last:border-0 last:pb-0 sm:flex-row">
       <Link
         href={`/jobs/${job.slug}`}
-        className="group/img relative flex h-40 w-full shrink-0 items-center justify-center overflow-hidden rounded-xl border border-slate-200 bg-slate-50 sm:h-32 sm:w-48"
+        className="group/img relative flex h-40 w-full shrink-0 items-center justify-center overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 sm:h-32 sm:w-48"
       >
         {banner ? (
           <Image
@@ -72,7 +75,7 @@ export function JobListRow({ job }: { job: JobCardType }) {
             sizes="(max-width: 640px) 100vw, 192px"
           />
         ) : (
-          <Building2 size={28} className="text-ink-300" />
+          <Building2 size={28} className="text-ink-300 dark:text-ink-600" />
         )}
         {job.isFeatured && (
           <div className="absolute left-2 top-2 z-10">
@@ -100,20 +103,23 @@ export function JobListRow({ job }: { job: JobCardType }) {
         </div>
 
         <Link href={`/jobs/${job.slug}`} className="group">
-          <h2 className="text-lg font-bold leading-snug text-ink-950 group-hover:text-brand-600 sm:text-xl">
+          <h2 className="text-lg font-bold leading-snug text-ink-950 dark:text-ink-50 group-hover:text-brand-600 dark:group-hover:text-brand-400 sm:text-xl">
             {job.title}
           </h2>
         </Link>
 
-        <p className="mt-1 flex items-center gap-1.5 text-sm font-medium text-ink-600">
+        <p className="mt-1 flex items-center gap-1.5 text-sm font-medium text-ink-600 dark:text-ink-400">
           {company.name}
           {company.isVerified && (
-            <BadgeCheck size={14} className="text-brand-500" />
+            <BadgeCheck
+              size={14}
+              className="text-brand-500 dark:text-brand-400"
+            />
           )}
         </p>
 
         {excerpt && (
-          <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-ink-500">
+          <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-ink-500 dark:text-ink-400">
             {excerpt}
           </p>
         )}
@@ -123,13 +129,13 @@ export function JobListRow({ job }: { job: JobCardType }) {
             {job.postedBy && (
               <>
                 <Avatar src={undefined} name={job.postedBy.name} size={22} />
-                <span className="text-xs font-medium text-ink-500">
+                <span className="text-xs font-medium text-ink-500 dark:text-ink-400">
                   {job.postedBy.name}
                 </span>
               </>
             )}
             {job.publishedAt && (
-              <span className="text-xs text-ink-400">
+              <span className="text-xs text-ink-400 dark:text-ink-500">
                 {job.postedBy ? "· " : ""}
                 {formatDate(job.publishedAt)}
               </span>

@@ -40,14 +40,14 @@ const CHANNELS = [
 
 export function FollowUsWidget() {
   return (
-    <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm">
+    <div className="rounded-2xl border border-slate-200/80 dark:border-slate-700 bg-white dark:bg-ink-900 p-5 shadow-sm">
       <div className="flex items-center gap-3">
         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-900 text-white shadow-sm">
           <Rss size={20} />
         </div>
         <div>
-          <h3 className="text-sm font-bold text-slate-900 leading-tight">Follow Us On Social Media</h3>
-          <p className="mt-0.5 text-xs text-slate-500">Get Latest Update On Social Media</p>
+          <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100 leading-tight">Follow Us On Social Media</h3>
+          <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">Get Latest Update On Social Media</p>
         </div>
       </div>
 

@@ -13,8 +13,8 @@ export default function LoginPage() {
   return (
     <div className="container-page flex min-h-[70vh] flex-col items-center justify-center py-16">
       <div className="mb-8 text-center">
-        <h1 className="text-2xl font-bold text-ink-900">Welcome back</h1>
-        <p className="mt-1.5 text-sm text-ink-500">Sign in to your account</p>
+        <h1 className="text-2xl font-bold text-ink-900 dark:text-ink-100">Welcome back</h1>
+        <p className="mt-1.5 text-sm text-ink-500 dark:text-ink-400">Sign in to your account</p>
       </div>
       <Suspense>
         <AuthForm mode="login" />

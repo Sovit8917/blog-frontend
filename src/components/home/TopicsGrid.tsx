@@ -15,8 +15,8 @@ export function TopicsGrid({ categories }: { categories: Category[] }) {
     <section>
       <div className="mb-5 flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-bold text-ink-900">Follow your interests</h2>
-          <p className="mt-1 text-sm text-ink-500">Pick a topic to see more of what you like, every time you're back.</p>
+          <h2 className="text-xl font-bold text-ink-900 dark:text-ink-100">Follow your interests</h2>
+          <p className="mt-1 text-sm text-ink-500 dark:text-ink-400">Pick a topic to see more of what you like, every time you're back.</p>
         </div>
       </div>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
@@ -24,10 +24,10 @@ export function TopicsGrid({ categories }: { categories: Category[] }) {
           <Link
             key={cat.id}
             href={`/category/${cat.slug}`}
-            className="group flex items-center justify-between gap-2 rounded-xl border border-ink-100 bg-white px-4 py-3.5 text-sm font-semibold text-ink-700 transition hover:border-brand-200 hover:bg-brand-50/40 hover:text-brand-700"
+            className="group flex items-center justify-between gap-2 rounded-xl border border-ink-100 dark:border-ink-800 bg-white dark:bg-ink-900 px-4 py-3.5 text-sm font-semibold text-ink-700 dark:text-ink-300 transition hover:border-brand-200 dark:hover:border-brand-700 hover:bg-brand-50/40 dark:hover:bg-brand-900/40 hover:text-brand-700 dark:hover:text-brand-400"
           >
             <span className="truncate">{cat.name}</span>
-            <ArrowRight size={14} className="shrink-0 text-ink-300 transition group-hover:translate-x-0.5 group-hover:text-brand-500" />
+            <ArrowRight size={14} className="shrink-0 text-ink-300 dark:text-ink-600 transition group-hover:translate-x-0.5 group-hover:text-brand-500 dark:group-hover:text-brand-400" />
           </Link>
         ))}
       </div>

@@ -26,7 +26,7 @@ export function MarkdownContent({
   className?: string;
 }) {
   return (
-    <div className={`prose prose-ink max-w-none ${className}`}>
+    <div className={`prose prose-ink dark:prose-invert max-w-none ${className}`}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         rehypePlugins={
@@ -82,27 +82,27 @@ export function MarkdownContent({
           // of blowing out the layout, and give them the bordered,
           // clearly-structured look requested for job/detail tables.
           table: ({ children }) => (
-            <div className="not-prose my-6 overflow-x-auto rounded-xl border border-ink-100">
+            <div className="not-prose my-6 overflow-x-auto rounded-xl border border-ink-100 dark:border-ink-800">
               <table className="w-full border-collapse text-left text-sm">
                 {children}
               </table>
             </div>
           ),
           thead: ({ children }) => (
-            <thead className="bg-ink-50">{children}</thead>
+            <thead className="bg-ink-50 dark:bg-ink-900">{children}</thead>
           ),
           tr: ({ children }) => (
-            <tr className="border-b border-ink-100 last:border-0">
+            <tr className="border-b border-ink-100 dark:border-ink-800 last:border-0">
               {children}
             </tr>
           ),
           th: ({ children }) => (
-            <th className="whitespace-nowrap px-4 py-3 font-semibold text-ink-900">
+            <th className="whitespace-nowrap px-4 py-3 font-semibold text-ink-900 dark:text-ink-100">
               {children}
             </th>
           ),
           td: ({ children }) => (
-            <td className="px-4 py-3 align-top text-ink-700">{children}</td>
+            <td className="px-4 py-3 align-top text-ink-700 dark:text-ink-300">{children}</td>
           ),
           ul: ({ children }) => <ul className="my-2 space-y-1">{children}</ul>,
           ol: ({ children }) => <ol className="my-2 space-y-1">{children}</ol>,
@@ -112,7 +112,7 @@ export function MarkdownContent({
             </li>
           ),
           blockquote: ({ children }) => (
-            <blockquote className="not-prose my-6 rounded-r-lg border-l-4 border-brand-300 bg-brand-50/60 px-5 py-3 text-ink-700">
+            <blockquote className="not-prose my-6 rounded-r-lg border-l-4 border-brand-300 dark:border-brand-700 bg-brand-50/60 dark:bg-brand-900/40 px-5 py-3 text-ink-700 dark:text-ink-300">
               {children}
             </blockquote>
           ),
@@ -120,7 +120,7 @@ export function MarkdownContent({
             codeClassName ? (
               <code className={codeClassName}>{children}</code>
             ) : (
-              <code className="rounded bg-ink-100 px-1.5 py-0.5 text-[0.9em] text-brand-700">
+              <code className="rounded bg-ink-100 dark:bg-ink-800 px-1.5 py-0.5 text-[0.9em] text-brand-700 dark:text-brand-400">
                 {children}
               </code>
             ),

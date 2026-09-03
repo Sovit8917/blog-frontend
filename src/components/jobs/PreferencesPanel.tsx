@@ -14,7 +14,7 @@ import {
 import type { CandidatePreferences, EmploymentType, ExperienceLevel, RemoteType } from '@/types';
 
 const fieldClass =
-  'w-full rounded-lg border border-ink-200 px-3 py-2 text-sm text-ink-800 outline-none focus:border-brand-400';
+  'w-full rounded-lg border border-ink-200 dark:border-ink-700 px-3 py-2 text-sm text-ink-800 dark:text-ink-200 outline-none focus:border-brand-400 dark:focus:border-brand-600';
 
 export function PreferencesPanel({ initial }: { initial: CandidatePreferences | null }) {
   const [location, setLocation] = useState(initial?.preferredLocation ?? '');
@@ -73,9 +73,9 @@ export function PreferencesPanel({ initial }: { initial: CandidatePreferences | 
   }
 
   return (
-    <div className="flex flex-col gap-5 rounded-2xl border border-ink-100 p-6">
+    <div className="flex flex-col gap-5 rounded-2xl border border-ink-100 dark:border-ink-800 p-6">
       <div>
-        <label className="mb-1.5 block text-sm font-medium text-ink-700">Preferred location</label>
+        <label className="mb-1.5 block text-sm font-medium text-ink-700 dark:text-ink-300">Preferred location</label>
         <input
           value={location}
           onChange={(e) => setLocation(e.target.value)}
@@ -86,7 +86,7 @@ export function PreferencesPanel({ initial }: { initial: CandidatePreferences | 
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <div>
-          <label className="mb-1.5 block text-sm font-medium text-ink-700">Work style</label>
+          <label className="mb-1.5 block text-sm font-medium text-ink-700 dark:text-ink-300">Work style</label>
           <select value={remoteType} onChange={(e) => setRemoteType(e.target.value as RemoteType | '')} className={fieldClass}>
             <option value="">Any</option>
             {Object.entries(REMOTE_TYPE_LABEL).map(([value, label]) => (
@@ -97,7 +97,7 @@ export function PreferencesPanel({ initial }: { initial: CandidatePreferences | 
           </select>
         </div>
         <div>
-          <label className="mb-1.5 block text-sm font-medium text-ink-700">Employment type</label>
+          <label className="mb-1.5 block text-sm font-medium text-ink-700 dark:text-ink-300">Employment type</label>
           <select
             value={employmentType}
             onChange={(e) => setEmploymentType(e.target.value as EmploymentType | '')}
@@ -112,7 +112,7 @@ export function PreferencesPanel({ initial }: { initial: CandidatePreferences | 
           </select>
         </div>
         <div>
-          <label className="mb-1.5 block text-sm font-medium text-ink-700">Experience level</label>
+          <label className="mb-1.5 block text-sm font-medium text-ink-700 dark:text-ink-300">Experience level</label>
           <select
             value={experienceLevel}
             onChange={(e) => setExperienceLevel(e.target.value as ExperienceLevel | '')}
@@ -130,7 +130,7 @@ export function PreferencesPanel({ initial }: { initial: CandidatePreferences | 
 
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="mb-1.5 block text-sm font-medium text-ink-700">Min expected salary</label>
+          <label className="mb-1.5 block text-sm font-medium text-ink-700 dark:text-ink-300">Min expected salary</label>
           <input
             type="number"
             min={0}
@@ -140,7 +140,7 @@ export function PreferencesPanel({ initial }: { initial: CandidatePreferences | 
           />
         </div>
         <div>
-          <label className="mb-1.5 block text-sm font-medium text-ink-700">Max expected salary</label>
+          <label className="mb-1.5 block text-sm font-medium text-ink-700 dark:text-ink-300">Max expected salary</label>
           <input
             type="number"
             min={0}
@@ -152,17 +152,17 @@ export function PreferencesPanel({ initial }: { initial: CandidatePreferences | 
       </div>
 
       <div>
-        <label className="mb-1.5 block text-sm font-medium text-ink-700">
+        <label className="mb-1.5 block text-sm font-medium text-ink-700 dark:text-ink-300">
           Skills
-          <span className="ml-1.5 font-normal text-ink-400">
+          <span className="ml-1.5 font-normal text-ink-400 dark:text-ink-500">
             — used to match you with roles (press Enter to add)
           </span>
         </label>
-        <div className="flex flex-wrap gap-1.5 rounded-lg border border-ink-200 p-2">
+        <div className="flex flex-wrap gap-1.5 rounded-lg border border-ink-200 dark:border-ink-700 p-2">
           {skills.map((s) => (
             <Badge key={s} variant="outline" className="gap-1.5">
               {s}
-              <button onClick={() => removeSkill(s)} className="text-ink-400 hover:text-red-600">
+              <button onClick={() => removeSkill(s)} className="text-ink-400 dark:text-ink-500 hover:text-red-600 dark:hover:text-red-400">
                 <X size={12} />
               </button>
             </Badge>
@@ -182,8 +182,8 @@ export function PreferencesPanel({ initial }: { initial: CandidatePreferences | 
         </div>
       </div>
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
-      {saved && !error && <p className="text-sm text-emerald-600">Preferences saved.</p>}
+      {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
+      {saved && !error && <p className="text-sm text-emerald-600 dark:text-emerald-400">Preferences saved.</p>}
 
       <Button onClick={onSave} disabled={saving} className="self-start">
         {saving ? <Loader2 size={15} className="animate-spin" /> : <Save size={15} />}

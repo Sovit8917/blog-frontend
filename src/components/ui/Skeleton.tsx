@@ -19,7 +19,7 @@ export function PostCardSkeleton() {
 /** Mirrors JobCard.tsx's layout so the mobile job-list skeleton doesn't jump around once real content lands. */
 export function JobCardSkeleton() {
   return (
-    <div className="flex flex-col gap-3 rounded-xl border border-ink-100 p-5">
+    <div className="flex flex-col gap-3 rounded-xl border border-ink-100 dark:border-ink-800 p-5">
       <Skeleton className="h-5 w-3/4" />
       <div className="flex items-center gap-2.5">
         <Skeleton className="h-8 w-8 rounded-md" />
@@ -43,7 +43,7 @@ export function JobCardSkeleton() {
 /** Mirrors JobRow.tsx's columns for the tablet/desktop table skeleton. */
 export function JobRowSkeleton() {
   return (
-    <tr className="border-b border-ink-100 last:border-0">
+    <tr className="border-b border-ink-100 dark:border-ink-800 last:border-0">
       <td className="px-4 py-4">
         <div className="flex items-center gap-3">
           <Skeleton className="h-10 w-10 shrink-0 rounded-lg" />

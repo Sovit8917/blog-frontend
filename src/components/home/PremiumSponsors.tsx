@@ -23,7 +23,7 @@ export function PremiumSponsors({ sponsors }: { sponsors: Sponsor[] }) {
     <section aria-label="Premium sponsors">
       <div className="mb-4 flex items-center gap-2">
         <Crown size={16} className="text-amber-500" />
-        <h2 className="text-sm font-bold uppercase tracking-wider text-ink-500">
+        <h2 className="text-sm font-bold uppercase tracking-wider text-ink-500 dark:text-ink-400">
           Premium sponsors
         </h2>
       </div>
@@ -34,29 +34,29 @@ export function PremiumSponsors({ sponsors }: { sponsors: Sponsor[] }) {
             href={s.website ?? '#'}
             target={s.website ? '_blank' : undefined}
             rel={s.website ? 'noopener noreferrer sponsored' : undefined}
-            className="group flex items-start gap-4 rounded-2xl border border-amber-200/60 bg-gradient-to-br from-amber-50/70 via-white to-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+            className="group flex items-start gap-4 rounded-2xl border border-amber-200/60 dark:border-amber-800 bg-gradient-to-br from-amber-50/70 via-white to-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
           >
-            <div className="relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white ring-1 ring-ink-100">
+            <div className="relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white dark:bg-ink-900 ring-1 ring-ink-100 dark:ring-ink-800">
               {s.logoUrl ? (
                 <Image src={s.logoUrl} alt={s.name} fill className="object-contain p-1.5" />
               ) : (
-                <span className="text-base font-bold text-ink-700">{s.name.charAt(0)}</span>
+                <span className="text-base font-bold text-ink-700 dark:text-ink-300">{s.name.charAt(0)}</span>
               )}
             </div>
             <div className="min-w-0 flex-1">
-              <span className="inline-block rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-amber-700">
+              <span className="inline-block rounded-full bg-amber-100 dark:bg-amber-900/30 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
                 {TIER_LABEL[s.tier] ?? 'Sponsor'}
               </span>
-              <h3 className="mt-1.5 truncate text-sm font-bold text-ink-900">{s.name}</h3>
+              <h3 className="mt-1.5 truncate text-sm font-bold text-ink-900 dark:text-ink-100">{s.name}</h3>
               {s.description && (
-                <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-ink-500">
+                <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-ink-500 dark:text-ink-400">
                   {s.description}
                 </p>
               )}
             </div>
             <ArrowUpRight
               size={16}
-              className="shrink-0 text-ink-300 transition group-hover:text-amber-600"
+              className="shrink-0 text-ink-300 dark:text-ink-600 transition group-hover:text-amber-600 dark:group-hover:text-amber-400"
             />
           </Link>
         ))}

@@ -45,9 +45,9 @@ export function TableOfContents() {
   return (
     <nav
       aria-label="Table of contents"
-      className="max-h-[calc(100vh-120px)] overflow-y-auto rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm"
+      className="max-h-[calc(100vh-120px)] overflow-y-auto rounded-2xl border border-slate-200/80 dark:border-slate-700 bg-white dark:bg-ink-900 p-5 shadow-sm"
     >
-      <p className="mb-3 text-[11px] font-bold uppercase tracking-wider text-brand-600">
+      <p className="mb-3 text-[11px] font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">
         On this page
       </p>
       <ul className="space-y-1 text-xs">
@@ -60,8 +60,8 @@ export function TableOfContents() {
               href={`#${h.id}`}
               className={`block rounded-lg px-2.5 py-1.5 transition leading-snug ${
                 activeId === h.id
-                  ? "bg-brand-50 font-semibold text-brand-700"
-                  : "text-ink-500 hover:bg-slate-100 hover:text-ink-900"
+                  ? "bg-brand-50 dark:bg-brand-900/40 font-semibold text-brand-700 dark:text-brand-400"
+                  : "text-ink-500 dark:text-ink-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-ink-900 dark:hover:text-ink-100"
               }`}
             >
               {h.text}

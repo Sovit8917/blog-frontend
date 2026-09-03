@@ -31,7 +31,7 @@ export default async function CollectionDetailPage({ params }: { params: { id: s
     <div className="container-page py-10">
       <Link
         href="/me/collections"
-        className="mb-6 inline-flex items-center gap-1.5 text-sm font-medium text-ink-500 hover:text-ink-900"
+        className="mb-6 inline-flex items-center gap-1.5 text-sm font-medium text-ink-500 dark:text-ink-400 hover:text-ink-900 dark:hover:text-ink-100"
       >
         <ArrowLeft size={15} /> All collections
       </Link>
@@ -39,19 +39,19 @@ export default async function CollectionDetailPage({ params }: { params: { id: s
       <header className="mb-8 flex flex-wrap items-start justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-3xl font-bold text-ink-900">{collection.name}</h1>
-            {collection.isPrivate && <Lock size={16} className="text-ink-400" />}
+            <h1 className="text-3xl font-bold text-ink-900 dark:text-ink-100">{collection.name}</h1>
+            {collection.isPrivate && <Lock size={16} className="text-ink-400 dark:text-ink-500" />}
           </div>
-          {collection.description && <p className="mt-2 max-w-xl text-ink-500">{collection.description}</p>}
-          <p className="mt-2 text-sm text-ink-400">{collection.items.length} saved</p>
+          {collection.description && <p className="mt-2 max-w-xl text-ink-500 dark:text-ink-400">{collection.description}</p>}
+          <p className="mt-2 text-sm text-ink-400 dark:text-ink-500">{collection.items.length} saved</p>
         </div>
         <DeleteCollectionButton collectionId={collection.id} redirectTo="/me/collections" />
       </header>
 
       {collection.items.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-ink-200 py-16 text-center text-ink-400">
+        <div className="rounded-xl border border-dashed border-ink-200 dark:border-ink-700 py-16 text-center text-ink-400 dark:text-ink-500">
           Nothing saved here yet.{' '}
-          <Link href="/blog" className="link-underline text-ink-700">
+          <Link href="/blog" className="link-underline text-ink-700 dark:text-ink-300">
             Browse the blog
           </Link>{' '}
           and add articles to this collection from the post page.
@@ -61,9 +61,9 @@ export default async function CollectionDetailPage({ params }: { params: { id: s
           {collection.items.map((item) => (
             <li
               key={item.id}
-              className="flex items-center gap-4 rounded-xl border border-ink-100 p-4"
+              className="flex items-center gap-4 rounded-xl border border-ink-100 dark:border-ink-800 p-4"
             >
-              <div className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-ink-100">
+              <div className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-ink-100 dark:bg-ink-800">
                 {item.post.coverImageUrl ? (
                   <Image
                     src={item.post.coverImageUrl}
@@ -72,20 +72,20 @@ export default async function CollectionDetailPage({ params }: { params: { id: s
                     className="object-cover"
                   />
                 ) : (
-                  <span className="text-sm font-bold text-ink-400">{item.post.title[0]}</span>
+                  <span className="text-sm font-bold text-ink-400 dark:text-ink-500">{item.post.title[0]}</span>
                 )}
               </div>
               <div className="flex-1">
                 <Link
                   href={`/blog/${item.post.slug}`}
-                  className="font-semibold text-ink-900 hover:text-brand-600"
+                  className="font-semibold text-ink-900 dark:text-ink-100 hover:text-brand-600 dark:hover:text-brand-400"
                 >
                   {item.post.title}
                 </Link>
-                <p className="text-sm text-ink-500">
+                <p className="text-sm text-ink-500 dark:text-ink-400">
                   {item.post.author?.name} · {readingTimeLabel(item.post.readingTimeMins)}
                 </p>
-                <p className="mt-0.5 text-xs text-ink-400">Added {timeAgo(item.addedAt)}</p>
+                <p className="mt-0.5 text-xs text-ink-400 dark:text-ink-500">Added {timeAgo(item.addedAt)}</p>
               </div>
               <RemoveFromCollectionButton collectionId={collection.id} postId={item.post.id} />
             </li>

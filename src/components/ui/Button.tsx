@@ -10,8 +10,8 @@ const base =
 const variants: Record<Variant, string> = {
   primary: "bg-slate-950 text-white hover:bg-slate-900 shadow-sm",
   secondary: "bg-slate-900 text-white hover:bg-slate-800",
-  outline: "ring-1 ring-inset ring-slate-200 text-slate-800 hover:bg-slate-50",
-  ghost: "text-slate-600 hover:bg-slate-100",
+  outline: "ring-1 ring-inset ring-slate-200 dark:ring-slate-700 text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800",
+  ghost: "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800",
 };
 const sizes: Record<Size, string> = {
   sm: "text-sm px-3 py-1.5",

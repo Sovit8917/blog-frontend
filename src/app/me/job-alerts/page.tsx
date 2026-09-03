@@ -16,9 +16,9 @@ export default async function JobAlertsPage() {
   return (
     <div className="container-page py-10">
       <header className="mb-8">
-        <h1 className="text-3xl font-bold text-ink-900">Job alerts</h1>
-        <p className="mt-2 text-ink-500">
-          Saved searches from the <a className="link-underline text-ink-700" href="/jobs">jobs page</a> — we
+        <h1 className="text-3xl font-bold text-ink-900 dark:text-ink-100">Job alerts</h1>
+        <p className="mt-2 text-ink-500 dark:text-ink-400">
+          Saved searches from the <a className="link-underline text-ink-700 dark:text-ink-300" href="/jobs">jobs page</a> — we
           email you a digest whenever a new listing matches.
         </p>
       </header>

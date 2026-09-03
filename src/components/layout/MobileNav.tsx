@@ -25,6 +25,7 @@ import {
 import { useAuth } from "@/lib/auth/AuthProvider";
 import devnexaLogoTransparent from "@/assests/devnexa-logo-transpernet.png";
 import type { Category } from "@/types";
+import { ThemeToggle } from "./ThemeToggle";
 
 type NavItem = { href: string; label: string };
 
@@ -87,10 +88,10 @@ export function MobileNav({
         role="dialog"
         aria-modal="true"
         aria-label="Site menu"
-        className="relative z-[10000] flex h-full w-[85vw] max-w-[20rem] flex-col bg-white shadow-2xl animate-slide-up"
+        className="relative z-[10000] flex h-full w-[85vw] max-w-[20rem] flex-col bg-white dark:bg-ink-900 shadow-2xl animate-slide-up"
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
+        <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 px-5 py-4">
           <Link
             href="/"
             onClick={() => setOpen(false)}
@@ -104,13 +105,16 @@ export function MobileNav({
               priority
             />
           </Link>
-          <button
-            aria-label="Close menu"
-            onClick={() => setOpen(false)}
-            className="rounded-full p-2 text-ink-500 hover:bg-slate-100 hover:text-ink-950 active:bg-slate-200 transition"
-          >
-            <X size={20} />
-          </button>
+          <div className="flex items-center gap-1">
+            <ThemeToggle />
+            <button
+              aria-label="Close menu"
+              onClick={() => setOpen(false)}
+              className="rounded-full p-2 text-ink-500 dark:text-ink-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-ink-950 dark:hover:text-ink-50 active:bg-slate-200 dark:active:bg-slate-700 transition"
+            >
+              <X size={20} />
+            </button>
+          </div>
         </div>
 
         {/* Scrollable Body */}
@@ -119,16 +123,16 @@ export function MobileNav({
           <Link
             href="/search"
             onClick={() => setOpen(false)}
-            className="flex items-center gap-3 rounded-xl border border-slate-200/80 bg-slate-50/80 px-4 py-3 text-sm font-medium text-ink-600 shadow-sm hover:border-slate-300 active:bg-slate-100 transition"
+            className="flex items-center gap-3 rounded-xl border border-slate-200/80 dark:border-slate-700 bg-slate-50/80 dark:bg-slate-900 px-4 py-3 text-sm font-medium text-ink-600 dark:text-ink-400 shadow-sm hover:border-slate-300 dark:hover:border-slate-600 active:bg-slate-100 dark:active:bg-slate-800 transition"
           >
-            <Search size={18} className="text-ink-400" />
+            <Search size={18} className="text-ink-400 dark:text-ink-500" />
             <span>Search articles & guides...</span>
           </Link>
 
           {/* Categories First */}
           {categories.length > 0 && (
             <div>
-              <p className="mb-2 px-1 text-xs font-bold uppercase tracking-wider text-ink-400">
+              <p className="mb-2 px-1 text-xs font-bold uppercase tracking-wider text-ink-400 dark:text-ink-500">
                 Categories
               </p>
               <ul className="space-y-1">
@@ -138,12 +142,12 @@ export function MobileNav({
                       href={`/category/${cat.slug}`}
                       className={`flex items-center justify-between rounded-xl px-3 py-2.5 text-sm font-medium transition ${
                         isActive(`/category/${cat.slug}`)
-                          ? "bg-brand-50 text-brand-700 font-semibold"
-                          : "text-ink-800 hover:bg-slate-50 hover:text-ink-950 active:bg-slate-100"
+                          ? "bg-brand-50 dark:bg-brand-900/40 text-brand-700 dark:text-brand-400 font-semibold"
+                          : "text-ink-800 dark:text-ink-200 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-ink-950 dark:hover:text-ink-50 active:bg-slate-100 dark:active:bg-slate-800"
                       }`}
                     >
                       <span>{cat.name}</span>
-                      <ChevronRight size={16} className="text-ink-300" />
+                      <ChevronRight size={16} className="text-ink-300 dark:text-ink-600" />
                     </Link>
                   </li>
                 ))}
@@ -153,7 +157,7 @@ export function MobileNav({
 
           {/* Quick Access / Tools */}
           <div>
-            <p className="mb-2 px-1 text-xs font-bold uppercase tracking-wider text-ink-400">
+            <p className="mb-2 px-1 text-xs font-bold uppercase tracking-wider text-ink-400 dark:text-ink-500">
               Quick Access &amp; Tools
             </p>
             <div className="grid grid-cols-2 gap-2">
@@ -165,14 +169,14 @@ export function MobileNav({
                     href={item.href}
                     className={`flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-xs font-semibold transition ${
                       isActive(item.href)
-                        ? "bg-brand-50 text-brand-700 border border-brand-200/80"
-                        : "bg-slate-50 text-ink-700 border border-slate-200/60 hover:bg-slate-100"
+                        ? "bg-brand-50 dark:bg-brand-900/40 text-brand-700 dark:text-brand-400 border border-brand-200/80 dark:border-brand-700"
+                        : "bg-slate-50 dark:bg-slate-900 text-ink-700 dark:text-ink-300 border border-slate-200/60 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800"
                     }`}
                   >
                     <Icon
                       size={16}
                       className={
-                        isActive(item.href) ? "text-brand-600" : "text-ink-500"
+                        isActive(item.href) ? "text-brand-600 dark:text-brand-400" : "text-ink-500 dark:text-ink-400"
                       }
                     />
                     {item.label}
@@ -184,7 +188,7 @@ export function MobileNav({
 
           {/* Account & Saved */}
           <div>
-            <p className="mb-2 px-1 text-xs font-bold uppercase tracking-wider text-ink-400">
+            <p className="mb-2 px-1 text-xs font-bold uppercase tracking-wider text-ink-400 dark:text-ink-500">
               Account & Saved
             </p>
             <ul className="space-y-1">
@@ -254,18 +258,18 @@ export function MobileNav({
         </nav>
 
         {/* Footer Action */}
-        <div className="border-t border-slate-100 p-5 bg-slate-50/50 space-y-3">
+        <div className="border-t border-slate-100 dark:border-slate-800 p-5 bg-slate-50/50 dark:bg-slate-900 space-y-3">
           {user ? (
             <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-3 min-w-0">
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-100 text-brand-700 font-bold text-sm">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-100 dark:bg-brand-900/40 text-brand-700 dark:text-brand-400 font-bold text-sm">
                   {user.name?.[0] || "U"}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-semibold text-ink-900">
+                  <p className="truncate text-sm font-semibold text-ink-900 dark:text-ink-100">
                     {user.name}
                   </p>
-                  <p className="truncate text-xs text-ink-500">
+                  <p className="truncate text-xs text-ink-500 dark:text-ink-400">
                     @{user.username}
                   </p>
                 </div>
@@ -275,7 +279,7 @@ export function MobileNav({
                   setOpen(false);
                   logout();
                 }}
-                className="shrink-0 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-rose-600 hover:bg-rose-50 hover:border-rose-200 transition"
+                className="shrink-0 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-ink-900 px-3 py-1.5 text-xs font-semibold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-900/30 hover:border-rose-200 dark:hover:border-rose-800 transition"
               >
                 Sign out
               </button>
@@ -293,7 +297,7 @@ export function MobileNav({
               <Link
                 href="/register"
                 onClick={() => setOpen(false)}
-                className="flex items-center justify-center rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-center text-xs font-semibold text-ink-800 shadow-sm hover:bg-slate-50 transition"
+                className="flex items-center justify-center rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-ink-900 px-3 py-2.5 text-center text-xs font-semibold text-ink-800 dark:text-ink-200 shadow-sm hover:bg-slate-50 dark:hover:bg-slate-800 transition"
               >
                 Register
               </Link>
@@ -310,7 +314,7 @@ export function MobileNav({
         aria-label="Open menu"
         aria-expanded={open}
         onClick={() => setOpen(true)}
-        className="-ml-1.5 rounded-md p-2 text-ink-600 transition hover:bg-ink-50 active:bg-ink-100"
+        className="-ml-1.5 rounded-md p-2 text-ink-600 dark:text-ink-400 transition hover:bg-ink-50 dark:hover:bg-ink-800 active:bg-ink-100 dark:active:bg-ink-800"
       >
         <Menu size={22} />
       </button>
@@ -336,8 +340,8 @@ function MobileLink({
       href={href}
       className={`flex items-center justify-between gap-2 rounded-lg px-3 py-3 text-[15px] font-medium transition ${
         active
-          ? "bg-brand-50 text-brand-700"
-          : "text-ink-700 hover:bg-ink-50 active:bg-ink-100"
+          ? "bg-brand-50 dark:bg-brand-900/40 text-brand-700 dark:text-brand-400"
+          : "text-ink-700 dark:text-ink-300 hover:bg-ink-50 dark:hover:bg-ink-800 active:bg-ink-100 dark:active:bg-ink-800"
       }`}
     >
       <span className="flex items-center gap-2.5">
@@ -346,7 +350,7 @@ function MobileLink({
       </span>
       <ChevronRight
         size={16}
-        className={active ? "text-brand-400" : "text-ink-300"}
+        className={active ? "text-brand-400" : "text-ink-300 dark:text-ink-600"}
       />
     </Link>
   );

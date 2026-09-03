@@ -24,7 +24,7 @@ export function LoadMoreLink({
     <div className="mt-8 flex justify-center">
       <Link
         href={`${basePath}?${search.toString()}`}
-        className="rounded-lg px-5 py-2.5 text-sm font-medium text-ink-700 ring-1 ring-ink-200 transition hover:bg-ink-50"
+        className="rounded-lg px-5 py-2.5 text-sm font-medium text-ink-700 dark:text-ink-300 ring-1 ring-ink-200 dark:ring-ink-700 transition hover:bg-ink-50 dark:hover:bg-ink-800"
       >
         Load more
       </Link>

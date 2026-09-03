@@ -141,15 +141,15 @@ const TRUST = [
 export default function AdvertisePage() {
   return (
     <>
-      <div className="border-b border-ink-100 bg-gradient-to-b from-brand-50/60 to-white">
+      <div className="border-b border-ink-100 dark:border-ink-800 bg-gradient-to-b from-brand-50/60 dark:from-brand-900/40 to-white">
         <div className="container-page py-14 sm:py-20">
-          <p className="text-sm font-semibold uppercase tracking-wider text-brand-600">
+          <p className="text-sm font-semibold uppercase tracking-wider text-brand-600 dark:text-brand-400">
             Advertise &amp; Partner
           </p>
-          <h1 className="mt-2 max-w-2xl text-3xl font-extrabold leading-tight text-ink-900 sm:text-4xl lg:text-[2.75rem]">
+          <h1 className="mt-2 max-w-2xl text-3xl font-extrabold leading-tight text-ink-900 dark:text-ink-100 sm:text-4xl lg:text-[2.75rem]">
             Reach developers and hiring teams who actually read.
           </h1>
-          <p className="mt-4 max-w-xl text-ink-500">
+          <p className="mt-4 max-w-xl text-ink-500 dark:text-ink-400">
             From featured job listings to sponsored content and newsletter placements — every
             partnership comes with real analytics, fast pages, and a security-hardened platform
             your brand can trust.
@@ -163,7 +163,7 @@ export default function AdvertisePage() {
             </Link>
             <a
               href="mailto:partnerships@devnexa.com"
-              className="inline-flex items-center gap-2 rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-ink-700 ring-1 ring-inset ring-ink-200 transition hover:bg-ink-50"
+              className="inline-flex items-center gap-2 rounded-lg bg-white dark:bg-ink-900 px-5 py-2.5 text-sm font-semibold text-ink-700 dark:text-ink-300 ring-1 ring-inset ring-ink-200 dark:ring-ink-700 transition hover:bg-ink-50 dark:hover:bg-ink-800"
             >
               Talk to our partnerships team
             </a>
@@ -173,10 +173,10 @@ export default function AdvertisePage() {
 
       <div className="container-page py-14 sm:py-16">
         <div className="mb-10 max-w-2xl">
-          <h2 className="text-xl font-bold text-ink-900 sm:text-2xl">
+          <h2 className="text-xl font-bold text-ink-900 dark:text-ink-100 sm:text-2xl">
             Every way to put your brand in front of our audience
           </h2>
-          <p className="mt-2 text-ink-500">
+          <p className="mt-2 text-ink-500 dark:text-ink-400">
             Pick one channel or combine several — every placement is measured the same way, so
             you always know what's working.
           </p>
@@ -186,17 +186,17 @@ export default function AdvertisePage() {
           {PRIMARY.map(({ icon: Icon, title, desc, points }) => (
             <div
               key={title}
-              className="group flex flex-col rounded-2xl border border-ink-100 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+              className="group flex flex-col rounded-2xl border border-ink-100 dark:border-ink-800 bg-white dark:bg-ink-900 p-6 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
             >
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-50 text-brand-600 transition group-hover:bg-brand-600 group-hover:text-white">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-50 dark:bg-brand-900/40 text-brand-600 dark:text-brand-400 transition group-hover:bg-brand-600 dark:group-hover:bg-brand-500 group-hover:text-white">
                 <Icon size={20} />
               </div>
-              <h3 className="mt-4 text-base font-bold text-ink-900">{title}</h3>
-              <p className="mt-1.5 text-sm leading-relaxed text-ink-500">{desc}</p>
+              <h3 className="mt-4 text-base font-bold text-ink-900 dark:text-ink-100">{title}</h3>
+              <p className="mt-1.5 text-sm leading-relaxed text-ink-500 dark:text-ink-400">{desc}</p>
               <ul className="mt-4 space-y-1.5">
                 {points.map((p) => (
-                  <li key={p} className="flex items-start gap-2 text-xs text-ink-600">
-                    <CheckCircle2 size={14} className="mt-0.5 shrink-0 text-brand-500" />
+                  <li key={p} className="flex items-start gap-2 text-xs text-ink-600 dark:text-ink-400">
+                    <CheckCircle2 size={14} className="mt-0.5 shrink-0 text-brand-500 dark:text-brand-400" />
                     {p}
                   </li>
                 ))}
@@ -206,11 +206,11 @@ export default function AdvertisePage() {
         </div>
       </div>
 
-      <div className="border-y border-ink-100 bg-ink-50/50">
+      <div className="border-y border-ink-100 dark:border-ink-800 bg-ink-50/50 dark:bg-ink-900">
         <div className="container-page py-14 sm:py-16">
           <div className="mb-10 max-w-2xl">
-            <h2 className="text-xl font-bold text-ink-900 sm:text-2xl">Advertiser packages</h2>
-            <p className="mt-2 text-ink-500">
+            <h2 className="text-xl font-bold text-ink-900 dark:text-ink-100 sm:text-2xl">Advertiser packages</h2>
+            <p className="mt-2 text-ink-500 dark:text-ink-400">
               Straightforward monthly tiers, or a custom mix for larger campaigns — either way you
               get the same real-time analytics.
             </p>
@@ -222,32 +222,32 @@ export default function AdvertisePage() {
                 key={name}
                 className={`relative flex flex-col rounded-2xl p-6 shadow-sm transition sm:p-7 ${
                   highlighted
-                    ? "border-2 border-brand-500 bg-white ring-1 ring-brand-500/20 sm:-translate-y-2"
-                    : "border border-ink-100 bg-white hover:-translate-y-0.5 hover:shadow-md"
+                    ? "border-2 border-brand-500 bg-white dark:bg-ink-900 ring-1 ring-brand-500/20 sm:-translate-y-2"
+                    : "border border-ink-100 dark:border-ink-800 bg-white dark:bg-ink-900 hover:-translate-y-0.5 hover:shadow-md"
                 }`}
               >
                 {highlighted && (
-                  <span className="absolute -top-3 left-6 rounded-full bg-brand-600 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow-sm">
+                  <span className="absolute -top-3 left-6 rounded-full bg-brand-600 dark:bg-brand-500 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow-sm">
                     Most popular
                   </span>
                 )}
                 <div
                   className={`flex h-10 w-10 items-center justify-center rounded-lg ${
-                    highlighted ? "bg-brand-600 text-white" : "bg-brand-50 text-brand-600"
+                    highlighted ? "bg-brand-600 dark:bg-brand-500 text-white" : "bg-brand-50 dark:bg-brand-900/40 text-brand-600 dark:text-brand-400"
                   }`}
                 >
                   <Icon size={20} />
                 </div>
-                <h3 className="mt-4 text-base font-bold text-ink-900">{name}</h3>
-                <p className="mt-1 text-sm text-ink-500">{desc}</p>
+                <h3 className="mt-4 text-base font-bold text-ink-900 dark:text-ink-100">{name}</h3>
+                <p className="mt-1 text-sm text-ink-500 dark:text-ink-400">{desc}</p>
                 <div className="mt-4 flex items-baseline gap-1">
-                  <span className="text-3xl font-extrabold text-ink-900">{price}</span>
-                  {period && <span className="text-sm font-medium text-ink-400">{period}</span>}
+                  <span className="text-3xl font-extrabold text-ink-900 dark:text-ink-100">{price}</span>
+                  {period && <span className="text-sm font-medium text-ink-400 dark:text-ink-500">{period}</span>}
                 </div>
                 <ul className="mt-5 flex-1 space-y-2.5">
                   {features.map((f) => (
-                    <li key={f} className="flex items-start gap-2 text-sm text-ink-600">
-                      <CheckCircle2 size={15} className="mt-0.5 shrink-0 text-brand-500" />
+                    <li key={f} className="flex items-start gap-2 text-sm text-ink-600 dark:text-ink-400">
+                      <CheckCircle2 size={15} className="mt-0.5 shrink-0 text-brand-500 dark:text-brand-400" />
                       {f}
                     </li>
                   ))}
@@ -256,7 +256,7 @@ export default function AdvertisePage() {
                   href="mailto:partnerships@devnexa.com"
                   className={`mt-6 inline-flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold shadow-sm transition ${
                     highlighted
-                      ? "bg-brand-600 text-white hover:bg-brand-700"
+                      ? "bg-brand-600 dark:bg-brand-500 text-white hover:bg-brand-700 dark:hover:bg-brand-600"
                       : "bg-slate-950 text-white hover:bg-slate-900"
                   }`}
                 >
@@ -268,22 +268,22 @@ export default function AdvertisePage() {
         </div>
       </div>
 
-      <div className="border-b border-ink-100 bg-white">
+      <div className="border-b border-ink-100 dark:border-ink-800 bg-white dark:bg-ink-900">
         <div className="container-page py-14">
-          <h2 className="text-xl font-bold text-ink-900 sm:text-2xl">
+          <h2 className="text-xl font-bold text-ink-900 dark:text-ink-100 sm:text-2xl">
             The platform behind every placement
           </h2>
-          <p className="mt-2 max-w-xl text-ink-500">
+          <p className="mt-2 max-w-xl text-ink-500 dark:text-ink-400">
             Performance and trust aren't add-ons — they're built into the site your campaign runs on.
           </p>
           <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-3">
             {TRUST.map(({ icon: Icon, title, desc }) => (
-              <div key={title} className="rounded-2xl bg-white p-6 ring-1 ring-ink-100">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-600/10 text-brand-600">
+              <div key={title} className="rounded-2xl bg-white dark:bg-ink-900 p-6 ring-1 ring-ink-100 dark:ring-ink-800">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-600/10 dark:bg-brand-500 text-brand-600 dark:text-brand-400">
                   <Icon size={20} />
                 </div>
-                <h3 className="mt-4 text-sm font-bold text-ink-900">{title}</h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-ink-500">{desc}</p>
+                <h3 className="mt-4 text-sm font-bold text-ink-900 dark:text-ink-100">{title}</h3>
+                <p className="mt-1.5 text-sm leading-relaxed text-ink-500 dark:text-ink-400">{desc}</p>
               </div>
             ))}
           </div>
@@ -291,7 +291,7 @@ export default function AdvertisePage() {
       </div>
 
       <div className="container-page py-14 sm:py-16">
-        <div className="flex flex-col items-start justify-between gap-6 rounded-2xl bg-gradient-to-br from-brand-600 to-brand-700 p-8 text-white sm:flex-row sm:items-center sm:p-10">
+        <div className="flex flex-col items-start justify-between gap-6 rounded-2xl bg-gradient-to-br from-brand-600 dark:from-brand-700 to-brand-700 dark:to-brand-800 p-8 text-white sm:flex-row sm:items-center sm:p-10">
           <div>
             <h2 className="text-xl font-bold sm:text-2xl">Ready to reach our audience?</h2>
             <p className="mt-2 max-w-md text-sm text-brand-50">
@@ -301,7 +301,7 @@ export default function AdvertisePage() {
           </div>
           <a
             href="mailto:partnerships@devnexa.com"
-            className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-brand-700 shadow-sm transition hover:bg-brand-50"
+            className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-white dark:bg-ink-900 px-5 py-2.5 text-sm font-semibold text-brand-700 dark:text-brand-400 shadow-sm transition hover:bg-brand-50 dark:hover:bg-brand-900/40"
           >
             Get in touch <ArrowRight size={15} />
           </a>

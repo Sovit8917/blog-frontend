@@ -42,14 +42,14 @@ export function VerifyEmailNotice() {
 
   return (
     <div className="w-full max-w-sm text-center">
-      <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-brand-50 text-brand-600">
+      <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-brand-50 dark:bg-brand-900/40 text-brand-600 dark:text-brand-400">
         <MailCheck size={22} />
       </div>
 
-      <p className="text-sm text-ink-600">
+      <p className="text-sm text-ink-600 dark:text-ink-400">
         {email ? (
           <>
-            We&apos;ve sent a verification link to <span className="font-medium text-ink-900">{email}</span>.
+            We&apos;ve sent a verification link to <span className="font-medium text-ink-900 dark:text-ink-100">{email}</span>.
           </>
         ) : (
           <>We&apos;ve sent you a verification link.</>
@@ -57,10 +57,10 @@ export function VerifyEmailNotice() {
         Click it to activate your account and sign in automatically.
       </p>
 
-      <p className="mt-3 text-xs text-ink-400">Didn&apos;t get it? Check your spam folder, or resend below.</p>
+      <p className="mt-3 text-xs text-ink-400 dark:text-ink-500">Didn&apos;t get it? Check your spam folder, or resend below.</p>
 
-      {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
-      {justSent && !error && <p className="mt-4 text-sm text-green-600">Verification email sent.</p>}
+      {error && <p className="mt-4 text-sm text-red-600 dark:text-red-400">{error}</p>}
+      {justSent && !error && <p className="mt-4 text-sm text-green-600 dark:text-green-400">Verification email sent.</p>}
 
       <Button
         type="button"
@@ -71,13 +71,13 @@ export function VerifyEmailNotice() {
         {sending ? 'Sending…' : cooldown > 0 ? `Resend in ${cooldown}s` : 'Resend verification email'}
       </Button>
 
-      <p className="mt-5 text-center text-sm text-ink-500">
+      <p className="mt-5 text-center text-sm text-ink-500 dark:text-ink-400">
         Wrong email?{' '}
-        <Link href="/register" className="link-underline font-medium text-ink-900">
+        <Link href="/register" className="link-underline font-medium text-ink-900 dark:text-ink-100">
           Create a new account
         </Link>{' '}
         or{' '}
-        <Link href="/login" className="link-underline font-medium text-ink-900">
+        <Link href="/login" className="link-underline font-medium text-ink-900 dark:text-ink-100">
           sign in
         </Link>
       </p>

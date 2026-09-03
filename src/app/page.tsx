@@ -81,21 +81,21 @@ export default async function HomePage() {
   return (
     <>
       {/* POSITIONING — say what this site is for before anything else. */}
-      <div className="border-b border-ink-100 bg-gradient-to-b from-brand-50/50 to-white">
+      <div className="border-b border-ink-100 dark:border-ink-800 bg-gradient-to-b from-brand-50/50 dark:from-brand-900/40 to-white">
         <div className="container-page py-10 sm:py-14">
-          <div className="inline-flex items-center gap-2 rounded-full border border-brand-200/80 bg-brand-50/80 px-3.5 py-1 text-xs font-medium text-brand-700 shadow-sm backdrop-blur">
+          <div className="inline-flex items-center gap-2 rounded-full border border-brand-200/80 dark:border-brand-700 bg-brand-50/80 dark:bg-brand-900/40 px-3.5 py-1 text-xs font-medium text-brand-700 dark:text-brand-400 shadow-sm backdrop-blur">
             <span className="h-1.5 w-1.5 rounded-full bg-brand-500 animate-pulse" />
             Tech Jobs · Career Content · Developer Resources
           </div>
 
-          <h1 className="mt-4 max-w-3xl text-3xl font-extrabold tracking-tight text-ink-950 sm:text-4xl lg:text-[2.75rem] lg:leading-[1.18]">
+          <h1 className="mt-4 max-w-3xl text-3xl font-extrabold tracking-tight text-ink-950 dark:text-ink-50 sm:text-4xl lg:text-[2.75rem] lg:leading-[1.18]">
             Build your career in tech.
-            <span className="block mt-1 bg-gradient-to-r from-brand-600 via-cyan-600 to-brand-500 bg-clip-text text-transparent">
+            <span className="block mt-1 bg-gradient-to-r from-brand-600 dark:from-brand-700 via-cyan-600 to-brand-500 dark:to-brand-700 bg-clip-text text-transparent">
               Find jobs. Learn skills. Grow faster.
             </span>
           </h1>
 
-          <p className="mt-3.5 max-w-xl text-base text-ink-500 sm:text-lg leading-relaxed">
+          <p className="mt-3.5 max-w-xl text-base text-ink-500 dark:text-ink-400 sm:text-lg leading-relaxed">
             Discover tech jobs, practical career guidance, and developer
             resources — all in one place.
           </p>
@@ -108,7 +108,7 @@ export default async function HomePage() {
             </Link>
             <Link
               href="/resources"
-              className="inline-flex items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-ink-700 ring-1 ring-inset ring-ink-200 transition hover:bg-ink-50"
+              className="inline-flex items-center gap-2 rounded-lg bg-white dark:bg-ink-900 px-4 py-2.5 text-sm font-semibold text-ink-700 dark:text-ink-300 ring-1 ring-inset ring-ink-200 dark:ring-ink-700 transition hover:bg-ink-50 dark:hover:bg-ink-800"
             >
               Browse Developer Resources
             </Link>
@@ -137,13 +137,13 @@ export default async function HomePage() {
           {/* INTEREST — quick jump into a category right under the hero. */}
           <div>
             <div className="mb-6 flex items-center justify-between">
-              <h2 className="text-xl font-bold text-ink-900">Latest stories</h2>
+              <h2 className="text-xl font-bold text-ink-900 dark:text-ink-100">Latest stories</h2>
               <nav className="hidden gap-1 sm:flex">
                 {safeCategories.slice(0, 4).map((c) => (
                   <Link
                     key={c.id}
                     href={`/category/${c.slug}`}
-                    className="rounded-full px-3 py-1 text-xs font-medium text-ink-500 ring-1 ring-ink-200 transition hover:bg-ink-50 hover:text-ink-900"
+                    className="rounded-full px-3 py-1 text-xs font-medium text-ink-500 dark:text-ink-400 ring-1 ring-ink-200 dark:ring-ink-700 transition hover:bg-ink-50 dark:hover:bg-ink-800 hover:text-ink-900 dark:hover:text-ink-100"
                   >
                     {c.name}
                   </Link>
@@ -183,16 +183,16 @@ export default async function HomePage() {
               browsing the site, not just readers. */}
           <Link
             href="/advertise"
-            className="group flex flex-col items-start justify-between gap-4 rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm transition hover:border-slate-300 hover:shadow-md sm:flex-row sm:items-center"
+            className="group flex flex-col items-start justify-between gap-4 rounded-2xl border border-slate-200/80 dark:border-slate-700 bg-white dark:bg-ink-900 p-6 shadow-sm transition hover:border-slate-300 dark:hover:border-slate-600 hover:shadow-md sm:flex-row sm:items-center"
           >
             <div>
-              <p className="text-xs font-bold uppercase tracking-wider text-brand-600">
+              <p className="text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">
                 For brands & employers
               </p>
-              <h3 className="mt-1 text-lg font-extrabold text-ink-950">
+              <h3 className="mt-1 text-lg font-extrabold text-ink-950 dark:text-ink-50">
                 Advertise with us
               </h3>
-              <p className="mt-1 text-sm text-ink-500 max-w-xl">
+              <p className="mt-1 text-sm text-ink-500 dark:text-ink-400 max-w-xl">
                 Featured jobs, sponsored content, newsletter placements — with
                 real analytics.
               </p>
@@ -209,7 +209,7 @@ export default async function HomePage() {
             <div className="mt-4 text-right">
               <Link
                 href="/for-you"
-                className="inline-flex items-center gap-1 text-sm font-semibold text-brand-600 hover:text-brand-700"
+                className="inline-flex items-center gap-1 text-sm font-semibold text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-400"
               >
                 See your full feed <ArrowRight size={14} />
               </Link>

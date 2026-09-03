@@ -98,7 +98,7 @@ export function PopupAd() {
       onClick={dismiss}
     >
       <div
-        className={`relative w-full max-w-[420px] overflow-hidden rounded-2xl bg-white shadow-2xl ring-1 ring-black/5 transition-all duration-200 ${
+        className={`relative w-full max-w-[420px] overflow-hidden rounded-2xl bg-white dark:bg-ink-900 shadow-2xl ring-1 ring-black/5 transition-all duration-200 ${
           closing ? 'scale-95 opacity-0' : 'scale-100 opacity-100'
         }`}
         onClick={(e) => e.stopPropagation()}
@@ -106,14 +106,14 @@ export function PopupAd() {
         <button
           onClick={dismiss}
           aria-label="Close advertisement"
-          className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-ink-600 shadow-md ring-1 ring-ink-200 backdrop-blur transition hover:scale-105 hover:bg-white"
+          className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 dark:bg-ink-900 text-ink-600 dark:text-ink-400 shadow-md ring-1 ring-ink-200 dark:ring-ink-700 backdrop-blur transition hover:scale-105 hover:bg-white dark:hover:bg-ink-900"
         >
           <X size={16} />
         </button>
 
         <AdImpressionTracker adId={ad.id}>
           <AdClickLink adId={ad.id} targetUrl={ad.targetUrl} className="group block">
-            <div className="relative aspect-[4/3] w-full overflow-hidden bg-ink-50">
+            <div className="relative aspect-[4/3] w-full overflow-hidden bg-ink-50 dark:bg-ink-900">
               <Image
                 src={ad.imageUrl}
                 alt={ad.title}
@@ -129,12 +129,12 @@ export function PopupAd() {
 
             <div className="flex items-center justify-between gap-3 p-4">
               <div className="min-w-0">
-                <p className="truncate text-sm font-bold text-ink-900">{ad.title}</p>
+                <p className="truncate text-sm font-bold text-ink-900 dark:text-ink-100">{ad.title}</p>
                 {ad.advertiser && (
-                  <p className="truncate text-xs text-ink-400">{ad.advertiser}</p>
+                  <p className="truncate text-xs text-ink-400 dark:text-ink-500">{ad.advertiser}</p>
                 )}
               </div>
-              <span className="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-brand-600 px-3.5 py-2 text-xs font-semibold text-white shadow-sm transition group-hover:bg-brand-700">
+              <span className="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-brand-600 dark:bg-brand-500 px-3.5 py-2 text-xs font-semibold text-white shadow-sm transition group-hover:bg-brand-700 dark:group-hover:bg-brand-600">
                 Learn more
                 <ArrowRight size={13} />
               </span>

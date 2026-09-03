@@ -27,17 +27,17 @@ export default async function TagPage({ params, searchParams }: Props) {
   const posts = await listPostsByTag(params.slug, { cursor: searchParams.cursor, limit: 9 });
 
   return (
-    <div className="bg-slate-50/50 py-8 lg:py-12">
+    <div className="bg-slate-50/50 dark:bg-slate-900 py-8 lg:py-12">
       <div className="container-page space-y-8">
-        <header className="rounded-2xl border border-slate-200/70 bg-white p-6 sm:p-8 shadow-sm">
-          <p className="text-xs font-bold uppercase tracking-wider text-brand-600">Tag</p>
-          <h1 className="mt-1 font-serif text-3xl font-extrabold text-ink-950 sm:text-4xl">#{tag.name}</h1>
+        <header className="rounded-2xl border border-slate-200/70 dark:border-slate-700 bg-white dark:bg-ink-900 p-6 sm:p-8 shadow-sm">
+          <p className="text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">Tag</p>
+          <h1 className="mt-1 font-serif text-3xl font-extrabold text-ink-950 dark:text-ink-50 sm:text-4xl">#{tag.name}</h1>
         </header>
 
         <AdSlot placement="HEADER" />
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_320px]">
-          <div className="rounded-2xl border border-slate-200/70 bg-white p-6 sm:p-8 shadow-sm">
+          <div className="rounded-2xl border border-slate-200/70 dark:border-slate-700 bg-white dark:bg-ink-900 p-6 sm:p-8 shadow-sm">
             <PostGrid posts={posts.items} priorityCount={3} />
           </div>
           <div>

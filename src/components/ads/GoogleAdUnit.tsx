@@ -130,12 +130,12 @@ export function GoogleAdUnit({
       }`}
     >
       {status === 'filled' && (
-        <p className="mb-1.5 text-center text-[10px] font-medium uppercase tracking-wider text-ink-300">
+        <p className="mb-1.5 text-center text-[10px] font-medium uppercase tracking-wider text-ink-300 dark:text-ink-600">
           Advertisement
         </p>
       )}
       {status === 'loading' && (
-        <div className="mx-auto my-1 h-[6px] w-full max-w-[80px] animate-pulse rounded-full bg-ink-100" />
+        <div className="mx-auto my-1 h-[6px] w-full max-w-[80px] animate-pulse rounded-full bg-ink-100 dark:bg-ink-800" />
       )}
       <div
         style={

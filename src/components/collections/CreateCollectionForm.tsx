@@ -45,15 +45,15 @@ export function CreateCollectionForm() {
   return (
     <form
       onSubmit={onSubmit}
-      className="w-full max-w-md rounded-2xl border border-ink-100 bg-white p-5 shadow-sm"
+      className="w-full max-w-md rounded-2xl border border-ink-100 dark:border-ink-800 bg-white dark:bg-ink-900 p-5 shadow-sm"
     >
       <div className="mb-3 flex items-center justify-between">
-        <h3 className="text-sm font-bold text-ink-900">New collection</h3>
+        <h3 className="text-sm font-bold text-ink-900 dark:text-ink-100">New collection</h3>
         <button
           type="button"
           onClick={() => setOpen(false)}
           aria-label="Cancel"
-          className="rounded-md p-1 text-ink-400 hover:bg-ink-50 hover:text-ink-700"
+          className="rounded-md p-1 text-ink-400 dark:text-ink-500 hover:bg-ink-50 dark:hover:bg-ink-800 hover:text-ink-700 dark:hover:text-ink-300"
         >
           <X size={16} />
         </button>
@@ -65,25 +65,25 @@ export function CreateCollectionForm() {
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="e.g. Interview prep reading list"
-          className="w-full rounded-lg border border-ink-200 px-3.5 py-2.5 text-sm outline-none placeholder:text-ink-400 focus:border-brand-400 focus:ring-2 focus:ring-brand-100"
+          className="w-full rounded-lg border border-ink-200 dark:border-ink-700 px-3.5 py-2.5 text-sm outline-none placeholder:text-ink-400 dark:placeholder:text-ink-500 focus:border-brand-400 dark:focus:border-brand-600 focus:ring-2 focus:ring-brand-100 dark:focus:ring-brand-900/40"
         />
         <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="Description (optional)"
           rows={2}
-          className="w-full resize-none rounded-lg border border-ink-200 px-3.5 py-2.5 text-sm outline-none placeholder:text-ink-400 focus:border-brand-400 focus:ring-2 focus:ring-brand-100"
+          className="w-full resize-none rounded-lg border border-ink-200 dark:border-ink-700 px-3.5 py-2.5 text-sm outline-none placeholder:text-ink-400 dark:placeholder:text-ink-500 focus:border-brand-400 dark:focus:border-brand-600 focus:ring-2 focus:ring-brand-100 dark:focus:ring-brand-900/40"
         />
-        <label className="flex items-center gap-2 text-sm text-ink-600">
+        <label className="flex items-center gap-2 text-sm text-ink-600 dark:text-ink-400">
           <input
             type="checkbox"
             checked={isPrivate}
             onChange={(e) => setIsPrivate(e.target.checked)}
-            className="h-4 w-4 rounded border-ink-300 text-brand-600 focus:ring-brand-400"
+            className="h-4 w-4 rounded border-ink-300 dark:border-ink-600 text-brand-600 dark:text-brand-400 focus:ring-brand-400 dark:focus:ring-brand-700"
           />
           Keep this collection private
         </label>
-        {error && <p className="text-sm text-red-600">{error}</p>}
+        {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
         <Button type="submit" disabled={pending || !name.trim()}>
           {pending ? 'Creating…' : 'Create collection'}
         </Button>

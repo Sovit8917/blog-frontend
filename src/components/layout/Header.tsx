@@ -7,6 +7,7 @@ import { MobileNav } from "./MobileNav";
 import { HeaderAuthActions } from "./HeaderAuthActions";
 import { NavLink } from "./NavLink";
 import { NavDropdown } from "./NavDropdown";
+import { ThemeToggle } from "./ThemeToggle";
 
 // Kept deliberately short: only the categories + a single "Jobs" entry point
 // live in the visible bar. Companies / Skills / Dev Resources are one click
@@ -37,7 +38,7 @@ export async function Header() {
   const visibleCategories = allTopLevel.slice(0, 3);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-ink-100 bg-white/85 backdrop-blur supports-[backdrop-filter]:bg-white/70">
+    <header className="sticky top-0 z-50 border-b border-ink-100 dark:border-ink-800 bg-white/85 dark:bg-ink-900 backdrop-blur supports-[backdrop-filter]:bg-white/70 dark:supports-[backdrop-filter]:bg-ink-900">
       <div className="container-page flex h-14 items-center justify-between gap-2 sm:h-16">
         <div className="flex min-w-0 items-center gap-2 sm:gap-4 xl:gap-6">
           <MobileNav categories={allTopLevel} jobBoardNav={JOB_BOARD_NAV} />
@@ -87,17 +88,18 @@ export async function Header() {
           <Link
             href="/search"
             aria-label="Search"
-            className="rounded-md p-2 text-ink-500 transition hover:bg-ink-50 hover:text-ink-900"
+            className="rounded-md p-2 text-ink-500 dark:text-ink-400 transition hover:bg-ink-50 dark:hover:bg-ink-800 hover:text-ink-900 dark:hover:text-ink-100"
           >
             <Search size={19} />
           </Link>
           <Link
             href="/me/bookmarks"
             aria-label="Bookmarks"
-            className="hidden rounded-md p-2 text-ink-500 transition hover:bg-ink-50 hover:text-ink-900 sm:inline-flex"
+            className="hidden rounded-md p-2 text-ink-500 dark:text-ink-400 transition hover:bg-ink-50 dark:hover:bg-ink-800 hover:text-ink-900 dark:hover:text-ink-100 sm:inline-flex"
           >
             <Bookmark size={19} />
           </Link>
+          <ThemeToggle />
           <HeaderAuthActions />
         </div>
       </div>

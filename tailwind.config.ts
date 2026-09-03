@@ -59,6 +59,25 @@ const config: Config = {
             a: { textUnderlineOffset: "3px", fontWeight: "500" },
           },
         },
+        // Powers `dark:prose-invert` on long-form content (blog posts, job
+        // descriptions) — mapped onto our own ink/brand scale rather than
+        // the plugin's default gray so dark reading matches the rest of
+        // the dark theme.
+        invert: {
+          css: {
+            "--tw-prose-invert-body": theme("colors.ink[300]"),
+            "--tw-prose-invert-headings": theme("colors.ink[50]"),
+            "--tw-prose-invert-links": theme("colors.brand[400]"),
+            "--tw-prose-invert-bold": theme("colors.ink[50]"),
+            "--tw-prose-invert-quotes": theme("colors.ink[300]"),
+            "--tw-prose-invert-code": theme("colors.brand[400]"),
+            "--tw-prose-invert-bullets": theme("colors.ink[600]"),
+            "--tw-prose-invert-hr": theme("colors.ink[800]"),
+            "--tw-prose-invert-th-borders": theme("colors.ink[700]"),
+            "--tw-prose-invert-td-borders": theme("colors.ink[800]"),
+            "--tw-prose-invert-captions": theme("colors.ink[400]"),
+          },
+        },
       }),
       animation: {
         "fade-in": "fadeIn .4s ease-out",

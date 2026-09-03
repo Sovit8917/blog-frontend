@@ -4,7 +4,7 @@ import { CompanyCard } from './CompanyCard';
 export function CompanyGrid({ companies }: { companies: Company[] }) {
   if (companies.length === 0) {
     return (
-      <div className="rounded-xl border border-dashed border-ink-200 py-16 text-center text-ink-400">
+      <div className="rounded-xl border border-dashed border-ink-200 dark:border-ink-700 py-16 text-center text-ink-400 dark:text-ink-500">
         No companies found.
       </div>
     );

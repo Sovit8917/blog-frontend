@@ -20,16 +20,16 @@ export default async function SavedJobsPage() {
   return (
     <div className="container-page py-10">
       <header className="mb-8">
-        <h1 className="text-3xl font-bold text-ink-900">Saved jobs</h1>
-        <p className="mt-2 text-ink-500">
+        <h1 className="text-3xl font-bold text-ink-900 dark:text-ink-100">Saved jobs</h1>
+        <p className="mt-2 text-ink-500 dark:text-ink-400">
           Roles you&apos;ve bookmarked to come back to.
         </p>
       </header>
 
       {saved.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-ink-200 py-16 text-center text-ink-400">
+        <div className="rounded-xl border border-dashed border-ink-200 dark:border-ink-700 py-16 text-center text-ink-400 dark:text-ink-500">
           You haven&apos;t saved any jobs yet.{" "}
-          <Link href="/jobs" className="link-underline text-ink-700">
+          <Link href="/jobs" className="link-underline text-ink-700 dark:text-ink-300">
             Browse open roles
           </Link>
           .
@@ -41,9 +41,9 @@ export default async function SavedJobsPage() {
             return (
             <li
               key={s.id}
-              className="flex items-center gap-4 rounded-xl border border-ink-100 p-4"
+              className="flex items-center gap-4 rounded-xl border border-ink-100 dark:border-ink-800 p-4"
             >
-              <div className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-ink-100">
+              <div className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-ink-100 dark:bg-ink-800">
                 {company.logoUrl ? (
                   <Image
                     src={company.logoUrl}
@@ -52,7 +52,7 @@ export default async function SavedJobsPage() {
                     className="object-cover"
                   />
                 ) : (
-                  <span className="text-sm font-bold text-ink-400">
+                  <span className="text-sm font-bold text-ink-400 dark:text-ink-500">
                     {company.name[0]}
                   </span>
                 )}
@@ -60,11 +60,11 @@ export default async function SavedJobsPage() {
               <div className="flex-1">
                 <Link
                   href={`/jobs/${s.job.slug}`}
-                  className="font-semibold text-ink-900 hover:text-brand-600"
+                  className="font-semibold text-ink-900 dark:text-ink-100 hover:text-brand-600 dark:hover:text-brand-400"
                 >
                   {s.job.title}
                 </Link>
-                <p className="text-sm text-ink-500">{company.name}</p>
+                <p className="text-sm text-ink-500 dark:text-ink-400">{company.name}</p>
                 <div className="mt-1 flex gap-2">
                   <Badge variant="outline">
                     {EMPLOYMENT_TYPE_LABEL[s.job.employmentType]}

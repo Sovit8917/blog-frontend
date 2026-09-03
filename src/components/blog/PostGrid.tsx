@@ -5,7 +5,7 @@ export function PostGrid({ posts, priorityCount = 0 }: { posts: PostCardType[]; 
   const safePosts = Array.isArray(posts) ? posts : [];
   if (safePosts.length === 0) {
     return (
-      <div className="rounded-xl border border-dashed border-ink-200 py-16 text-center text-ink-400">
+      <div className="rounded-xl border border-dashed border-ink-200 dark:border-ink-700 py-16 text-center text-ink-400 dark:text-ink-500">
         No posts found yet.
       </div>
     );

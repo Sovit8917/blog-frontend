@@ -2,11 +2,11 @@ import { Skeleton } from '@/components/ui/Skeleton';
 
 export default function JobDetailLoading() {
   return (
-    <div className="bg-slate-50/50 pb-28 pt-8 lg:pb-12 lg:pt-12">
+    <div className="bg-slate-50/50 dark:bg-slate-900 pb-28 pt-8 lg:pb-12 lg:pt-12">
       <div className="container-page">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_340px] lg:gap-10">
           <div>
-            <div className="rounded-2xl border border-slate-200/70 bg-white p-6 shadow-sm sm:p-8">
+            <div className="rounded-2xl border border-slate-200/70 dark:border-slate-700 bg-white dark:bg-ink-900 p-6 shadow-sm sm:p-8">
               <div className="mb-4 flex gap-2">
                 <Skeleton className="h-6 w-24 rounded-full" />
                 <Skeleton className="h-6 w-20 rounded-full" />
@@ -29,7 +29,7 @@ export default function JobDetailLoading() {
               ))}
             </section>
 
-            <div className="mt-6 space-y-3 rounded-2xl border border-slate-200/70 bg-white p-6 shadow-sm sm:p-8">
+            <div className="mt-6 space-y-3 rounded-2xl border border-slate-200/70 dark:border-slate-700 bg-white dark:bg-ink-900 p-6 shadow-sm sm:p-8">
               <Skeleton className="h-4 w-full" />
               <Skeleton className="h-4 w-full" />
               <Skeleton className="h-4 w-5/6" />

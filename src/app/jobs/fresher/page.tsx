@@ -112,29 +112,29 @@ export default async function FresherJobsPage({ searchParams }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(FAQ)) }}
       />
 
-      <div className="bg-slate-50/50 py-8 lg:py-12">
+      <div className="bg-slate-50/50 dark:bg-slate-900 py-8 lg:py-12">
         <div className="container-page space-y-8">
-          <nav className="flex items-center gap-2 text-xs font-medium text-ink-400">
-            <Link href="/" className="transition hover:text-brand-600">Home</Link>
-            <span className="text-ink-300">/</span>
-            <Link href="/jobs" className="transition hover:text-brand-600">Jobs</Link>
-            <span className="text-ink-300">/</span>
-            <span className="text-ink-600">Fresher Jobs</span>
+          <nav className="flex items-center gap-2 text-xs font-medium text-ink-400 dark:text-ink-500">
+            <Link href="/" className="transition hover:text-brand-600 dark:hover:text-brand-400">Home</Link>
+            <span className="text-ink-300 dark:text-ink-600">/</span>
+            <Link href="/jobs" className="transition hover:text-brand-600 dark:hover:text-brand-400">Jobs</Link>
+            <span className="text-ink-300 dark:text-ink-600">/</span>
+            <span className="text-ink-600 dark:text-ink-400">Fresher Jobs</span>
           </nav>
 
-          <header className="rounded-2xl border border-slate-200/70 bg-white p-6 sm:p-8 shadow-sm">
-            <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-brand-600">
+          <header className="rounded-2xl border border-slate-200/70 dark:border-slate-700 bg-white dark:bg-ink-900 p-6 sm:p-8 shadow-sm">
+            <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">
               <GraduationCap size={14} /> Freshers &amp; Interns
             </p>
-            <h1 className="mt-1 font-serif text-3xl font-extrabold text-ink-950 sm:text-4xl">
+            <h1 className="mt-1 font-serif text-3xl font-extrabold text-ink-950 dark:text-ink-50 sm:text-4xl">
               Fresher Jobs — Entry-Level &amp; Internship Openings
             </h1>
-            <p className="mt-2 max-w-2xl text-base leading-relaxed text-ink-600">
+            <p className="mt-2 max-w-2xl text-base leading-relaxed text-ink-600 dark:text-ink-400">
               No experience, no problem. These roles are open to recent graduates,
               career-changers, and first-time job seekers — internships and
               entry-level positions only, updated as companies post them.
               Looking for something more senior?{" "}
-              <Link href="/jobs" className="link-underline text-ink-800">
+              <Link href="/jobs" className="link-underline text-ink-800 dark:text-ink-200">
                 Browse the full job board
               </Link>
               .
@@ -144,37 +144,37 @@ export default async function FresherJobsPage({ searchParams }: Props) {
           <AdSlot placement="HEADER" />
 
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_320px]">
-            <div className="rounded-2xl border border-slate-200/70 bg-white p-6 sm:p-8 shadow-sm space-y-6">
+            <div className="rounded-2xl border border-slate-200/70 dark:border-slate-700 bg-white dark:bg-ink-900 p-6 sm:p-8 shadow-sm space-y-6">
               <div className="flex flex-wrap items-center justify-between gap-3">
-                <p className="text-sm text-ink-500">
+                <p className="text-sm text-ink-500 dark:text-ink-400">
                   {total !== undefined ? (
                     <>
-                      <span className="font-semibold text-ink-800">{total.toLocaleString()}</span>{" "}
+                      <span className="font-semibold text-ink-800 dark:text-ink-200">{total.toLocaleString()}</span>{" "}
                       {total === 1 ? "fresher job" : "fresher jobs"} found
                     </>
                   ) : (
                     <>
-                      <span className="font-semibold text-ink-800">{page.items.length}</span>{" "}
+                      <span className="font-semibold text-ink-800 dark:text-ink-200">{page.items.length}</span>{" "}
                       jobs on this page
                     </>
                   )}
                 </p>
                 <Link
                   href="/jobs?freshersOnly=true"
-                  className="text-sm font-semibold text-brand-600 hover:text-brand-700"
+                  className="text-sm font-semibold text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-400"
                 >
                   Refine with more filters →
                 </Link>
               </div>
 
               {page.items.length === 0 ? (
-                <div className="flex flex-col items-center gap-4 rounded-xl border border-dashed border-ink-200 px-6 py-16 text-center">
-                  <span className="flex h-12 w-12 items-center justify-center rounded-full bg-ink-50 text-ink-400">
+                <div className="flex flex-col items-center gap-4 rounded-xl border border-dashed border-ink-200 dark:border-ink-700 px-6 py-16 text-center">
+                  <span className="flex h-12 w-12 items-center justify-center rounded-full bg-ink-50 dark:bg-ink-900 text-ink-400 dark:text-ink-500">
                     <SearchX size={22} />
                   </span>
                   <div>
-                    <p className="font-semibold text-ink-800">No fresher jobs match right now</p>
-                    <p className="mx-auto mt-1 max-w-sm text-sm text-ink-500">
+                    <p className="font-semibold text-ink-800 dark:text-ink-200">No fresher jobs match right now</p>
+                    <p className="mx-auto mt-1 max-w-sm text-sm text-ink-500 dark:text-ink-400">
                       Check back soon, or browse the full job board for other experience levels.
                     </p>
                   </div>
@@ -210,13 +210,13 @@ export default async function FresherJobsPage({ searchParams }: Props) {
                   jobs" queries with real, readable content rather than just a
                   filtered list, which is what a thin/duplicate-content page
                   (/jobs?freshersOnly=true) would otherwise be. */}
-              <section className="space-y-4 border-t border-ink-100 pt-6">
-                <h2 className="text-lg font-bold text-ink-900">Frequently asked questions</h2>
+              <section className="space-y-4 border-t border-ink-100 dark:border-ink-800 pt-6">
+                <h2 className="text-lg font-bold text-ink-900 dark:text-ink-100">Frequently asked questions</h2>
                 <div className="space-y-4">
                   {FAQ.map((item) => (
                     <div key={item.question}>
-                      <h3 className="font-semibold text-ink-800">{item.question}</h3>
-                      <p className="mt-1 text-sm leading-relaxed text-ink-600">{item.answer}</p>
+                      <h3 className="font-semibold text-ink-800 dark:text-ink-200">{item.question}</h3>
+                      <p className="mt-1 text-sm leading-relaxed text-ink-600 dark:text-ink-400">{item.answer}</p>
                     </div>
                   ))}
                 </div>

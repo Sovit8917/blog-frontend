@@ -9,6 +9,7 @@ import { getCurrentUser } from "@/lib/auth/session";
 import { GoogleAdSenseScript } from "@/components/ads/GoogleAdSenseScript";
 import { ConsentBanner } from "@/components/ads/ConsentBanner";
 import { PopupAd } from "@/components/ads/PopupAd";
+import { ThemeProvider } from "@/lib/theme/ThemeProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -28,8 +29,12 @@ export default async function RootLayout({
   const user = await getCurrentUser();
 
   return (
-    <html lang="en" className={`${inter.variable} ${sourceSerif.variable}`}>
-      <body className="flex min-h-screen flex-col">
+    <html
+      lang="en"
+      className={`dark ${inter.variable} ${sourceSerif.variable}`}
+      suppressHydrationWarning
+    >
+      <body className="flex min-h-screen flex-col transition-colors">
         <GoogleAdSenseScript />
         <script
           type="application/ld+json"
@@ -38,13 +43,15 @@ export default async function RootLayout({
             __html: JSON.stringify(organizationJsonLd()),
           }}
         />
-        <AuthProvider initialUser={user}>
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </AuthProvider>
-        <ConsentBanner />
-        <PopupAd />
+        <ThemeProvider>
+          <AuthProvider initialUser={user}>
+            <Header />
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </AuthProvider>
+          <ConsentBanner />
+          <PopupAd />
+        </ThemeProvider>
       </body>
     </html>
   );

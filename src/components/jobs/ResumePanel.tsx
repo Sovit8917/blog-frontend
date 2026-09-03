@@ -43,22 +43,22 @@ export function ResumePanel({ initialResume }: { initialResume: ResumeInfo | nul
   };
 
   return (
-    <div className="rounded-2xl border border-ink-100 p-6">
+    <div className="rounded-2xl border border-ink-100 dark:border-ink-800 p-6">
       {resume?.resumeUrl ? (
         <div className="flex flex-col gap-4">
-          <div className="flex items-center gap-3 rounded-xl border border-ink-200 bg-ink-50/60 p-4">
-            <FileText size={22} className="shrink-0 text-ink-400" />
+          <div className="flex items-center gap-3 rounded-xl border border-ink-200 dark:border-ink-700 bg-ink-50/60 dark:bg-ink-900 p-4">
+            <FileText size={22} className="shrink-0 text-ink-400 dark:text-ink-500" />
             <div className="min-w-0 flex-1">
               <a
                 href={resume.resumeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block truncate font-medium text-ink-900 hover:text-brand-600"
+                className="block truncate font-medium text-ink-900 dark:text-ink-100 hover:text-brand-600 dark:hover:text-brand-400"
               >
                 {resume.resumeFileName || 'Your resume'}
               </a>
               {resume.resumeUpdatedAt && (
-                <p className="text-xs text-ink-400">
+                <p className="text-xs text-ink-400 dark:text-ink-500">
                   Uploaded {new Date(resume.resumeUpdatedAt).toLocaleDateString()}
                 </p>
               )}
@@ -66,7 +66,7 @@ export function ResumePanel({ initialResume }: { initialResume: ResumeInfo | nul
           </div>
 
           <div className="flex gap-2">
-            <label className="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg ring-1 ring-inset ring-ink-300 px-4 py-2.5 text-sm font-medium text-ink-700 hover:bg-ink-50">
+            <label className="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg ring-1 ring-inset ring-ink-300 dark:ring-ink-600 px-4 py-2.5 text-sm font-medium text-ink-700 dark:text-ink-300 hover:bg-ink-50 dark:hover:bg-ink-800">
               {uploading ? (
                 <>
                   <Loader2 size={15} className="animate-spin" /> Uploading…
@@ -90,7 +90,7 @@ export function ResumePanel({ initialResume }: { initialResume: ResumeInfo | nul
           </div>
         </div>
       ) : (
-        <label className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-ink-300 px-6 py-10 text-center text-ink-500 hover:border-brand-400 hover:text-brand-600">
+        <label className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-ink-300 dark:border-ink-600 px-6 py-10 text-center text-ink-500 dark:text-ink-400 hover:border-brand-400 dark:hover:border-brand-600 hover:text-brand-600 dark:hover:text-brand-400">
           {uploading ? (
             <>
               <Loader2 size={22} className="animate-spin" />
@@ -100,7 +100,7 @@ export function ResumePanel({ initialResume }: { initialResume: ResumeInfo | nul
             <>
               <Upload size={22} />
               <span className="text-sm font-medium">Upload your resume</span>
-              <span className="text-xs text-ink-400">PDF, DOC, or DOCX — up to 8MB</span>
+              <span className="text-xs text-ink-400 dark:text-ink-500">PDF, DOC, or DOCX — up to 8MB</span>
             </>
           )}
           <input
@@ -112,7 +112,7 @@ export function ResumePanel({ initialResume }: { initialResume: ResumeInfo | nul
           />
         </label>
       )}
-      {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
+      {error && <p className="mt-3 text-sm text-red-600 dark:text-red-400">{error}</p>}
     </div>
   );
 }

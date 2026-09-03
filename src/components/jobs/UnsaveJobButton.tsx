@@ -22,7 +22,7 @@ export function UnsaveJobButton({ jobId }: { jobId: string }) {
     <button
       onClick={onClick}
       disabled={pending}
-      className="rounded-lg px-3 py-2 text-sm font-medium text-ink-500 transition hover:bg-ink-50 disabled:opacity-50"
+      className="rounded-lg px-3 py-2 text-sm font-medium text-ink-500 dark:text-ink-400 transition hover:bg-ink-50 dark:hover:bg-ink-800 disabled:opacity-50"
     >
       Remove
     </button>

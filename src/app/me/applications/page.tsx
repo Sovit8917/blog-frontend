@@ -31,16 +31,16 @@ export default async function MyApplicationsPage() {
   return (
     <div className="container-page py-10">
       <header className="mb-8">
-        <h1 className="text-3xl font-bold text-ink-900">My applications</h1>
-        <p className="mt-2 text-ink-500">
+        <h1 className="text-3xl font-bold text-ink-900 dark:text-ink-100">My applications</h1>
+        <p className="mt-2 text-ink-500 dark:text-ink-400">
           Jobs you&apos;ve applied to and their current status.
         </p>
       </header>
 
       {applications.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-ink-200 py-16 text-center text-ink-400">
+        <div className="rounded-xl border border-dashed border-ink-200 dark:border-ink-700 py-16 text-center text-ink-400 dark:text-ink-500">
           You haven&apos;t applied to any jobs yet.{" "}
-          <Link href="/jobs" className="link-underline text-ink-700">
+          <Link href="/jobs" className="link-underline text-ink-700 dark:text-ink-300">
             Browse open roles
           </Link>
           .
@@ -52,9 +52,9 @@ export default async function MyApplicationsPage() {
             return (
             <li
               key={app.id}
-              className="flex items-center gap-4 rounded-xl border border-ink-100 p-4"
+              className="flex items-center gap-4 rounded-xl border border-ink-100 dark:border-ink-800 p-4"
             >
-              <div className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-ink-100">
+              <div className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-ink-100 dark:bg-ink-800">
                 {company?.logoUrl ? (
                   <Image
                     src={company.logoUrl}
@@ -63,7 +63,7 @@ export default async function MyApplicationsPage() {
                     className="object-cover"
                   />
                 ) : (
-                  <span className="text-sm font-bold text-ink-400">
+                  <span className="text-sm font-bold text-ink-400 dark:text-ink-500">
                     {company?.name?.[0]}
                   </span>
                 )}
@@ -71,12 +71,12 @@ export default async function MyApplicationsPage() {
               <div className="flex-1">
                 <Link
                   href={`/jobs/${app.job?.slug}`}
-                  className="font-semibold text-ink-900 hover:text-brand-600"
+                  className="font-semibold text-ink-900 dark:text-ink-100 hover:text-brand-600 dark:hover:text-brand-400"
                 >
                   {app.job?.title}
                 </Link>
-                <p className="text-sm text-ink-500">{company?.name}</p>
-                <p className="mt-0.5 text-xs text-ink-400">
+                <p className="text-sm text-ink-500 dark:text-ink-400">{company?.name}</p>
+                <p className="mt-0.5 text-xs text-ink-400 dark:text-ink-500">
                   Applied {timeAgo(app.createdAt)}
                 </p>
               </div>

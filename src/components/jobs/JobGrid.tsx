@@ -13,13 +13,13 @@ import { JobRow } from './JobRow';
 export function JobGrid({ jobs, hasActiveFilters = false }: { jobs: JobCardType[]; hasActiveFilters?: boolean }) {
   if (jobs.length === 0) {
     return (
-      <div className="flex flex-col items-center gap-4 rounded-xl border border-dashed border-ink-200 px-6 py-16 text-center">
-        <span className="flex h-12 w-12 items-center justify-center rounded-full bg-ink-50 text-ink-400">
+      <div className="flex flex-col items-center gap-4 rounded-xl border border-dashed border-ink-200 dark:border-ink-700 px-6 py-16 text-center">
+        <span className="flex h-12 w-12 items-center justify-center rounded-full bg-ink-50 dark:bg-ink-900 text-ink-400 dark:text-ink-500">
           <SearchX size={22} />
         </span>
         <div>
-          <p className="font-semibold text-ink-800">No jobs match your filters</p>
-          <p className="mx-auto mt-1 max-w-sm text-sm text-ink-500">
+          <p className="font-semibold text-ink-800 dark:text-ink-200">No jobs match your filters</p>
+          <p className="mx-auto mt-1 max-w-sm text-sm text-ink-500 dark:text-ink-400">
             {hasActiveFilters
               ? "Try removing a filter or broadening your search — location and keyword tend to narrow results the most."
               : "There aren't any open roles right now. Check back soon."}
@@ -47,11 +47,11 @@ export function JobGrid({ jobs, hasActiveFilters = false }: { jobs: JobCardType[
       </div>
 
       {/* Tablet/desktop: table */}
-      <div className="hidden overflow-hidden rounded-xl border border-ink-100 md:block">
+      <div className="hidden overflow-hidden rounded-xl border border-ink-100 dark:border-ink-800 md:block">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[760px] border-collapse text-left text-sm">
             <thead>
-              <tr className="border-b border-ink-100 bg-ink-50/80 text-xs font-semibold uppercase tracking-wider text-ink-500">
+              <tr className="border-b border-ink-100 dark:border-ink-800 bg-ink-50/80 dark:bg-ink-900 text-xs font-semibold uppercase tracking-wider text-ink-500 dark:text-ink-400">
                 <th className="px-4 py-3">Role</th>
                 <th className="px-4 py-3">Location</th>
                 <th className="px-4 py-3">Type</th>

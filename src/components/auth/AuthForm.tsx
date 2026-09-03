@@ -81,16 +81,16 @@ export function AuthForm({ mode }: { mode: 'login' | 'register' }) {
       <GoogleButton redirectTo={redirectTo} />
 
       <div className="my-5 flex items-center gap-3">
-        <div className="h-px flex-1 bg-ink-100" />
-        <span className="text-xs font-medium uppercase tracking-wide text-ink-400">or</span>
-        <div className="h-px flex-1 bg-ink-100" />
+        <div className="h-px flex-1 bg-ink-100 dark:bg-ink-800" />
+        <span className="text-xs font-medium uppercase tracking-wide text-ink-400 dark:text-ink-500">or</span>
+        <div className="h-px flex-1 bg-ink-100 dark:bg-ink-800" />
       </div>
 
       <form onSubmit={onSubmit}>
         <div className="flex flex-col gap-4">
           {fields.map((field) => (
             <label key={field.name} className="flex flex-col gap-1.5">
-              <span className="text-sm font-medium text-ink-700">{field.label}</span>
+              <span className="text-sm font-medium text-ink-700 dark:text-ink-300">{field.label}</span>
               {field.type === 'password' ? (
                 <div className="relative">
                   <input
@@ -100,7 +100,7 @@ export function AuthForm({ mode }: { mode: 'login' | 'register' }) {
                     minLength={field.minLength}
                     value={values[field.name] ?? ''}
                     onChange={(e) => setValues((v) => ({ ...v, [field.name]: e.target.value }))}
-                    className="w-full rounded-lg border border-ink-200 px-3.5 py-2.5 pr-10 text-sm outline-none placeholder:text-ink-400 focus:border-brand-400 focus:ring-2 focus:ring-brand-100"
+                    className="w-full rounded-lg border border-ink-200 dark:border-ink-700 px-3.5 py-2.5 pr-10 text-sm outline-none placeholder:text-ink-400 dark:placeholder:text-ink-500 focus:border-brand-400 dark:focus:border-brand-600 focus:ring-2 focus:ring-brand-100 dark:focus:ring-brand-900/40"
                   />
                   <button
                     type="button"
@@ -108,7 +108,7 @@ export function AuthForm({ mode }: { mode: 'login' | 'register' }) {
                     aria-label={showPassword ? 'Hide password' : 'Show password'}
                     aria-pressed={showPassword}
                     tabIndex={-1}
-                    className="absolute inset-y-0 right-0 flex items-center px-3 text-ink-400 transition hover:text-ink-600"
+                    className="absolute inset-y-0 right-0 flex items-center px-3 text-ink-400 dark:text-ink-500 transition hover:text-ink-600 dark:hover:text-ink-400"
                   >
                     {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                   </button>
@@ -120,11 +120,11 @@ export function AuthForm({ mode }: { mode: 'login' | 'register' }) {
                   autoComplete={field.autoComplete}
                   value={values[field.name] ?? ''}
                   onChange={(e) => setValues((v) => ({ ...v, [field.name]: e.target.value }))}
-                  className="rounded-lg border border-ink-200 px-3.5 py-2.5 text-sm outline-none placeholder:text-ink-400 focus:border-brand-400 focus:ring-2 focus:ring-brand-100"
+                  className="rounded-lg border border-ink-200 dark:border-ink-700 px-3.5 py-2.5 text-sm outline-none placeholder:text-ink-400 dark:placeholder:text-ink-500 focus:border-brand-400 dark:focus:border-brand-600 focus:ring-2 focus:ring-brand-100 dark:focus:ring-brand-900/40"
                 />
               )}
               {field.name === 'password' && mode === 'register' && (
-                <span className="text-xs text-ink-400">At least 8 characters.</span>
+                <span className="text-xs text-ink-400 dark:text-ink-500">At least 8 characters.</span>
               )}
             </label>
           ))}
@@ -132,31 +132,31 @@ export function AuthForm({ mode }: { mode: 'login' | 'register' }) {
 
         {mode === 'login' && (
           <div className="mt-2 text-right">
-            <Link href="/forgot-password" className="link-underline text-sm font-medium text-ink-500">
+            <Link href="/forgot-password" className="link-underline text-sm font-medium text-ink-500 dark:text-ink-400">
               Forgot password?
             </Link>
           </div>
         )}
 
-        {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
+        {error && <p className="mt-4 text-sm text-red-600 dark:text-red-400">{error}</p>}
 
         <Button type="submit" disabled={submitting} className="mt-6 w-full">
           {submitting ? 'Please wait…' : mode === 'login' ? 'Sign in' : 'Create account'}
         </Button>
       </form>
 
-      <p className="mt-5 text-center text-sm text-ink-500">
+      <p className="mt-5 text-center text-sm text-ink-500 dark:text-ink-400">
         {mode === 'login' ? (
           <>
             Don&apos;t have an account?{' '}
-            <Link href="/register" className="link-underline font-medium text-ink-900">
+            <Link href="/register" className="link-underline font-medium text-ink-900 dark:text-ink-100">
               Create one
             </Link>
           </>
         ) : (
           <>
             Already have an account?{' '}
-            <Link href="/login" className="link-underline font-medium text-ink-900">
+            <Link href="/login" className="link-underline font-medium text-ink-900 dark:text-ink-100">
               Sign in
             </Link>
           </>

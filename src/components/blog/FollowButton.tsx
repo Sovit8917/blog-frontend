@@ -76,15 +76,15 @@ export function FollowButton({
         className={cn(
           'flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium ring-1 transition disabled:opacity-60',
           following
-            ? 'bg-ink-50 text-ink-700 ring-ink-200 hover:bg-ink-100'
-            : 'bg-slate-950 text-white ring-slate-950 hover:bg-slate-900',
+            ? 'bg-ink-50 dark:bg-ink-900 text-ink-700 dark:text-ink-300 ring-ink-200 dark:ring-ink-700 hover:bg-ink-100 dark:hover:bg-ink-800'
+            : 'bg-slate-950 text-white ring-slate-950 dark:ring-slate-50 hover:bg-slate-900',
         )}
       >
         {following ? <UserCheck size={16} /> : <UserPlus size={16} />}
         {following ? 'Following' : 'Follow'}
       </button>
       {!hideCount && (
-        <span className="text-sm text-ink-500">
+        <span className="text-sm text-ink-500 dark:text-ink-400">
           {followerCount} {followerCount === 1 ? 'follower' : 'followers'}
         </span>
       )}

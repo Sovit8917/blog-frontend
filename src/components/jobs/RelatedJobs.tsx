@@ -13,13 +13,13 @@ import { JobCard } from './JobCard';
 export function RelatedJobs({ jobs }: { jobs: JobCardType[] }) {
   if (jobs.length === 0) return null;
   return (
-    <section className="mt-16 border-t border-ink-100 pt-10">
+    <section className="mt-16 border-t border-ink-100 dark:border-ink-800 pt-10">
       <div className="mb-6 flex items-center justify-between">
-        <h2 className="flex items-center gap-2 text-xl font-bold text-ink-900">
-          <Briefcase size={20} className="text-brand-600" />
+        <h2 className="flex items-center gap-2 text-xl font-bold text-ink-900 dark:text-ink-100">
+          <Briefcase size={20} className="text-brand-600 dark:text-brand-400" />
           Jobs related to this article
         </h2>
-        <Link href="/jobs" className="text-sm font-semibold text-brand-600 hover:text-brand-700">
+        <Link href="/jobs" className="text-sm font-semibold text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-400">
           Browse all jobs →
         </Link>
       </div>

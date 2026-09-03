@@ -52,8 +52,8 @@ export function CommentSection({
   };
 
   return (
-    <section id="comments" className="mt-16 border-t border-ink-100 pt-10">
-      <h2 className="mb-6 flex items-center gap-2 text-xl font-bold text-ink-900">
+    <section id="comments" className="mt-16 border-t border-ink-100 dark:border-ink-800 pt-10">
+      <h2 className="mb-6 flex items-center gap-2 text-xl font-bold text-ink-900 dark:text-ink-100">
         <MessageCircle size={20} /> Comments (
         {Array.isArray(comments) ? comments.length : 0})
       </h2>
@@ -64,10 +64,10 @@ export function CommentSection({
           onChange={(e) => setDraft(e.target.value)}
           placeholder="Share your thoughts…"
           rows={3}
-          className="w-full resize-none rounded-xl border border-ink-200 p-4 text-sm outline-none placeholder:text-ink-400 focus:border-brand-400 focus:ring-2 focus:ring-brand-100"
+          className="w-full resize-none rounded-xl border border-ink-200 dark:border-ink-700 p-4 text-sm outline-none placeholder:text-ink-400 dark:placeholder:text-ink-500 focus:border-brand-400 dark:focus:border-brand-600 focus:ring-2 focus:ring-brand-100 dark:focus:ring-brand-900/40"
         />
         <div className="mt-2 flex items-center justify-between">
-          {notice && <p className="text-xs text-ink-500">{notice}</p>}
+          {notice && <p className="text-xs text-ink-500 dark:text-ink-400">{notice}</p>}
           <Button
             type="submit"
             size="sm"
@@ -90,21 +90,21 @@ export function CommentSection({
               />
               <div className="flex-1">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-sm font-semibold text-ink-900">
+                  <span className="text-sm font-semibold text-ink-900 dark:text-ink-100">
                     {c.user?.name ?? "Anonymous"}
                   </span>
-                  <span className="text-xs text-ink-400">
+                  <span className="text-xs text-ink-400 dark:text-ink-500">
                     {timeAgo(c.createdAt)}
                   </span>
                 </div>
-                <p className="mt-1 text-sm leading-relaxed text-ink-700">
+                <p className="mt-1 text-sm leading-relaxed text-ink-700 dark:text-ink-300">
                   {c.content}
                 </p>
               </div>
             </li>
           ))}
         {(!Array.isArray(comments) || comments.length === 0) && (
-          <p className="text-sm text-ink-400">
+          <p className="text-sm text-ink-400 dark:text-ink-500">
             Be the first to share your thoughts.
           </p>
         )}

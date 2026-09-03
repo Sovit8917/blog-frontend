@@ -21,7 +21,7 @@ export function AffiliateLink({
       href={affiliateHref(slug)}
       target="_blank"
       rel="sponsored nofollow noopener noreferrer"
-      className={`inline-flex items-center gap-1 font-medium text-brand-600 underline decoration-brand-300 underline-offset-2 hover:text-brand-700 ${className}`}
+      className={`inline-flex items-center gap-1 font-medium text-brand-600 dark:text-brand-400 underline decoration-brand-300 underline-offset-2 hover:text-brand-700 dark:hover:text-brand-400 ${className}`}
     >
       {children}
       <ExternalLink size={13} className="opacity-60" />
