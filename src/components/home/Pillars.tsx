@@ -45,7 +45,9 @@ export function Pillars() {
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-50 dark:bg-brand-900/40 text-brand-600 dark:text-brand-400 transition group-hover:bg-brand-600 dark:group-hover:bg-brand-500 group-hover:text-white">
             <Icon size={19} />
           </div>
-          <h3 className="mt-4 text-base font-bold text-ink-900 dark:text-ink-100">{title}</h3>
+          <h3 className="mt-4 text-base font-bold text-ink-900 dark:text-ink-100">
+            {title}
+          </h3>
           <p className="mt-1.5 flex-1 text-sm leading-relaxed text-ink-500 dark:text-ink-400">
             {description}
           </p>

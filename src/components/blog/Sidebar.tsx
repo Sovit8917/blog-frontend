@@ -4,6 +4,7 @@ import { listTrendingPosts, listTags } from "@/lib/api";
 import { AdSlot } from "@/components/ads/AdSlot";
 import { Badge } from "@/components/ui/Badge";
 import { readingTimeLabel } from "@/lib/utils";
+import { FollowUsWidget } from "@/components/jobs/FollowUsWidget";
 
 /** Reusable right-rail: trending posts, tag cloud, sidebar ad — used on post + list pages. */
 export async function Sidebar() {
@@ -43,6 +44,8 @@ export async function Sidebar() {
         </ol>
       </div>
 
+      <FollowUsWidget />
+
       <AdSlot placement="SIDEBAR" />
 
       <div className="rounded-2xl border border-slate-200/80 dark:border-slate-700 bg-white/80 dark:bg-ink-900 p-5 shadow-sm backdrop-blur-md">
@@ -65,3 +68,4 @@ export async function Sidebar() {
     </aside>
   );
 }
+

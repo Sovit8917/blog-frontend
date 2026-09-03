@@ -81,6 +81,7 @@ export function ShareButton({
       channel: "linkedin" as Channel,
       label: "Share on LinkedIn",
       btnStyle: "bg-[#0A66C2] hover:bg-[#0A66C2]/90 hover:shadow-[#0A66C2]/30",
+      iconColor: "text-[#0A66C2] fill-[#0A66C2]",
       href: `https://www.linkedin.com/sharing/share-offsite/?url=${encoded}`,
       svgPath:
         "M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.2V10.9H6.46M7.83 6.25a1.62 1.62 0 0 0-1.63 1.62 1.63 1.63 0 1 0 3.25 0c0-.9-.73-1.62-1.62-1.62Z",
@@ -89,6 +90,7 @@ export function ShareButton({
       channel: "telegram" as Channel,
       label: "Share on Telegram",
       btnStyle: "bg-[#229ED9] hover:bg-[#229ED9]/90 hover:shadow-[#229ED9]/30",
+      iconColor: "text-[#229ED9] fill-[#229ED9]",
       href: `https://t.me/share/url?url=${encoded}&text=${encodedTitle}`,
       svgPath:
         "m20.665 3.717-17.73 6.837c-1.21.486-1.203 1.161-.222 1.462l4.552 1.42 10.532-6.645c.498-.303.953-.14.579.192l-8.533 7.701h-.002l-.313 4.67c.458 0 .66-.21.916-.458l2.199-2.138 4.573 3.378c.843.464 1.448.225 1.658-.785l2.997-14.113c.307-1.233-.472-1.792-1.506-1.521z",
@@ -97,6 +99,7 @@ export function ShareButton({
       channel: "whatsapp" as Channel,
       label: "Share on WhatsApp",
       btnStyle: "bg-[#25D366] hover:bg-[#25D366]/90 hover:shadow-[#25D366]/30",
+      iconColor: "text-[#25D366] fill-[#25D366]",
       href: `https://api.whatsapp.com/send?text=${encodedTitle}%20${encoded}`,
       svgPath:
         "M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.196 8.196 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24M8.53 7.33c-.16 0-.43.06-.66.31-.22.25-.86.84-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.53.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.06-.1-.23-.16-.48-.29s-1.47-.73-1.7-.81c-.23-.09-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.15.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.12-.56-1.35-.77-1.85-.2-.48-.4-.42-.56-.43-.14-.01-.3-.01-.47-.01Z",
@@ -105,6 +108,7 @@ export function ShareButton({
       channel: "x" as Channel,
       label: "Share on X",
       btnStyle: "bg-black hover:bg-neutral-900 hover:shadow-black/30",
+      iconColor: "text-black dark:text-white fill-current",
       href: `https://twitter.com/intent/tweet?url=${encoded}&text=${encodedTitle}`,
       svgPath:
         "M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z",
@@ -113,6 +117,7 @@ export function ShareButton({
       channel: "facebook" as Channel,
       label: "Share on Facebook",
       btnStyle: "bg-[#1877F2] hover:bg-[#1877F2]/90 hover:shadow-[#1877F2]/30",
+      iconColor: "text-[#1877F2] fill-[#1877F2]",
       href: `https://www.facebook.com/sharer/sharer.php?u=${encoded}`,
       svgPath:
         "M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z",

@@ -92,3 +92,43 @@ export async function getAdsenseSettings(): Promise<AdsenseSettings> {
     },
   };
 }
+
+export interface SocialLinks {
+  twitter: string;
+  linkedin: string;
+  github: string;
+  telegram: string;
+  whatsapp: string;
+  instagram: string;
+  facebook: string;
+}
+
+/**
+ * GET /settings?group=social -- Social links as set by the admin in
+ * Settings → Social links. Source of truth is the database (`social_links`
+ * setting) — no env vars, no endpoint-guessing. If the admin hasn't filled
+ * a field in, it comes back as '' and callers should just not render that
+ * icon.
+ */
+export async function getSocialLinks(): Promise<SocialLinks> {
+  const settings = await apiFetch<Record<string, any>>('/settings?group=social', {
+    revalidate: 300,
+    tags: ['settings:social'],
+  }).catch(() => ({}) as Record<string, any>);
+
+  const links = settings.social_links || settings || {};
+
+  return {
+    twitter: links.twitter || '',
+    linkedin: links.linkedin || '',
+    github: links.github || '',
+    telegram: links.telegram || '',
+    whatsapp: links.whatsapp || '',
+    instagram: links.instagram || '',
+    facebook: links.facebook || '',
+  };
+}
+
+
+
+

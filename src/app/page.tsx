@@ -137,7 +137,9 @@ export default async function HomePage() {
           {/* INTEREST — quick jump into a category right under the hero. */}
           <div>
             <div className="mb-6 flex items-center justify-between">
-              <h2 className="text-xl font-bold text-ink-900 dark:text-ink-100">Latest stories</h2>
+              <h2 className="text-xl font-bold text-ink-900 dark:text-ink-100">
+                Latest stories
+              </h2>
               <nav className="hidden gap-1 sm:flex">
                 {safeCategories.slice(0, 4).map((c) => (
                   <Link
