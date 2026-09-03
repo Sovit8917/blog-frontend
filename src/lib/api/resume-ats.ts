@@ -1,7 +1,5 @@
-import { apiFetch, ApiRequestError } from './client';
+import { apiFetch, ApiRequestError, API_BASE } from './client';
 import type { ResumeAnalysisResult, ResumeJobMatch, ResumeRecommendedJob } from '@/types';
-
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
 
 /**
  * Candidate ATS (P2) — heuristic resume scoring, per-job match scoring, and
