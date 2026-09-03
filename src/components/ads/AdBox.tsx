@@ -31,26 +31,34 @@ export function AdBox({
   if (broken || !imageUrl) return null;
 
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex w-full flex-col items-center justify-center">
       <p className="mb-1.5 text-center text-[10px] font-medium uppercase tracking-wider text-ink-300">
         Advertisement
       </p>
-      <AdImpressionTracker adId={adId}>
-        <AdClickLink
-          adId={adId}
-          targetUrl={targetUrl}
-          className={`relative block w-full overflow-hidden rounded-xl ring-1 ring-ink-100 ${slotClassName}`}
-        >
-          <Image
-            src={imageUrl}
-            alt={title}
-            fill
-            className="object-cover transition group-hover:scale-[1.02]"
-            sizes="(max-width: 768px) 100vw, 728px"
-            onError={() => setBroken(true)}
-          />
-        </AdClickLink>
-      </AdImpressionTracker>
+      {/*
+        The sizing classes (aspect-ratio / fixed height from SLOT_SIZES)
+        live on this plain div, not on the <a> below. next/image's `fill`
+        mode needs every ancestor down to this point to resolve to a real
+        height; putting the size on a block-level div and then forcing
+        `h-full w-full` on every element in between (AdImpressionTracker,
+        AdClickLink) keeps that chain intact. Previously the size classes
+        were on the <a> itself with an unstyled div between it and here,
+        which collapsed to height 0 and rendered the ad invisible.
+      */}
+      <div className={`relative w-full overflow-hidden rounded-xl ring-1 ring-ink-100 ${slotClassName}`}>
+        <AdImpressionTracker adId={adId}>
+          <AdClickLink adId={adId} targetUrl={targetUrl} className="block h-full w-full">
+            <Image
+              src={imageUrl}
+              alt={title}
+              fill
+              className="object-cover transition group-hover:scale-[1.02]"
+              sizes="(max-width: 768px) 100vw, 728px"
+              onError={() => setBroken(true)}
+            />
+          </AdClickLink>
+        </AdImpressionTracker>
+      </div>
     </div>
   );
 }

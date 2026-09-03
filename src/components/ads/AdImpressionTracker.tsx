@@ -11,7 +11,15 @@ import { useEffect, useRef } from 'react';
  * backend). It's kept as the hook point for real viewability tracking if a
  * `POST /ads/:id/impression` endpoint is ever added.
  */
-export function AdImpressionTracker({ adId, children }: { adId: string; children: React.ReactNode }) {
+export function AdImpressionTracker({
+  adId,
+  children,
+  className = '',
+}: {
+  adId: string;
+  children: React.ReactNode;
+  className?: string;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const fired = useRef(false);
 
@@ -42,5 +50,15 @@ export function AdImpressionTracker({ adId, children }: { adId: string; children
     };
   }, [adId]);
 
-  return <div ref={ref}>{children}</div>;
+  // w-full h-full is required here: this div sits between the sized slot
+  // wrapper (see AdBox) and the next/image `fill` element. A plain
+  // unstyled div collapses to height 0 (block default is height: auto),
+  // which breaks the size chain fill relies on and silently renders the
+  // image at 0x0 -- console warns "parent element ... has not been styled
+  // to have a set height" and the ad box appears visually empty.
+  return (
+    <div ref={ref} className={`h-full w-full ${className}`}>
+      {children}
+    </div>
+  );
 }
