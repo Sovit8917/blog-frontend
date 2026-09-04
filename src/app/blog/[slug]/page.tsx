@@ -30,8 +30,15 @@ import { getAffiliateRecommendations } from "@/lib/api/monetization";
 import { Avatar } from "@/components/ui/Avatar";
 import { Badge } from "@/components/ui/Badge";
 import { formatDate, readingTimeLabel } from "@/lib/utils";
+import type { DifficultyLevel } from "@/types";
 
 export const revalidate = 120;
+
+const DIFFICULTY_LABELS: Record<DifficultyLevel, string> = {
+  BEGINNER: "Beginner",
+  INTERMEDIATE: "Intermediate",
+  ADVANCED: "Advanced",
+};
 
 interface Props {
   params: { slug: string };
@@ -244,6 +251,76 @@ export default async function PostPage({ params }: Props) {
                       className="object-cover"
                       sizes="(max-width: 1024px) 100vw, 896px"
                     />
+                  </div>
+                )}
+
+                {/* Tech/Software/AI details — only present on tech-category posts */}
+                {(post.difficultyLevel ||
+                  (post.techStack && post.techStack.length > 0) ||
+                  (post.aiModelsUsed && post.aiModelsUsed.length > 0) ||
+                  (post.toolsUsed && post.toolsUsed.length > 0) ||
+                  post.githubUrl ||
+                  post.demoUrl ||
+                  post.prerequisites) && (
+                  <div className="mt-8 rounded-xl border border-slate-200/70 dark:border-slate-700 bg-slate-50/60 dark:bg-slate-900/40 p-5 space-y-3">
+                    <div className="flex flex-wrap items-center gap-2">
+                      {post.difficultyLevel && (
+                        <Badge variant="outline" className="px-2.5 py-1 text-xs font-semibold">
+                          {DIFFICULTY_LABELS[post.difficultyLevel]}
+                        </Badge>
+                      )}
+                      {post.techStack?.map((t) => (
+                        <Badge key={t} variant="outline" className="px-2.5 py-1 text-xs font-medium">
+                          {t}
+                        </Badge>
+                      ))}
+                    </div>
+
+                    {post.aiModelsUsed && post.aiModelsUsed.length > 0 && (
+                      <p className="text-xs text-ink-500 dark:text-ink-400">
+                        <span className="font-semibold text-ink-700 dark:text-ink-300">AI models used:</span>{" "}
+                        {post.aiModelsUsed.join(", ")}
+                      </p>
+                    )}
+
+                    {post.toolsUsed && post.toolsUsed.length > 0 && (
+                      <p className="text-xs text-ink-500 dark:text-ink-400">
+                        <span className="font-semibold text-ink-700 dark:text-ink-300">Tools used:</span>{" "}
+                        {post.toolsUsed.join(", ")}
+                      </p>
+                    )}
+
+                    {post.prerequisites && (
+                      <p className="text-xs text-ink-500 dark:text-ink-400">
+                        <span className="font-semibold text-ink-700 dark:text-ink-300">Prerequisites:</span>{" "}
+                        {post.prerequisites}
+                      </p>
+                    )}
+
+                    {(post.githubUrl || post.demoUrl) && (
+                      <div className="flex flex-wrap gap-3 pt-1">
+                        {post.githubUrl && (
+                          <a
+                            href={post.githubUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs font-semibold text-brand-600 dark:text-brand-400 hover:underline"
+                          >
+                            View source on GitHub →
+                          </a>
+                        )}
+                        {post.demoUrl && (
+                          <a
+                            href={post.demoUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs font-semibold text-brand-600 dark:text-brand-400 hover:underline"
+                          >
+                            View live demo →
+                          </a>
+                        )}
+                      </div>
+                    )}
                   </div>
                 )}
 

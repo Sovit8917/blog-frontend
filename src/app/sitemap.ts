@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next';
+import { SITE } from '@/lib/seo/metadata';
 
 /**
  * Delegates to the backend's own GET /sitemap.xml (which already unions posts,
@@ -8,20 +9,35 @@ import type { MetadataRoute } from 'next';
  */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = process.env.NEXT_PUBLIC_API_URL ?? '';
-  // Same route-prefix issue as lib/api/client.ts: the backend mounts this
-  // under `/api/v1/sitemap.xml`, not `/sitemap.xml` (see setGlobalPrefix in
-  // the backend's main.ts).
   const prefix = (process.env.NEXT_PUBLIC_API_PREFIX ?? '/api/v1').replace(/\/+$/, '');
-  const res = await fetch(`${base}${prefix}/sitemap.xml`, { next: { revalidate: 3600 } });
-  const xml = await res.text();
 
-  const entries: MetadataRoute.Sitemap = [];
-  const urlRegex = /<loc>(.*?)<\/loc>(?:<lastmod>(.*?)<\/lastmod>)?/g;
-  let match;
-  while ((match = urlRegex.exec(xml))) {
-    const loc = match[1];
-    if (!loc) continue;
-    entries.push({ url: loc, lastModified: match[2] ? new Date(match[2]) : undefined });
+  try {
+    const res = await fetch(`${base}${prefix}/sitemap.xml`, { next: { revalidate: 3600 } });
+    if (!res.ok) {
+      throw new Error(`Failed to fetch sitemap: ${res.status} ${res.statusText}`);
+    }
+    const xml = await res.text();
+
+    const entries: MetadataRoute.Sitemap = [];
+    const urlRegex = /<loc>(.*?)<\/loc>(?:<lastmod>(.*?)<\/lastmod>)?/g;
+    let match;
+    while ((match = urlRegex.exec(xml))) {
+      const loc = match[1];
+      if (!loc) continue;
+      entries.push({ url: loc, lastModified: match[2] ? new Date(match[2]) : undefined });
+    }
+    return entries;
+  } catch (error) {
+    console.warn('[sitemap] Failed to fetch sitemap from backend, returning fallback routes:', error);
+    // Fallback static routes so build doesn't fail when backend is offline
+    const baseUrl = SITE.url || 'http://localhost:3000';
+    return [
+      { url: baseUrl, lastModified: new Date() },
+      { url: `${baseUrl}/blog`, lastModified: new Date() },
+      { url: `${baseUrl}/jobs`, lastModified: new Date() },
+      { url: `${baseUrl}/categories`, lastModified: new Date() },
+      { url: `${baseUrl}/tags`, lastModified: new Date() },
+    ];
   }
-  return entries;
 }
+

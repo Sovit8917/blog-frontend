@@ -110,7 +110,17 @@ export interface Post {
    * author/editor explicitly linked jobs on this post.
    */
   linkedJobs?: JobCard[];
+  /** Tech/Software/AI content details — populated only for tech-category posts. */
+  techStack?: string[];
+  difficultyLevel?: DifficultyLevel | null;
+  githubUrl?: string | null;
+  demoUrl?: string | null;
+  aiModelsUsed?: string[];
+  toolsUsed?: string[];
+  prerequisites?: string | null;
 }
+
+export type DifficultyLevel = 'BEGINNER' | 'INTERMEDIATE' | 'ADVANCED';
 
 export type PostCard = Pick<
   Post,
