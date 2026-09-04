@@ -481,17 +481,19 @@ export default async function JobDetailPage({ params }: Props) {
               {/* ---- Bottom CTA + share row — the closing "Apply" moment once the
                   candidate has read the full write-up, mirroring how job boards
                   end an article with a big apply button and share icons. ---- */}
-              <div className="mt-10 rounded-xl bg-ink-50/70 dark:bg-ink-900 p-5 sm:p-6">
-                <div className="flex flex-wrap items-center justify-between gap-4">
-                  <ApplyJobButton
-                    jobId={job.id}
-                    jobSlug={job.slug}
-                    applyUrl={job.applyUrl}
-                    allowInternalApply={job.allowInternalApply}
-                    alreadyApplied={alreadyApplied}
-                  />
-                  <div className="flex items-center gap-3">
-                    <span className="text-xs font-semibold uppercase tracking-wider text-ink-400 dark:text-ink-500">
+              <div className="mt-10 rounded-2xl bg-ink-50/70 dark:bg-ink-900/90 border border-slate-200/70 dark:border-slate-800 p-4 sm:p-6">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+                  <div className="w-full sm:w-auto">
+                    <ApplyJobButton
+                      jobId={job.id}
+                      jobSlug={job.slug}
+                      applyUrl={job.applyUrl}
+                      allowInternalApply={job.allowInternalApply}
+                      alreadyApplied={alreadyApplied}
+                    />
+                  </div>
+                  <div className="flex flex-wrap items-center gap-2.5 pt-2 sm:pt-0 border-t border-slate-200/60 dark:border-slate-800 sm:border-t-0">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-ink-400 dark:text-ink-500 shrink-0">
                       Share
                     </span>
                     <ShareButton

@@ -91,3 +91,44 @@ div:has(> ins.adsbygoogle[data-ad-status="unfilled"]) {
   display: none !important;
 }
 
+/* Elegant custom scrollbar for Table of Contents container */
+.toc-scroll {
+  scrollbar-width: thin !important;
+  scrollbar-color: rgba(148, 163, 184, 0.4) transparent !important;
+}
+.toc-scroll::-webkit-scrollbar {
+  display: block !important;
+  width: 4px !important;
+}
+.toc-scroll::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+.toc-scroll::-webkit-scrollbar-thumb {
+  background-color: rgba(148, 163, 184, 0.4) !important;
+  border-radius: 9999px !important;
+}
+.toc-scroll:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(100, 116, 139, 0.6) !important;
+}
+
+/* Fix leading space inside markdown code blocks and pre */
+.prose pre {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  background-color: transparent !important;
+  padding: 1rem 1.25rem !important;
+}
+
+.prose pre code {
+  background-color: transparent !important;
+  border-width: 0 !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  font-weight: 400 !important;
+  color: inherit !important;
+  font-size: inherit !important;
+}
+
+
+
+

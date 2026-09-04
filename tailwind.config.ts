@@ -39,43 +39,101 @@ const config: Config = {
       typography: ({ theme }: any) => ({
         DEFAULT: {
           css: {
-            "--tw-prose-body": theme("colors.ink[700]"),
-            "--tw-prose-headings": theme("colors.ink[900]"),
+            "--tw-prose-body": theme("colors.ink[800]"),
+            "--tw-prose-headings": theme("colors.ink[950]"),
             "--tw-prose-links": theme("colors.brand[600]"),
-            "--tw-prose-bold": theme("colors.ink[900]"),
-            "--tw-prose-quotes": theme("colors.ink[600]"),
+            "--tw-prose-bold": theme("colors.ink[950]"),
+            "--tw-prose-quotes": theme("colors.ink[700]"),
             "--tw-prose-code": theme("colors.brand[700]"),
+            "--tw-prose-hr": theme("colors.ink[200]"),
             maxWidth: "none",
             fontSize: "1rem",
-            lineHeight: "1.65",
-            p: { marginTop: "0.85em", marginBottom: "0.85em" },
-            "h1, h2, h3, h4": {
-              marginTop: "1.2em",
-              marginBottom: "0.5em",
-              scrollMarginTop: "5rem",
+            lineHeight: "1.7",
+            letterSpacing: "-0.011em",
+            p: {
+              marginTop: "0.65em",
+              marginBottom: "0.65em",
             },
-            "ul, ol": { marginTop: "0.6em", marginBottom: "0.6em" },
-            li: { marginTop: "0.25em", marginBottom: "0.25em" },
-            a: { textUnderlineOffset: "3px", fontWeight: "500" },
+            h1: {
+              fontSize: "2rem",
+              marginTop: "1.2em",
+              marginBottom: "0.4em",
+              lineHeight: "1.25",
+              fontWeight: "700",
+              letterSpacing: "-0.025em",
+            },
+            h2: {
+              fontSize: "1.45rem",
+              marginTop: "1.25em",
+              marginBottom: "0.4em",
+              lineHeight: "1.3",
+              fontWeight: "700",
+              letterSpacing: "-0.02em",
+              scrollMarginTop: "5.5rem",
+            },
+            h3: {
+              fontSize: "1.2rem",
+              marginTop: "1em",
+              marginBottom: "0.3em",
+              lineHeight: "1.35",
+              fontWeight: "600",
+              letterSpacing: "-0.015em",
+              scrollMarginTop: "5.5rem",
+            },
+            h4: {
+              fontSize: "1.05rem",
+              marginTop: "0.85em",
+              marginBottom: "0.25em",
+              lineHeight: "1.4",
+              fontWeight: "600",
+              scrollMarginTop: "5.5rem",
+            },
+            "ul, ol": {
+              marginTop: "0.5em",
+              marginBottom: "0.5em",
+              paddingLeft: "1.25em",
+            },
+            li: {
+              marginTop: "0.2em",
+              marginBottom: "0.2em",
+              lineHeight: "1.6",
+            },
+            hr: {
+              marginTop: "1.5em",
+              marginBottom: "1.5em",
+              borderColor: theme("colors.ink[200]"),
+            },
+            a: {
+              textUnderlineOffset: "3px",
+              fontWeight: "500",
+              transition: "color 0.15s ease",
+            },
+            strong: {
+              fontWeight: "600",
+              color: theme("colors.ink[950]"),
+            },
           },
         },
-        // Powers `dark:prose-invert` on long-form content (blog posts, job
-        // descriptions) — mapped onto our own ink/brand scale rather than
-        // the plugin's default gray so dark reading matches the rest of
-        // the dark theme.
+        // Powers `dark:prose-invert` on long-form content
         invert: {
           css: {
-            "--tw-prose-invert-body": theme("colors.ink[300]"),
+            "--tw-prose-invert-body": theme("colors.ink[200]"),
             "--tw-prose-invert-headings": theme("colors.ink[50]"),
             "--tw-prose-invert-links": theme("colors.brand[400]"),
             "--tw-prose-invert-bold": theme("colors.ink[50]"),
             "--tw-prose-invert-quotes": theme("colors.ink[300]"),
-            "--tw-prose-invert-code": theme("colors.brand[400]"),
-            "--tw-prose-invert-bullets": theme("colors.ink[600]"),
+            "--tw-prose-invert-code": theme("colors.brand[300]"),
+            "--tw-prose-invert-bullets": theme("colors.ink[500]"),
             "--tw-prose-invert-hr": theme("colors.ink[800]"),
             "--tw-prose-invert-th-borders": theme("colors.ink[700]"),
             "--tw-prose-invert-td-borders": theme("colors.ink[800]"),
             "--tw-prose-invert-captions": theme("colors.ink[400]"),
+            hr: {
+              borderColor: theme("colors.ink[800]"),
+            },
+            strong: {
+              color: theme("colors.ink[50]"),
+            },
           },
         },
       }),

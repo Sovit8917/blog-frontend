@@ -232,14 +232,14 @@ export function ShareButton({
   }
 
   return (
-    <div className={cn("flex items-center gap-2 py-0.5", className)}>
+    <div className={cn("flex flex-wrap items-center gap-1.5 sm:gap-2 py-0.5 max-w-full", className)}>
       {canNativeShare && (
         <button
           onClick={nativeShare}
           aria-label="Share"
-          className="flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100 dark:bg-ink-800 text-slate-700 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700 shadow-xs transition hover:bg-slate-200 dark:hover:bg-ink-700"
+          className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-slate-100 dark:bg-ink-800 text-slate-700 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700 shadow-xs transition hover:bg-slate-200 dark:hover:bg-ink-700"
         >
-          <Share2 size={17} />
+          <Share2 size={16} />
         </button>
       )}
 
@@ -252,12 +252,12 @@ export function ShareButton({
           aria-label={label}
           onClick={() => track(channel)}
           className={cn(
-            "flex h-10 w-10 items-center justify-center rounded-2xl text-white shadow-xs transition hover:opacity-90",
+            "flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl text-white shadow-xs transition hover:opacity-90",
             btnStyle,
           )}
         >
           <svg
-            className="h-5 w-5 fill-white"
+            className="h-4.5 w-4.5 sm:h-5 sm:w-5 fill-white"
             viewBox="0 0 24 24"
           >
             <path d={svgPath} />
@@ -270,7 +270,7 @@ export function ShareButton({
         onClick={copy}
         aria-label="Copy link"
         className={cn(
-          "flex h-10 items-center gap-2 rounded-2xl border px-3.5 text-xs font-semibold shadow-xs transition",
+          "flex h-9 sm:h-10 shrink-0 items-center gap-1.5 sm:gap-2 rounded-xl sm:rounded-2xl border px-3 text-xs font-semibold shadow-xs transition",
           copied
             ? "border-emerald-500 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 ring-1 ring-emerald-200 dark:ring-emerald-800"
             : "border-slate-200/90 dark:border-slate-700 bg-white dark:bg-ink-900 text-slate-700 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-100",
@@ -279,18 +279,18 @@ export function ShareButton({
         {copied ? (
           <>
             <Check
-              size={15}
+              size={14}
               className="text-emerald-600 dark:text-emerald-400 animate-in zoom-in-75 duration-100"
             />
-            <span>Copied!</span>
+            <span className="hidden xs:inline">Copied!</span>
           </>
         ) : (
           <>
             <Copy
-              size={15}
+              size={14}
               className="text-slate-500 dark:text-slate-400 group-hover:text-slate-800 dark:group-hover:text-slate-200 transition-colors"
             />
-            <span>Copy Link</span>
+            <span className="hidden xs:inline">Copy</span>
           </>
         )}
       </button>

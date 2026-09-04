@@ -116,7 +116,10 @@ export default async function PostPage({ params }: Props) {
         <article className="container-page">
           {/* Breadcrumb */}
           <nav className="mb-6 flex items-center gap-2 text-xs font-medium text-ink-400 dark:text-ink-500">
-            <Link href="/" className="transition hover:text-brand-600 dark:hover:text-brand-400">
+            <Link
+              href="/"
+              className="transition hover:text-brand-600 dark:hover:text-brand-400"
+            >
               Home
             </Link>
             {post.category && (
@@ -248,6 +251,7 @@ export default async function PostPage({ params }: Props) {
                       alt={post.title}
                       fill
                       priority
+                      unoptimized
                       className="object-cover"
                       sizes="(max-width: 1024px) 100vw, 896px"
                     />
@@ -265,12 +269,19 @@ export default async function PostPage({ params }: Props) {
                   <div className="mt-8 rounded-xl border border-slate-200/70 dark:border-slate-700 bg-slate-50/60 dark:bg-slate-900/40 p-5 space-y-3">
                     <div className="flex flex-wrap items-center gap-2">
                       {post.difficultyLevel && (
-                        <Badge variant="outline" className="px-2.5 py-1 text-xs font-semibold">
+                        <Badge
+                          variant="outline"
+                          className="px-2.5 py-1 text-xs font-semibold"
+                        >
                           {DIFFICULTY_LABELS[post.difficultyLevel]}
                         </Badge>
                       )}
                       {post.techStack?.map((t) => (
-                        <Badge key={t} variant="outline" className="px-2.5 py-1 text-xs font-medium">
+                        <Badge
+                          key={t}
+                          variant="outline"
+                          className="px-2.5 py-1 text-xs font-medium"
+                        >
                           {t}
                         </Badge>
                       ))}
@@ -278,21 +289,27 @@ export default async function PostPage({ params }: Props) {
 
                     {post.aiModelsUsed && post.aiModelsUsed.length > 0 && (
                       <p className="text-xs text-ink-500 dark:text-ink-400">
-                        <span className="font-semibold text-ink-700 dark:text-ink-300">AI models used:</span>{" "}
+                        <span className="font-semibold text-ink-700 dark:text-ink-300">
+                          AI models used:
+                        </span>{" "}
                         {post.aiModelsUsed.join(", ")}
                       </p>
                     )}
 
                     {post.toolsUsed && post.toolsUsed.length > 0 && (
                       <p className="text-xs text-ink-500 dark:text-ink-400">
-                        <span className="font-semibold text-ink-700 dark:text-ink-300">Tools used:</span>{" "}
+                        <span className="font-semibold text-ink-700 dark:text-ink-300">
+                          Tools used:
+                        </span>{" "}
                         {post.toolsUsed.join(", ")}
                       </p>
                     )}
 
                     {post.prerequisites && (
                       <p className="text-xs text-ink-500 dark:text-ink-400">
-                        <span className="font-semibold text-ink-700 dark:text-ink-300">Prerequisites:</span>{" "}
+                        <span className="font-semibold text-ink-700 dark:text-ink-300">
+                          Prerequisites:
+                        </span>{" "}
                         {post.prerequisites}
                       </p>
                     )}
@@ -325,12 +342,12 @@ export default async function PostPage({ params }: Props) {
                 )}
 
                 {/* Article Content */}
-                <div className="mt-10">
+                <div className="mt-6">
                   <PostContent content={post.content} />
                 </div>
 
                 {/* In-content Ad */}
-                <AdSlot placement="IN_CONTENT" className="my-10" />
+                <AdSlot placement="IN_CONTENT" className="my-6" />
 
                 {/* Affiliate product recommendations */}
                 <AffiliateRecommendations links={affiliatePicks} />
