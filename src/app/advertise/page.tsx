@@ -162,7 +162,7 @@ export default function AdvertisePage() {
               Become an employer <ArrowRight size={15} />
             </Link>
             <a
-              href="mailto:partnerships@devnexa.com"
+              href="mailto:partnerships@karyvio.com"
               className="inline-flex items-center gap-2 rounded-lg bg-white dark:bg-ink-900 px-5 py-2.5 text-sm font-semibold text-ink-700 dark:text-ink-300 ring-1 ring-inset ring-ink-200 dark:ring-ink-700 transition hover:bg-ink-50 dark:hover:bg-ink-800"
             >
               Talk to our partnerships team
@@ -253,7 +253,7 @@ export default function AdvertisePage() {
                   ))}
                 </ul>
                 <a
-                  href="mailto:partnerships@devnexa.com"
+                  href="mailto:partnerships@karyvio.com"
                   className={`mt-6 inline-flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold shadow-sm transition ${
                     highlighted
                       ? "bg-brand-600 dark:bg-brand-500 text-white hover:bg-brand-700 dark:hover:bg-brand-600"
@@ -300,7 +300,7 @@ export default function AdvertisePage() {
             </p>
           </div>
           <a
-            href="mailto:partnerships@devnexa.com"
+            href="mailto:partnerships@karyvio.com"
             className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-white dark:bg-ink-900 px-5 py-2.5 text-sm font-semibold text-brand-700 dark:text-brand-400 shadow-sm transition hover:bg-brand-50 dark:hover:bg-brand-900/40"
           >
             Get in touch <ArrowRight size={15} />

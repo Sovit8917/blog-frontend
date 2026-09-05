@@ -266,7 +266,7 @@ export async function Footer() {
 
           {/* Bottom copyright bar */}
           <div className="mt-6 flex flex-col gap-2 border-t border-slate-300/70 dark:border-slate-600 pt-4 text-xs text-slate-500 dark:text-slate-400 sm:flex-row sm:items-center sm:justify-between">
-            <p>© {new Date().getFullYear()} Devnexa. All rights reserved.</p>
+            <p>© {new Date().getFullYear()} Karyvio. All rights reserved.</p>
             <div className="flex flex-wrap items-center gap-4 text-slate-600 dark:text-slate-400">
               <Link href="/about" className="transition hover:text-slate-900 dark:hover:text-slate-100">
                 About

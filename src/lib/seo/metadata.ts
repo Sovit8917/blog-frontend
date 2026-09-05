@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { stripMarkdown, truncate } from '@/lib/utils';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
-const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME ?? 'Devnexa';
+const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME ?? 'Karyvio';
 
 interface PostSeoInput {
   slug: string;
@@ -29,7 +29,7 @@ export function buildPostMetadata(post: PostSeoInput): Metadata {
   const url = post.canonicalUrl || `${SITE_URL}/blog/${post.slug}`;
 
   return {
-    title: `${title} | ${SITE_NAME}`,
+    title,
     description,
     keywords: post.seoKeywords || undefined,
     alternates: { canonical: url },
@@ -57,7 +57,7 @@ export function buildListMetadata(input: {
 }): Metadata {
   const url = `${SITE_URL}${input.path}`;
   return {
-    title: `${input.title} | ${SITE_NAME}`,
+    title: input.title,
     description: input.description,
     alternates: { canonical: url },
     openGraph: {

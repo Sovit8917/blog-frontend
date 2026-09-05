@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/lib/auth/AuthProvider";
 import { LogIn, LogOut, Sparkles } from "lucide-react";
+import type { Category } from "@/types";
 import { ThemeToggle } from "./ThemeToggle";
 
 type NavItem = { href: string; label: string };
