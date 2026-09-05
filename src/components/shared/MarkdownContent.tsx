@@ -111,21 +111,106 @@ function CodeBlock({
 // Icon dictionary matching common tech & career keywords
 function getStepIcon(text: string): LucideIcon {
   const lower = text.toLowerCase();
-  if (lower.includes("fundament") || lower.includes("computer") || lower.includes("hardware") || lower.includes("cpu")) return Cpu;
-  if (lower.includes("network") || lower.includes("web") || lower.includes("internet") || lower.includes("dns")) return Globe;
-  if (lower.includes("linux") || lower.includes("unix") || lower.includes("os") || lower.includes("terminal") || lower.includes("bash") || lower.includes("shell") || lower.includes("cli")) return Terminal;
-  if (lower.includes("secur") || lower.includes("cyber") || lower.includes("protect") || lower.includes("auth")) return ShieldAlert;
-  if (lower.includes("script") || lower.includes("code") || lower.includes("python") || lower.includes("program") || lower.includes("javascript")) return Code2;
-  if (lower.includes("tool") || lower.includes("utility") || lower.includes("devops") || lower.includes("git")) return Wrench;
-  if (lower.includes("lab") || lower.includes("practice") || lower.includes("hands-on") || lower.includes("test")) return FlaskConical;
-  if (lower.includes("specializ") || lower.includes("target") || lower.includes("goal") || lower.includes("path")) return Target;
-  if (lower.includes("project") || lower.includes("build") || lower.includes("portfolio") && lower.includes("build")) return Layers;
-  if (lower.includes("resume") || lower.includes("cv") || lower.includes("document")) return FileSpreadsheet;
-  if (lower.includes("interview") || lower.includes("mock") || lower.includes("people") || lower.includes("communicat")) return Users2;
-  if (lower.includes("job") || lower.includes("role") || lower.includes("hire") || lower.includes("career") || lower.includes("apply")) return Briefcase;
+  if (
+    lower.includes("fundament") ||
+    lower.includes("computer") ||
+    lower.includes("hardware") ||
+    lower.includes("cpu")
+  )
+    return Cpu;
+  if (
+    lower.includes("network") ||
+    lower.includes("web") ||
+    lower.includes("internet") ||
+    lower.includes("dns")
+  )
+    return Globe;
+  if (
+    lower.includes("linux") ||
+    lower.includes("unix") ||
+    lower.includes("os") ||
+    lower.includes("terminal") ||
+    lower.includes("bash") ||
+    lower.includes("shell") ||
+    lower.includes("cli")
+  )
+    return Terminal;
+  if (
+    lower.includes("secur") ||
+    lower.includes("cyber") ||
+    lower.includes("protect") ||
+    lower.includes("auth")
+  )
+    return ShieldAlert;
+  if (
+    lower.includes("script") ||
+    lower.includes("code") ||
+    lower.includes("python") ||
+    lower.includes("program") ||
+    lower.includes("javascript")
+  )
+    return Code2;
+  if (
+    lower.includes("tool") ||
+    lower.includes("utility") ||
+    lower.includes("devops") ||
+    lower.includes("git")
+  )
+    return Wrench;
+  if (
+    lower.includes("lab") ||
+    lower.includes("practice") ||
+    lower.includes("hands-on") ||
+    lower.includes("test")
+  )
+    return FlaskConical;
+  if (
+    lower.includes("specializ") ||
+    lower.includes("target") ||
+    lower.includes("goal") ||
+    lower.includes("path")
+  )
+    return Target;
+  if (
+    lower.includes("project") ||
+    lower.includes("build") ||
+    (lower.includes("portfolio") && lower.includes("build"))
+  )
+    return Layers;
+  if (
+    lower.includes("resume") ||
+    lower.includes("cv") ||
+    lower.includes("document")
+  )
+    return FileSpreadsheet;
+  if (
+    lower.includes("interview") ||
+    lower.includes("mock") ||
+    lower.includes("people") ||
+    lower.includes("communicat")
+  )
+    return Users2;
+  if (
+    lower.includes("job") ||
+    lower.includes("role") ||
+    lower.includes("hire") ||
+    lower.includes("career") ||
+    lower.includes("apply")
+  )
+    return Briefcase;
   if (lower.includes("database") || lower.includes("sql")) return Database;
-  if (lower.includes("server") || lower.includes("cloud") || lower.includes("aws")) return Server;
-  if (lower.includes("learn") || lower.includes("study") || lower.includes("book")) return BookOpen;
+  if (
+    lower.includes("server") ||
+    lower.includes("cloud") ||
+    lower.includes("aws")
+  )
+    return Server;
+  if (
+    lower.includes("learn") ||
+    lower.includes("study") ||
+    lower.includes("book")
+  )
+    return BookOpen;
   if (lower.includes("certif") || lower.includes("degree")) return Award;
   return Sparkles;
 }
@@ -133,54 +218,72 @@ function getStepIcon(text: string): LucideIcon {
 // Curated vibrant theme themes for roadmap items matching reference aesthetics
 const COLOR_THEMES = [
   {
-    gradient: "from-blue-500/10 via-sky-500/5 to-white dark:from-blue-950/40 dark:via-ink-900/90 dark:to-ink-900",
-    border: "border-blue-200/80 dark:border-blue-500/30 hover:border-blue-400 dark:hover:border-blue-400",
-    nodePill: "bg-blue-100 dark:bg-blue-950/80 text-blue-600 dark:text-blue-400 border border-blue-300 dark:border-blue-700/60",
+    gradient:
+      "from-blue-500/10 via-sky-500/5 to-white dark:from-blue-950/40 dark:via-ink-900/90 dark:to-ink-900",
+    border:
+      "border-blue-200/80 dark:border-blue-500/30 hover:border-blue-400 dark:hover:border-blue-400",
+    nodePill:
+      "bg-blue-100 dark:bg-blue-950/80 text-blue-600 dark:text-blue-400 border border-blue-300 dark:border-blue-700/60",
     nodeInner: "bg-blue-600 text-white shadow-sm shadow-blue-500/40",
     iconBox: "bg-blue-600 text-white shadow-md shadow-blue-500/30",
     glow: "hover:shadow-blue-500/15",
     line: "#3b82f6",
   },
   {
-    gradient: "from-emerald-500/10 via-teal-500/5 to-white dark:from-emerald-950/40 dark:via-ink-900/90 dark:to-ink-900",
-    border: "border-emerald-200/80 dark:border-emerald-500/30 hover:border-emerald-400 dark:hover:border-emerald-400",
-    nodePill: "bg-emerald-100 dark:bg-emerald-950/80 text-emerald-600 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-700/60",
+    gradient:
+      "from-emerald-500/10 via-teal-500/5 to-white dark:from-emerald-950/40 dark:via-ink-900/90 dark:to-ink-900",
+    border:
+      "border-emerald-200/80 dark:border-emerald-500/30 hover:border-emerald-400 dark:hover:border-emerald-400",
+    nodePill:
+      "bg-emerald-100 dark:bg-emerald-950/80 text-emerald-600 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-700/60",
     nodeInner: "bg-emerald-600 text-white shadow-sm shadow-emerald-500/40",
     iconBox: "bg-emerald-600 text-white shadow-md shadow-emerald-500/30",
     glow: "hover:shadow-emerald-500/15",
     line: "#10b981",
   },
   {
-    gradient: "from-amber-400/15 via-yellow-500/5 to-white dark:from-amber-950/40 dark:via-ink-900/90 dark:to-ink-900",
-    border: "border-amber-200/80 dark:border-amber-500/30 hover:border-amber-400 dark:hover:border-amber-400",
-    nodePill: "bg-amber-100 dark:bg-amber-950/80 text-amber-600 dark:text-amber-400 border border-amber-300 dark:border-amber-700/60",
+    gradient:
+      "from-amber-400/15 via-yellow-500/5 to-white dark:from-amber-950/40 dark:via-ink-900/90 dark:to-ink-900",
+    border:
+      "border-amber-200/80 dark:border-amber-500/30 hover:border-amber-400 dark:hover:border-amber-400",
+    nodePill:
+      "bg-amber-100 dark:bg-amber-950/80 text-amber-600 dark:text-amber-400 border border-amber-300 dark:border-amber-700/60",
     nodeInner: "bg-amber-500 text-white shadow-sm shadow-amber-500/40",
     iconBox: "bg-amber-500 text-white shadow-md shadow-amber-500/30",
     glow: "hover:shadow-amber-500/15",
     line: "#f59e0b",
   },
   {
-    gradient: "from-rose-500/10 via-pink-500/5 to-white dark:from-rose-950/40 dark:via-ink-900/90 dark:to-ink-900",
-    border: "border-rose-200/80 dark:border-rose-500/30 hover:border-rose-400 dark:hover:border-rose-400",
-    nodePill: "bg-rose-100 dark:bg-rose-950/80 text-rose-600 dark:text-rose-400 border border-rose-300 dark:border-rose-700/60",
+    gradient:
+      "from-rose-500/10 via-pink-500/5 to-white dark:from-rose-950/40 dark:via-ink-900/90 dark:to-ink-900",
+    border:
+      "border-rose-200/80 dark:border-rose-500/30 hover:border-rose-400 dark:hover:border-rose-400",
+    nodePill:
+      "bg-rose-100 dark:bg-rose-950/80 text-rose-600 dark:text-rose-400 border border-rose-300 dark:border-rose-700/60",
     nodeInner: "bg-rose-500 text-white shadow-sm shadow-rose-500/40",
     iconBox: "bg-rose-500 text-white shadow-md shadow-rose-500/30",
     glow: "hover:shadow-rose-500/15",
     line: "#f43f5e",
   },
   {
-    gradient: "from-purple-500/10 via-violet-500/5 to-white dark:from-purple-950/40 dark:via-ink-900/90 dark:to-ink-900",
-    border: "border-purple-200/80 dark:border-purple-500/30 hover:border-purple-400 dark:hover:border-purple-400",
-    nodePill: "bg-purple-100 dark:bg-purple-950/80 text-purple-600 dark:text-purple-400 border border-purple-300 dark:border-purple-700/60",
+    gradient:
+      "from-purple-500/10 via-violet-500/5 to-white dark:from-purple-950/40 dark:via-ink-900/90 dark:to-ink-900",
+    border:
+      "border-purple-200/80 dark:border-purple-500/30 hover:border-purple-400 dark:hover:border-purple-400",
+    nodePill:
+      "bg-purple-100 dark:bg-purple-950/80 text-purple-600 dark:text-purple-400 border border-purple-300 dark:border-purple-700/60",
     nodeInner: "bg-purple-600 text-white shadow-sm shadow-purple-500/40",
     iconBox: "bg-purple-600 text-white shadow-md shadow-purple-500/30",
     glow: "hover:shadow-purple-500/15",
     line: "#a855f7",
   },
   {
-    gradient: "from-cyan-500/10 via-teal-500/5 to-white dark:from-cyan-950/40 dark:via-ink-900/90 dark:to-ink-900",
-    border: "border-cyan-200/80 dark:border-cyan-500/30 hover:border-cyan-400 dark:hover:border-cyan-400",
-    nodePill: "bg-cyan-100 dark:bg-cyan-950/80 text-cyan-600 dark:text-cyan-400 border border-cyan-300 dark:border-cyan-700/60",
+    gradient:
+      "from-cyan-500/10 via-teal-500/5 to-white dark:from-cyan-950/40 dark:via-ink-900/90 dark:to-ink-900",
+    border:
+      "border-cyan-200/80 dark:border-cyan-500/30 hover:border-cyan-400 dark:hover:border-cyan-400",
+    nodePill:
+      "bg-cyan-100 dark:bg-cyan-950/80 text-cyan-600 dark:text-cyan-400 border border-cyan-300 dark:border-cyan-700/60",
     nodeInner: "bg-cyan-600 text-white shadow-sm shadow-cyan-500/40",
     iconBox: "bg-cyan-600 text-white shadow-md shadow-cyan-500/30",
     glow: "hover:shadow-cyan-500/15",
@@ -466,10 +569,7 @@ export function MarkdownContent({
   slugHeadings?: boolean;
   className?: string;
 }) {
-  const { segments } = useMemo(
-    () => processRoadmapContent(content),
-    [content]
-  );
+  const { segments } = useMemo(() => processRoadmapContent(content), [content]);
 
   return (
     <div
