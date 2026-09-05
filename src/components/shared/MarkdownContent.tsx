@@ -1,7 +1,10 @@
 "use client";
 
-import ReactMarkdown from "react-markdown";
+import ReactMarkdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+import remarkDirective from "remark-directive";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import {
@@ -29,21 +32,337 @@ import {
   BookOpen,
   Rocket,
   Award,
+  Info,
+  Lightbulb,
+  AlertTriangle,
+  AlertOctagon,
+  CheckCircle2,
   type LucideIcon,
 } from "lucide-react";
 import React, { useState, useMemo } from "react";
+import { codeToHtml } from "shiki";
+
+// AST visitor plugin to transform remarkDirective (:::note, :::tip, etc.) into HTML elements
+function remarkDirectivePlugin() {
+  return (tree: any) => {
+    function visit(node: any) {
+      if (!node) return;
+      if (
+        node.type === "containerDirective" ||
+        node.type === "leafDirective" ||
+        node.type === "textDirective"
+      ) {
+        const data = node.data || (node.data = {});
+        const hast = data.hast || (data.hast = {});
+        hast.tagName = "callout";
+        hast.properties = {
+          ...hast.properties,
+          type: node.name,
+          ...(node.attributes || {}),
+        };
+        data.hProperties = {
+          type: node.name,
+          ...(node.attributes || {}),
+        };
+      }
+      if (node.children) {
+        node.children.forEach(visit);
+      }
+    }
+    visit(tree);
+  };
+}
+
+// Callout / Admonition component
+function CalloutBlock({
+  type = "note",
+  title,
+  children,
+}: {
+  type?: string;
+  title?: string;
+  children: React.ReactNode;
+}) {
+  const normType = type.toLowerCase();
+  
+  let Icon = Info;
+  let borderCls = "border-sky-500/80 dark:border-sky-500/70";
+  let bgCls = "bg-sky-50/70 dark:bg-sky-950/30";
+  let textCls = "text-sky-950 dark:text-sky-200";
+  let iconCls = "text-sky-600 dark:text-sky-400";
+  let defaultTitle = "Note";
+
+  if (normType === "tip" || normType === "idea" || normType === "success") {
+    Icon = normType === "success" ? CheckCircle2 : Lightbulb;
+    borderCls = "border-emerald-500/80 dark:border-emerald-500/70";
+    bgCls = "bg-emerald-50/70 dark:bg-emerald-950/30";
+    textCls = "text-emerald-950 dark:text-emerald-200";
+    iconCls = "text-emerald-600 dark:text-emerald-400";
+    defaultTitle = normType === "success" ? "Success" : "Tip";
+  } else if (normType === "warning" || normType === "warn" || normType === "caution") {
+    Icon = AlertTriangle;
+    borderCls = "border-amber-500/80 dark:border-amber-500/70";
+    bgCls = "bg-amber-50/70 dark:bg-amber-950/30";
+    textCls = "text-amber-950 dark:text-amber-200";
+    iconCls = "text-amber-600 dark:text-amber-400";
+    defaultTitle = "Warning";
+  } else if (normType === "danger" || normType === "error" || normType === "alert") {
+    Icon = AlertOctagon;
+    borderCls = "border-rose-500/80 dark:border-rose-500/70";
+    bgCls = "bg-rose-50/70 dark:bg-rose-950/30";
+    textCls = "text-rose-950 dark:text-rose-200";
+    iconCls = "text-rose-600 dark:text-rose-400";
+    defaultTitle = "Danger";
+  } else if (normType === "important" || normType === "info") {
+    Icon = Info;
+    borderCls = "border-purple-500/80 dark:border-purple-500/70";
+    bgCls = "bg-purple-50/70 dark:bg-purple-950/30";
+    textCls = "text-purple-950 dark:text-purple-200";
+    iconCls = "text-purple-600 dark:text-purple-400";
+    defaultTitle = "Important";
+  }
+
+  return (
+    <div
+      className={`not-prose my-6 overflow-hidden rounded-xl border-l-4 ${borderCls} ${bgCls} p-4 text-sm shadow-sm transition-all`}
+    >
+      <div className="flex items-center gap-2 font-semibold tracking-wide">
+        <Icon size={18} className={`shrink-0 ${iconCls}`} />
+        <span className={`capitalize ${textCls}`}>{title || defaultTitle}</span>
+      </div>
+      <div className={`mt-2 leading-relaxed text-ink-800 dark:text-ink-200 [&>p]:my-1`}>
+        {children}
+      </div>
+    </div>
+  );
+}
+
+import mermaid from "mermaid";
+
+// Interactive Mermaid Diagram Component
+function MermaidDiagram({ chart }: { chart: string }) {
+  const [svg, setSvg] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
+  const id = useMemo(() => `mermaid-${Math.random().toString(36).substring(2, 9)}`, []);
+
+  React.useEffect(() => {
+    let isMounted = true;
+    if (!chart) return;
+
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: "dark",
+      themeVariables: {
+        darkMode: true,
+        background: "#0d1117",
+        mainBkg: "#1c2128",
+        nodeBorder: "#444c56",
+        clusterBkg: "#161b22",
+        clusterBorder: "#30363d",
+        lineColor: "#58a6ff",
+        textColor: "#f0f6fc",
+        nodeTextColor: "#ffffff",
+        titleColor: "#58a6ff",
+        edgeLabelBackground: "#161b22",
+        actorBkg: "#1c2128",
+        actorBorder: "#58a6ff",
+        actorTextColor: "#ffffff",
+        actorLineColor: "#58a6ff",
+        signalColor: "#58a6ff",
+        signalTextColor: "#ffffff",
+        labelBoxBkgColor: "#1c2128",
+        labelBoxBorderColor: "#444c56",
+        labelTextColor: "#ffffff",
+        loopTextColor: "#ffffff",
+        noteBorderColor: "#d29922",
+        noteBkgColor: "#2d2206",
+        noteTextColor: "#e3b341",
+        activationBorderColor: "#58a6ff",
+        activationBkgColor: "#1c2128",
+        sequenceNumberColor: "#ffffff",
+        sectionBkgColor: "#1c2128",
+        altSectionBkgColor: "#161b22",
+        sectionBkgColor2: "#21262d",
+        taskBorderColor: "#58a6ff",
+        taskBkgColor: "#1f6feb",
+        taskTextColor: "#ffffff",
+        taskTextLightColor: "#ffffff",
+        taskTextOutsideColor: "#f0f6fc",
+        taskTextClickableColor: "#79c0ff",
+        activeTaskBorderColor: "#79c0ff",
+        activeTaskBkgColor: "#388bfd",
+        gridColor: "#30363d",
+        todayLineColor: "#f85149",
+        fontSize: "14px",
+        fontFamily: "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
+      },
+      securityLevel: "loose",
+    });
+
+    mermaid
+      .render(id, chart)
+      .then(({ svg: renderedSvg }) => {
+        if (isMounted) {
+          setSvg(renderedSvg);
+          setError(null);
+        }
+      })
+      .catch((err) => {
+        if (isMounted) {
+          setError(err?.message || "Failed to render diagram");
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [chart, id]);
+
+  if (error) {
+    return (
+      <div className="not-prose my-6 overflow-hidden rounded-xl border border-rose-500/40 bg-rose-950/20 p-4 text-xs font-mono text-rose-300">
+        <p className="font-semibold text-rose-400 mb-2">Mermaid Diagram Syntax Notice:</p>
+        <pre className="overflow-x-auto whitespace-pre-wrap">{chart}</pre>
+      </div>
+    );
+  }
+
+  return (
+    <div className="not-prose group relative my-7 overflow-hidden rounded-2xl border border-slate-800 bg-[#0d1117] p-6 shadow-xl">
+      <div className="mb-4 flex items-center justify-between border-b border-slate-800/80 pb-3 text-xs text-slate-400">
+        <span className="flex items-center gap-2 font-mono font-medium text-slate-300">
+          <Layers size={14} className="text-brand-400" />
+          <span className="text-[11px] tracking-wider uppercase">Diagram / Architecture</span>
+        </span>
+      </div>
+      <div
+        className="mermaid-render flex justify-center overflow-x-auto [&_svg]:max-w-full [&_svg]:h-auto"
+        dangerouslySetInnerHTML={{ __html: svg }}
+      />
+    </div>
+  );
+}
+
+import katex from "katex";
+
+// KaTeX Block & Inline Renderer
+function KatexBlock({
+  math,
+  displayMode = false,
+}: {
+  math: string;
+  displayMode?: boolean;
+}) {
+  const cleanedMath = useMemo(() => {
+    if (!math) return "";
+    let m = math.trim();
+    // Strip leading \[ or $$ if present inside the code block
+    m = m.replace(/^\\\[\s*/, "").replace(/\s*\\\]$/, "");
+    m = m.replace(/^\$\$\s*/, "").replace(/\s*\$\$$/, "");
+    m = m.replace(/^\\\(\s*/, "").replace(/\s*\\\)$/, "");
+    return m.trim();
+  }, [math]);
+
+  const html = useMemo(() => {
+    if (!cleanedMath) return null;
+    try {
+      return katex.renderToString(cleanedMath, {
+        displayMode: true,
+        throwOnError: false,
+        errorColor: "#f87171",
+        strict: false,
+        trust: true,
+      });
+    } catch {
+      return null;
+    }
+  }, [cleanedMath]);
+
+  if (!html) {
+    return <code className="text-rose-400">{math}</code>;
+  }
+
+  return (
+    <div
+      className="katex-display my-4 overflow-x-auto text-center"
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
+  );
+}
 
 function CodeBlock({
   className,
   children,
+  ...props
 }: {
   className?: string;
   children: React.ReactNode;
+  [key: string]: any;
 }) {
   const [copied, setCopied] = useState(false);
+  const [highlightedHtml, setHighlightedHtml] = useState<string | null>(null);
   const match = /language-(\w+)/.exec(className || "");
   const language = match ? match[1] : "";
-  const codeText = String(children).replace(/\n$/, "");
+  const codeText = typeof children === "string" ? children.replace(/\n$/, "") : String(children || "").replace(/\n$/, "");
+
+  // If rehype-katex / remark-math generated math code block
+  if (language === "math" || className?.includes("math-display")) {
+    return <KatexBlock math={codeText} displayMode={true} />;
+  }
+  if (className?.includes("math-inline")) {
+    return <KatexBlock math={codeText} displayMode={false} />;
+  }
+
+  // If mermaid diagram (System Architecture, API Flow, AI Pipeline, ML Workflow, Sequence, etc.)
+  if (language && language.toLowerCase() === "mermaid") {
+    return <MermaidDiagram chart={codeText} />;
+  }
+
+  // If inline code
+  if (!match && !className && typeof children === "string" && !children.includes("\n")) {
+    return (
+      <code
+        className="rounded-lg bg-slate-100 dark:bg-slate-800/95 px-2 py-1 text-[0.875em] font-mono font-medium text-brand-700 dark:text-brand-300 border border-slate-200/80 dark:border-slate-700/80 shadow-2xs inline-block my-0.5 tracking-tight"
+        {...props}
+      >
+        {children}
+      </code>
+    );
+  }
+
+  // Highlight using Shiki
+  React.useEffect(() => {
+    let isMounted = true;
+    if (!codeText) return;
+
+    const highlight = async () => {
+      try {
+        const html = await codeToHtml(codeText, {
+          lang: language || "text",
+          theme: "github-dark",
+        });
+        if (isMounted) {
+          setHighlightedHtml(html);
+        }
+      } catch (err) {
+        // Fallback gracefully on unknown language
+        try {
+          const fallbackHtml = await codeToHtml(codeText, {
+            lang: "text",
+            theme: "github-dark",
+          });
+          if (isMounted) setHighlightedHtml(fallbackHtml);
+        } catch {
+          // ignore
+        }
+      }
+    };
+
+    highlight();
+    return () => {
+      isMounted = false;
+    };
+  }, [codeText, language]);
 
   const handleCopy = async () => {
     try {
@@ -55,30 +374,16 @@ function CodeBlock({
     }
   };
 
-  // If inline code
-  if (
-    !match &&
-    !className &&
-    typeof children === "string" &&
-    !children.includes("\n")
-  ) {
-    return (
-      <code className="rounded-md bg-slate-100 dark:bg-slate-800/90 px-1.5 py-0.5 text-[0.875em] font-mono font-medium text-brand-700 dark:text-brand-300 border border-slate-200/60 dark:border-slate-700/60 shadow-2xs">
-        {children}
-      </code>
-    );
-  }
-
   return (
-    <div className="not-prose group relative my-6 overflow-hidden rounded-xl border border-slate-800/80 bg-[#0d1117] text-slate-200 shadow-md">
-      <div className="flex items-center justify-between border-b border-slate-800/90 bg-[#161b22] px-4 py-2 text-xs text-slate-400">
+    <div className="not-prose group relative my-6 overflow-hidden rounded-xl border border-slate-700/80 bg-[#0d1117] text-slate-100 shadow-xl">
+      <div className="flex items-center justify-between border-b border-slate-800 bg-[#161b22] px-4 py-2 text-xs text-slate-400">
         <span className="flex items-center gap-2 font-mono font-semibold text-slate-300">
           <span className="flex gap-1.5">
-            <span className="h-2.5 w-2.5 rounded-full bg-red-500/80" />
-            <span className="h-2.5 w-2.5 rounded-full bg-amber-500/80" />
-            <span className="h-2.5 w-2.5 rounded-full bg-emerald-500/80" />
+            <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f56]" />
+            <span className="h-2.5 w-2.5 rounded-full bg-[#ffbd2e]" />
+            <span className="h-2.5 w-2.5 rounded-full bg-[#27c93f]" />
           </span>
-          <span className="ml-1 text-[11px] tracking-wider uppercase">
+          <span className="ml-1 text-[11px] font-semibold tracking-wider text-slate-300 uppercase">
             {language || "CODE"}
           </span>
         </span>
@@ -86,7 +391,7 @@ function CodeBlock({
           type="button"
           onClick={handleCopy}
           aria-label="Copy code"
-          className="flex items-center gap-1.5 rounded-md px-2.5 py-1 text-[11px] font-medium text-slate-400 transition hover:bg-slate-700 hover:text-slate-100"
+          className="flex items-center gap-1.5 rounded-md px-2.5 py-1 text-[11px] font-medium text-slate-400 transition hover:bg-slate-700/70 hover:text-slate-100"
         >
           {copied ? (
             <>
@@ -101,9 +406,16 @@ function CodeBlock({
           )}
         </button>
       </div>
-      <pre className="overflow-x-auto p-4 text-[13.5px] font-mono leading-relaxed text-slate-100 selection:bg-brand-600 selection:text-white">
-        <code className={className}>{codeText}</code>
-      </pre>
+      {highlightedHtml ? (
+        <div
+          className="shiki-container overflow-x-auto p-4 text-[13.5px] font-mono leading-relaxed text-slate-100 selection:bg-brand-600 selection:text-white [&_pre]:!bg-transparent [&_pre]:!m-0 [&_pre]:!p-0 [&_code]:!bg-transparent [&_code]:!p-0"
+          dangerouslySetInnerHTML={{ __html: highlightedHtml }}
+        />
+      ) : (
+        <pre className="overflow-x-auto p-4 text-[13.5px] font-mono leading-relaxed text-slate-200 selection:bg-brand-600 selection:text-white">
+          <code className={className}>{codeText}</code>
+        </pre>
+      )}
     </div>
   );
 }
@@ -306,7 +618,7 @@ function RoadmapTimeline({ steps }: { steps: RoadmapStep[] }) {
 
         <div className="flex flex-col gap-6 sm:gap-8">
           {steps.map((step, idx) => {
-            const theme = COLOR_THEMES[idx % COLOR_THEMES.length];
+            const theme = COLOR_THEMES[idx % COLOR_THEMES.length] || COLOR_THEMES[0]!;
             const StepIcon = getStepIcon(step.title);
             const isEven = idx % 2 === 0;
 
@@ -460,6 +772,7 @@ function processRoadmapContent(content: string) {
 
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
+      if (line === undefined) continue;
       const trimmed = line.trim();
 
       if (!trimmed) {
@@ -495,7 +808,7 @@ function processRoadmapContent(content: string) {
       // Lookahead to check if this line is followed by an arrow
       let nextIsArrow = false;
       for (let j = i + 1; j < lines.length; j++) {
-        const nextLine = lines[j].trim();
+        const nextLine = lines[j]?.trim();
         if (!nextLine) continue;
         if (isArrowLine(nextLine)) {
           nextIsArrow = true;
@@ -526,7 +839,7 @@ function processRoadmapContent(content: string) {
             steps: currentSteps,
           });
           currentSteps = [];
-        } else if (currentSteps.length === 1) {
+        } else if (currentSteps.length === 1 && currentSteps[0]?.title) {
           currentMarkdownLines.push(currentSteps[0].title);
           currentSteps = [];
         }
@@ -545,7 +858,7 @@ function processRoadmapContent(content: string) {
         type: "roadmap",
         steps: currentSteps,
       });
-    } else if (currentSteps.length === 1) {
+    } else if (currentSteps.length === 1 && currentSteps[0]?.title) {
       currentMarkdownLines.push(currentSteps[0].title);
     }
 
@@ -560,6 +873,43 @@ function processRoadmapContent(content: string) {
   return { segments };
 }
 
+// Preprocess LaTeX math syntax so all common math formats are normalized to standard Markdown math ($ and $$)
+function normalizeMathDelimiters(markdown: string): string {
+  if (!markdown) return "";
+  
+  let res = markdown;
+
+  // 1. Convert ```math or ```latex code blocks (containing LaTeX equations like \[ ... \]) to $$ ... $$ display blocks
+  res = res.replace(/```(?:math|latex)\s*([\s\S]*?)```/gi, (match, math) => {
+    let cleaned = math.trim();
+    // Strip inner \[ ... \] or $$ ... $$ if present inside the code block
+    cleaned = cleaned.replace(/^\\\[\s*/, "").replace(/\s*\\\]$/, "");
+    cleaned = cleaned.replace(/^\$\$\s*/, "").replace(/\s*\$\$$/, "");
+    cleaned = cleaned.trim().replace(/\\+$/, "").trim();
+    return `\n\n$$\n${cleaned}\n$$\n\n`;
+  });
+
+  // 2. Convert \[ ... \] or \[ ... \] with any malformed/unescaped delimiters to $$ ... $$
+  res = res.replace(/\\\[([\s\S]*?)(?:\\\]|\\\]|\])/g, (match, math) => {
+    const cleaned = math.trim().replace(/\\+$/, "").trim();
+    return `\n\n$$\n${cleaned}\n$$\n\n`;
+  });
+
+  // 3. Ensure single-line $$ math $$ on its own line is split into multi-line $$\nmath\n$$ for remark-math block parsing
+  res = res.replace(/^[ \t]*\$\$([^\n$]+)\$\$[ \t]*$/gm, (match, math) => {
+    const cleaned = math.trim().replace(/\\+$/, "").trim();
+    return `\n\n$$\n${cleaned}\n$$\n\n`;
+  });
+  
+  // 4. Convert \( ... \) inline math to $ ... $
+  res = res.replace(/\\\(([\s\S]*?)(?:\\\)|\\\))/g, (_, math) => {
+    const cleaned = math.trim().replace(/\\+$/, "").trim();
+    return `$${cleaned}$`;
+  });
+
+  return res;
+}
+
 export function MarkdownContent({
   content,
   slugHeadings = true,
@@ -569,7 +919,8 @@ export function MarkdownContent({
   slugHeadings?: boolean;
   className?: string;
 }) {
-  const { segments } = useMemo(() => processRoadmapContent(content), [content]);
+  const normalizedContent = useMemo(() => normalizeMathDelimiters(content), [content]);
+  const { segments } = useMemo(() => processRoadmapContent(normalizedContent), [normalizedContent]);
 
   return (
     <div
@@ -583,9 +934,23 @@ export function MarkdownContent({
         return (
           <ReactMarkdown
             key={index}
-            remarkPlugins={[remarkGfm]}
-            rehypePlugins={
-              slugHeadings
+            remarkPlugins={[
+              remarkGfm,
+              [remarkMath, { singleDollarTextMath: true }],
+              remarkDirective,
+              remarkDirectivePlugin,
+            ]}
+            rehypePlugins={[
+              [
+                rehypeKatex,
+                {
+                  throwOnError: false,
+                  errorColor: "#f87171",
+                  strict: false,
+                  trust: true,
+                },
+              ] as any,
+              ...(slugHeadings
                 ? [
                     rehypeSlug,
                     [
@@ -600,10 +965,11 @@ export function MarkdownContent({
                       },
                     ],
                   ]
-                : []
-            }
+                : []),
+            ]}
             components={{
-              img: ({ src, alt }) =>
+              callout: CalloutBlock as any,
+              img: ({ src, alt }: React.ImgHTMLAttributes<HTMLImageElement>) =>
                 src ? (
                   <figure className="my-8 overflow-hidden rounded-2xl border border-slate-200/70 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 shadow-sm">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -620,7 +986,7 @@ export function MarkdownContent({
                     )}
                   </figure>
                 ) : null,
-              a: ({ href, children, className: linkClassName }) =>
+              a: ({ href, children, className: linkClassName }: React.AnchorHTMLAttributes<HTMLAnchorElement>) =>
                 linkClassName?.includes("anchor-link") ? (
                   <a href={href} className={linkClassName} aria-hidden>
                     <Link2 size={16} />
@@ -639,57 +1005,95 @@ export function MarkdownContent({
                     {children}
                   </a>
                 ),
-              table: ({ children }) => (
+              table: ({ children }: React.TableHTMLAttributes<HTMLTableElement>) => (
                 <div className="not-prose my-7 overflow-x-auto rounded-xl border border-slate-200/80 dark:border-slate-800 shadow-sm bg-white dark:bg-ink-950">
                   <table className="w-full border-collapse text-left text-sm">
                     {children}
                   </table>
                 </div>
               ),
-              thead: ({ children }) => (
+              thead: ({ children }: React.HTMLAttributes<HTMLTableSectionElement>) => (
                 <thead className="border-b border-slate-200/80 dark:border-slate-800 bg-slate-50/80 dark:bg-ink-900 font-semibold text-ink-900 dark:text-ink-100">
                   {children}
                 </thead>
               ),
-              tbody: ({ children }) => (
+              tbody: ({ children }: React.HTMLAttributes<HTMLTableSectionElement>) => (
                 <tbody className="divide-y divide-slate-100 dark:divide-slate-800/70">
                   {children}
                 </tbody>
               ),
-              tr: ({ children }) => (
+              tr: ({ children }: React.HTMLAttributes<HTMLTableRowElement>) => (
                 <tr className="transition-colors hover:bg-slate-50/50 dark:hover:bg-slate-900/40">
                   {children}
                 </tr>
               ),
-              th: ({ children }) => (
+              th: ({ children }: React.ThHTMLAttributes<HTMLTableHeaderCellElement>) => (
                 <th className="whitespace-nowrap px-4 py-3 font-semibold text-ink-900 dark:text-ink-100">
                   {children}
                 </th>
               ),
-              td: ({ children }) => (
+              td: ({ children }: React.TdHTMLAttributes<HTMLTableDataCellElement>) => (
                 <td className="px-4 py-3 align-top text-ink-700 dark:text-ink-300 text-[13.5px] leading-normal">
                   {children}
                 </td>
               ),
-              ul: ({ children }) => (
-                <ul className="my-4 space-y-2 list-disc pl-5 marker:text-brand-500 dark:marker:text-brand-400">
-                  {children}
-                </ul>
-              ),
-              ol: ({ children }) => (
+              ul: ({ children, className: ulClassName }: React.HTMLAttributes<HTMLUListElement>) => {
+                const isTaskList = ulClassName?.includes("contains-task-list");
+                return (
+                  <ul
+                    className={`my-4 space-y-2 ${
+                      isTaskList
+                        ? "list-none pl-0 space-y-2.5"
+                        : "list-disc pl-5 marker:text-brand-500 dark:marker:text-brand-400"
+                    }`}
+                  >
+                    {children}
+                  </ul>
+                );
+              },
+              ol: ({ children }: React.OlHTMLAttributes<HTMLOListElement>) => (
                 <ol className="my-4 space-y-2 list-decimal pl-5 marker:text-brand-600 dark:marker:text-brand-400 marker:font-semibold">
                   {children}
                 </ol>
               ),
-              li: ({ children }) => (
-                <li className="text-ink-800 dark:text-ink-200 leading-relaxed pl-1">
+              li: ({ children, className: liClassName }: React.LiHTMLAttributes<HTMLLIElement>) => {
+                const isTaskItem = liClassName?.includes("task-list-item");
+                return (
+                  <li
+                    className={`text-ink-800 dark:text-ink-200 leading-relaxed ${
+                      isTaskItem
+                        ? "flex items-start gap-2.5 list-none pl-0"
+                        : "pl-1.5 py-0.5"
+                    }`}
+                  >
+                    {children}
+                  </li>
+                );
+              },
+              kbd: ({ children }: React.HTMLAttributes<HTMLElement>) => (
+                <kbd className="inline-flex items-center justify-center rounded-md border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 font-mono text-[0.8em] font-semibold text-ink-800 dark:text-ink-200 shadow-2xs">
                   {children}
-                </li>
+                </kbd>
               ),
-              p: ({ children }) => (
+              input: ({ type, checked, disabled, ...props }: React.InputHTMLAttributes<HTMLInputElement>) => {
+                if (type === "checkbox") {
+                  return (
+                    <input
+                      type="checkbox"
+                      checked={checked}
+                      disabled={disabled}
+                      readOnly
+                      className="mt-1 h-4 w-4 rounded border-slate-300 dark:border-slate-600 text-brand-600 focus:ring-brand-500 dark:bg-slate-800"
+                      {...props}
+                    />
+                  );
+                }
+                return <input type={type} {...props} />;
+              },
+              p: ({ children }: React.HTMLAttributes<HTMLParagraphElement>) => (
                 <p className="my-3 leading-relaxed">{children}</p>
               ),
-              h1: ({ children, id }) => (
+              h1: ({ children, id }: React.HTMLAttributes<HTMLHeadingElement>) => (
                 <h1
                   id={id}
                   className="scroll-mt-24 font-bold text-ink-950 dark:text-ink-50 text-2xl sm:text-3xl mt-9 mb-4"
@@ -697,7 +1101,7 @@ export function MarkdownContent({
                   {children}
                 </h1>
               ),
-              h2: ({ children, id }) => (
+              h2: ({ children, id }: React.HTMLAttributes<HTMLHeadingElement>) => (
                 <h2
                   id={id}
                   className="scroll-mt-24 font-bold text-ink-950 dark:text-ink-50 text-xl sm:text-2xl mt-8 mb-3"
@@ -705,7 +1109,7 @@ export function MarkdownContent({
                   {children}
                 </h2>
               ),
-              h3: ({ children, id }) => (
+              h3: ({ children, id }: React.HTMLAttributes<HTMLHeadingElement>) => (
                 <h3
                   id={id}
                   className="scroll-mt-24 font-bold text-ink-900 dark:text-ink-100 text-lg sm:text-xl mt-6 mb-2"
@@ -713,7 +1117,7 @@ export function MarkdownContent({
                   {children}
                 </h3>
               ),
-              h4: ({ children, id }) => (
+              h4: ({ children, id }: React.HTMLAttributes<HTMLHeadingElement>) => (
                 <h4
                   id={id}
                   className="scroll-mt-24 font-semibold text-ink-800 dark:text-ink-200 text-base sm:text-lg mt-5 mb-2"
@@ -721,12 +1125,12 @@ export function MarkdownContent({
                   {children}
                 </h4>
               ),
-              strong: ({ children }) => (
+              strong: ({ children }: React.HTMLAttributes<HTMLElement>) => (
                 <strong className="font-semibold text-ink-950 dark:text-ink-50">
                   {children}
                 </strong>
               ),
-              blockquote: ({ children }) => (
+              blockquote: ({ children }: React.BlockquoteHTMLAttributes<HTMLQuoteElement>) => (
                 <blockquote className="not-prose my-4 rounded-r-lg border-l-4 border-brand-500 bg-slate-50 dark:bg-slate-900/60 px-4 py-3 text-ink-700 dark:text-ink-300 text-sm leading-relaxed">
                   {children}
                 </blockquote>
@@ -735,8 +1139,8 @@ export function MarkdownContent({
                 <hr className="my-6 border-t border-slate-200 dark:border-slate-800" />
               ),
               code: CodeBlock as any,
-              pre: ({ children }) => <>{children}</>,
-            }}
+              pre: ({ children }: React.HTMLAttributes<HTMLPreElement>) => <>{children}</>,
+            } as any}
           >
             {segment.content}
           </ReactMarkdown>

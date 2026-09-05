@@ -3,24 +3,27 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth/client";
+import { sendSignupOtp, verifySignupOtp, completeSignup } from "@/lib/api/auth-otp";
 import type { User } from "@/types";
 
 interface AuthContextValue {
   user: User | null;
   login: (input: { email: string; password: string }) => Promise<void>;
   loginWithGoogle: (redirectTo?: string) => Promise<void>;
-  // Resolves with `{ needsVerification: true }` when the account was
-  // created but no session was issued (email verification pending) —
-  // the account exists, so this is not an error. Resolves with
-  // `{ needsVerification: false }` once we're actually signed in
-  // (e.g. requireEmailVerification is off, or a future social flow).
-  register: (input: {
+  // Sign-up is OTP-first: an account is only created once the code sent
+  // to the address has actually been verified.
+  //   1. sendSignupOtp    — email a 6-digit code
+  //   2. verifySignupOtp  — check the code (no account yet)
+  //   3. finishSignup     — create the account + sign in
+  sendSignupOtp: (email: string) => Promise<void>;
+  verifySignupOtp: (email: string, otp: string) => Promise<void>;
+  finishSignup: (input: {
     email: string;
-    username: string;
+    otp: string;
     name: string;
+    username: string;
     password: string;
-  }) => Promise<{ needsVerification: boolean }>;
-  resendVerificationEmail: (email: string) => Promise<void>;
+  }) => Promise<{ onboardingRequired: boolean }>;
   logout: () => Promise<void>;
 }
 
@@ -104,45 +107,17 @@ export function AuthProvider({
           callbackURL,
         });
       },
-      register: async (input) => {
-        const callbackURL = `${window.location.origin}/`;
-
-        const { data, error } = await authClient.signUp.email({
-          email: input.email,
-          password: input.password,
-          name: input.name,
-          username: input.username,
-          callbackURL,
-        } as Parameters<typeof authClient.signUp.email>[0]);
-
-        if (error) {
-          throw new Error(error.message || "Could not create account");
-        }
-
-        // With requireEmailVerification on, Better Auth creates the user
-        // but does NOT issue a session/token here — `data.token` is only
-        // present when we're actually signed in. Don't set `user` in the
-        // pending case, or the app would treat an unverified visitor as
-        // logged in.
-        const signedIn = Boolean(
-          (data as { token?: string | null } | null)?.token,
-        );
-        if (signedIn) {
-          setUser(toUser(data?.user as Record<string, unknown> | undefined));
-          router.refresh();
-          return { needsVerification: false };
-        }
-        return { needsVerification: true };
+      sendSignupOtp: async (email) => {
+        await sendSignupOtp(email);
       },
-      resendVerificationEmail: async (email) => {
-        const callbackURL = `${window.location.origin}/`;
-        const { error } = await authClient.sendVerificationEmail({
-          email,
-          callbackURL,
-        });
-        if (error) {
-          throw new Error(error.message || "Could not resend verification email");
-        }
+      verifySignupOtp: async (email, otp) => {
+        await verifySignupOtp(email, otp);
+      },
+      finishSignup: async (input) => {
+        const result = await completeSignup(input);
+        setUser(toUser(result.user as unknown as Record<string, unknown>));
+        router.refresh();
+        return { onboardingRequired: result.onboardingRequired };
       },
       logout: async () => {
         await authClient.signOut().catch(() => undefined);

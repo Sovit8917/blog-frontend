@@ -10,6 +10,7 @@ import { GoogleAdSenseScript } from "@/components/ads/GoogleAdSenseScript";
 import { ConsentBanner } from "@/components/ads/ConsentBanner";
 import { PopupAd } from "@/components/ads/PopupAd";
 import { ThemeProvider } from "@/lib/theme/ThemeProvider";
+import "katex/dist/katex.min.css";
 import "./globals.css";
 
 export const metadata: Metadata = {

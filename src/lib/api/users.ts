@@ -49,6 +49,41 @@ export function toggleFollow(username: string) {
   });
 }
 
+/** PATCH /me/profile — update name/bio/avatarUrl for the signed-in user. */
+export function updateOwnProfile(input: { name?: string; bio?: string; avatarUrl?: string }) {
+  return apiFetch<UserProfile>('/me/profile', {
+    method: 'PATCH',
+    body: JSON.stringify(input),
+    revalidate: false,
+  });
+}
+
+/**
+ * POST /me/avatar — multipart image upload for the onboarding/profile
+ * avatar step. Not routed through apiFetch since that always sets a JSON
+ * Content-Type; FormData needs the browser to set its own boundary.
+ */
+export async function uploadOwnAvatar(file: File) {
+  const form = new FormData();
+  form.append('file', file);
+  const res = await fetch(`${API_BASE}/me/avatar`, {
+    method: 'POST',
+    credentials: 'include',
+    body: form,
+  });
+  if (!res.ok) {
+    let payload: ApiError;
+    try {
+      payload = await res.json();
+    } catch {
+      payload = { statusCode: res.status, message: res.statusText };
+    }
+    throw new ApiRequestError(payload);
+  }
+  const body = await res.json();
+  return (body?.data ?? body) as { avatarUrl: string };
+}
+
 /**
  * Employer access request flow: a plain USER asks to post jobs. Admin/Super
  * Admin approval flips their role to AUTHOR, which unlocks the employer
