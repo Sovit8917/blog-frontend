@@ -492,8 +492,8 @@ export default async function JobDetailPage({ params }: Props) {
                       alreadyApplied={alreadyApplied}
                     />
                   </div>
-                  <div className="flex flex-wrap items-center gap-2.5 pt-2 sm:pt-0 border-t border-slate-200/60 dark:border-slate-800 sm:border-t-0">
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-ink-400 dark:text-ink-500 shrink-0">
+                  <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 pt-3 sm:pt-0 border-t border-slate-200/60 dark:border-slate-800 sm:border-t-0">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-ink-400 dark:text-ink-500 shrink-0 mr-1">
                       Share
                     </span>
                     <ShareButton

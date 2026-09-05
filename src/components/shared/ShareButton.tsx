@@ -78,6 +78,15 @@ export function ShareButton({
 
   const links = [
     {
+      channel: "whatsapp" as Channel,
+      label: "Share on WhatsApp",
+      btnStyle: "bg-[#25D366] hover:bg-[#25D366]/90 hover:shadow-[#25D366]/30",
+      iconColor: "text-[#25D366] fill-[#25D366]",
+      href: `https://api.whatsapp.com/send?text=${encodedTitle}%20${encoded}`,
+      svgPath:
+        "M19.05 4.91A9.816 9.816 0 0 0 12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01zm-7.01 15.24c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.196 8.196 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24 2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24zm4.51-6.17c-.25-.12-1.47-.73-1.7-.81-.23-.09-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.15.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.12-.56-1.35-.77-1.85-.2-.48-.4-.42-.56-.43-.14-.01-.3-.01-.47-.01-.16 0-.43.06-.66.31-.22.25-.86.84-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.53.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.06-.1-.23-.16-.48-.29z",
+    },
+    {
       channel: "linkedin" as Channel,
       label: "Share on LinkedIn",
       btnStyle: "bg-[#0A66C2] hover:bg-[#0A66C2]/90 hover:shadow-[#0A66C2]/30",
@@ -94,15 +103,6 @@ export function ShareButton({
       href: `https://t.me/share/url?url=${encoded}&text=${encodedTitle}`,
       svgPath:
         "m20.665 3.717-17.73 6.837c-1.21.486-1.203 1.161-.222 1.462l4.552 1.42 10.532-6.645c.498-.303.953-.14.579.192l-8.533 7.701h-.002l-.313 4.67c.458 0 .66-.21.916-.458l2.199-2.138 4.573 3.378c.843.464 1.448.225 1.658-.785l2.997-14.113c.307-1.233-.472-1.792-1.506-1.521z",
-    },
-    {
-      channel: "whatsapp" as Channel,
-      label: "Share on WhatsApp",
-      btnStyle: "bg-[#25D366] hover:bg-[#25D366]/90 hover:shadow-[#25D366]/30",
-      iconColor: "text-[#25D366] fill-[#25D366]",
-      href: `https://api.whatsapp.com/send?text=${encodedTitle}%20${encoded}`,
-      svgPath:
-        "M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.196 8.196 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24M8.53 7.33c-.16 0-.43.06-.66.31-.22.25-.86.84-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.53.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.06-.1-.23-.16-.48-.29s-1.47-.73-1.7-.81c-.23-.09-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.15.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.12-.56-1.35-.77-1.85-.2-.48-.4-.42-.56-.43-.14-.01-.3-.01-.47-.01Z",
     },
     {
       channel: "x" as Channel,
@@ -163,9 +163,9 @@ export function ShareButton({
             }
           }}
           aria-label="Share resource"
-          className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-ink-900 text-slate-600 dark:text-slate-400 shadow-sm transition hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800"
+          className="flex h-9 w-9 sm:h-9.5 sm:w-9.5 aspect-square items-center justify-center rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-ink-900 text-slate-600 dark:text-slate-400 shadow-2xs transition hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800"
         >
-          <Share2 size={15} />
+          <Share2 size={16} />
         </button>
 
         {isOpen && (
@@ -232,14 +232,19 @@ export function ShareButton({
   }
 
   return (
-    <div className={cn("flex flex-wrap items-center gap-1.5 sm:gap-2 py-0.5 max-w-full", className)}>
+    <div
+      className={cn(
+        "flex flex-nowrap items-center gap-1.5 sm:gap-2 max-w-full",
+        className,
+      )}
+    >
       {canNativeShare && (
         <button
           onClick={nativeShare}
           aria-label="Share"
-          className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-slate-100 dark:bg-ink-800 text-slate-700 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700 shadow-xs transition hover:bg-slate-200 dark:hover:bg-ink-700"
+          className="flex h-9 w-9 sm:h-9.5 sm:w-9.5 aspect-square shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-slate-100 dark:bg-ink-800 text-slate-700 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700 shadow-2xs transition hover:bg-slate-200 dark:hover:bg-ink-700"
         >
-          <Share2 size={16} />
+          <Share2 className="h-4 w-4 sm:h-4.5 sm:w-4.5" />
         </button>
       )}
 
@@ -252,12 +257,12 @@ export function ShareButton({
           aria-label={label}
           onClick={() => track(channel)}
           className={cn(
-            "flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl text-white shadow-xs transition hover:opacity-90",
+            "flex h-9 w-9 sm:h-9.5 sm:w-9.5 aspect-square shrink-0 items-center justify-center rounded-xl sm:rounded-2xl text-white shadow-2xs transition hover:opacity-90",
             btnStyle,
           )}
         >
           <svg
-            className="h-4.5 w-4.5 sm:h-5 sm:w-5 fill-white"
+            className="h-4 w-4 sm:h-4.5 sm:w-4.5 fill-white shrink-0"
             viewBox="0 0 24 24"
           >
             <path d={svgPath} />
@@ -270,7 +275,7 @@ export function ShareButton({
         onClick={copy}
         aria-label="Copy link"
         className={cn(
-          "flex h-9 sm:h-10 shrink-0 items-center gap-1.5 sm:gap-2 rounded-xl sm:rounded-2xl border px-3 text-xs font-semibold shadow-xs transition",
+          "flex h-9 sm:h-9.5 shrink-0 items-center gap-1.5 rounded-xl sm:rounded-2xl border px-2.5 sm:px-3 text-xs font-semibold shadow-2xs transition",
           copied
             ? "border-emerald-500 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 ring-1 ring-emerald-200 dark:ring-emerald-800"
             : "border-slate-200/90 dark:border-slate-700 bg-white dark:bg-ink-900 text-slate-700 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-100",
@@ -280,17 +285,17 @@ export function ShareButton({
           <>
             <Check
               size={14}
-              className="text-emerald-600 dark:text-emerald-400 animate-in zoom-in-75 duration-100"
+              className="text-emerald-600 dark:text-emerald-400 animate-in zoom-in-75 duration-100 shrink-0"
             />
-            <span className="hidden xs:inline">Copied!</span>
+            <span className="hidden xs:inline sm:inline">Copied!</span>
           </>
         ) : (
           <>
             <Copy
               size={14}
-              className="text-slate-500 dark:text-slate-400 group-hover:text-slate-800 dark:group-hover:text-slate-200 transition-colors"
+              className="text-slate-500 dark:text-slate-400 group-hover:text-slate-800 dark:group-hover:text-slate-200 transition-colors shrink-0"
             />
-            <span className="hidden xs:inline">Copy</span>
+            <span className="hidden xs:inline sm:inline">Copy</span>
           </>
         )}
       </button>

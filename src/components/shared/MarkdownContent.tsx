@@ -41,6 +41,8 @@ import {
 } from "lucide-react";
 import React, { useState, useMemo } from "react";
 import { codeToHtml } from "shiki";
+import mermaid from "mermaid";
+import katex from "katex";
 
 // AST visitor plugin to transform remarkDirective (:::note, :::tip, etc.) into HTML elements
 function remarkDirectivePlugin() {
@@ -136,8 +138,6 @@ function CalloutBlock({
     </div>
   );
 }
-
-import mermaid from "mermaid";
 
 // Interactive Mermaid Diagram Component
 function MermaidDiagram({ chart }: { chart: string }) {
@@ -242,8 +242,6 @@ function MermaidDiagram({ chart }: { chart: string }) {
     </div>
   );
 }
-
-import katex from "katex";
 
 // KaTeX Block & Inline Renderer
 function KatexBlock({

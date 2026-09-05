@@ -232,13 +232,15 @@ export default async function PostPage({ params }: Props) {
                   )}
                 </div>
 
-                {/* Separated Action Toolbar: Left (Likes/Bookmark) & Right (Share Buttons) */}
-                <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-y border-slate-100 dark:border-slate-800 py-3">
-                  <LikeBookmarkBar
-                    postId={post.id}
-                    initialLikes={post.likeCount}
-                  />
-                  <div className="overflow-x-auto max-w-full no-scrollbar">
+                {/* Action Toolbar: Left (Likes/Bookmark) & Right (Share Buttons) */}
+                <div className="mt-5 flex items-center justify-between gap-2.5 sm:gap-4 border-y border-slate-100 dark:border-slate-800/80 py-3 overflow-x-auto no-scrollbar">
+                  <div className="shrink-0">
+                    <LikeBookmarkBar
+                      postId={post.id}
+                      initialLikes={post.likeCount}
+                    />
+                  </div>
+                  <div className="shrink-0 flex items-center">
                     <ShareBar url={url} title={post.title} postId={post.id} />
                   </div>
                 </div>
@@ -353,13 +355,17 @@ export default async function PostPage({ params }: Props) {
                 <AffiliateRecommendations links={affiliatePicks} />
 
                 {/* Footer Action Bar */}
-                <div className="w-full overflow-x-auto py-1 max-w-full no-scrollbar border-t border-slate-100 dark:border-slate-800 pt-6">
-                  <div className="flex flex-wrap items-center justify-between gap-4 min-w-0">
-                    <LikeBookmarkBar
-                      postId={post.id}
-                      initialLikes={post.likeCount}
-                    />
-                    <ShareBar url={url} title={post.title} postId={post.id} />
+                <div className="w-full border-t border-slate-100 dark:border-slate-800/80 pt-6">
+                  <div className="flex items-center justify-between gap-2.5 sm:gap-4 overflow-x-auto no-scrollbar py-1">
+                    <div className="shrink-0">
+                      <LikeBookmarkBar
+                        postId={post.id}
+                        initialLikes={post.likeCount}
+                      />
+                    </div>
+                    <div className="shrink-0 flex items-center">
+                      <ShareBar url={url} title={post.title} postId={post.id} />
+                    </div>
                   </div>
                 </div>
 

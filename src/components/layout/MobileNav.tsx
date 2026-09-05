@@ -23,8 +23,7 @@ import {
   Award,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth/AuthProvider";
-import devnexaLogoTransparent from "@/assests/devnexa-logo-transpernet.png";
-import type { Category } from "@/types";
+import { LogIn, LogOut, Sparkles } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 
 type NavItem = { href: string; label: string };
@@ -98,10 +97,19 @@ export function MobileNav({
             className="flex items-center"
           >
             <Image
-              src={devnexaLogoTransparent}
-              alt="Devnexa"
-              height={44}
-              className="h-10.5 w-auto object-contain scale-110 origin-left contrast-125 brightness-95"
+              src="/karyvio-light.png"
+              alt="Karyvio"
+              width={140}
+              height={40}
+              className="h-8.5 sm:h-9.5 w-auto object-contain origin-left block dark:hidden"
+              priority
+            />
+            <Image
+              src="/karyvio-dark.png"
+              alt="Karyvio"
+              width={140}
+              height={40}
+              className="h-8.5 sm:h-9.5 w-auto object-contain origin-left hidden dark:block"
               priority
             />
           </Link>

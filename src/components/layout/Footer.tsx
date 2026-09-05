@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { NewsletterForm } from "@/components/home/NewsletterForm";
 import { AdSlot } from "@/components/ads/AdSlot";
-import devnexaLogoTransparent from "@/assests/devnexa-logo-transpernet.png";
 import { Sparkles, Rss } from "lucide-react";
 import { getSocialLinks } from "@/lib/api";
 
@@ -154,10 +153,18 @@ export async function Footer() {
             <div className="space-y-3 lg:col-span-4">
               <Link href="/" className="inline-flex items-center py-1">
                 <Image
-                  src={devnexaLogoTransparent}
-                  alt="Devnexa"
-                  height={52}
-                  className="h-10 sm:h-12 w-auto object-contain origin-left filter drop-shadow-xs contrast-125"
+                  src="/karyvio-light.png"
+                  alt="Karyvio"
+                  width={160}
+                  height={48}
+                  className="h-9 sm:h-11 w-auto object-contain origin-left block dark:hidden"
+                />
+                <Image
+                  src="/karyvio-dark.png"
+                  alt="Karyvio"
+                  width={160}
+                  height={48}
+                  className="h-9 sm:h-11 w-auto object-contain origin-left hidden dark:block"
                 />
               </Link>
               <p className="text-xs leading-relaxed text-slate-600 dark:text-slate-400 max-w-sm font-normal">

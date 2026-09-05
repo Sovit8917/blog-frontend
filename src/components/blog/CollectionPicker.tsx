@@ -104,9 +104,9 @@ export function CollectionPicker({ postId }: { postId: string }) {
       <button
         onClick={toggleOpen}
         aria-label="Save to collection"
-        className="flex h-10 w-10 items-center justify-center rounded-2xl text-xs font-semibold text-ink-600 dark:text-ink-400 border border-slate-200/90 dark:border-slate-700 bg-white dark:bg-ink-900 shadow-xs transition hover:opacity-90 hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-ink-800"
+        className="flex h-9 w-9 sm:h-9.5 sm:w-9.5 items-center justify-center rounded-xl text-xs font-semibold text-ink-600 dark:text-ink-400 border border-slate-200/90 dark:border-slate-700 bg-white dark:bg-ink-900 shadow-2xs transition hover:opacity-90 hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-ink-800 active:scale-95"
       >
-        <FolderPlus size={16} />
+        <FolderPlus size={15} />
       </button>
 
       {open && (

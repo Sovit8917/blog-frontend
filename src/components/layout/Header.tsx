@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { Search, Bookmark } from "lucide-react";
 import { listCategories } from "@/lib/api";
-import devnexaLogoTransparent from "@/assests/devnexa-logo-transpernet.png";
 import { MobileNav } from "./MobileNav";
 import { HeaderAuthActions } from "./HeaderAuthActions";
 import { NavLink } from "./NavLink";
@@ -44,10 +43,19 @@ export async function Header() {
           <MobileNav categories={allTopLevel} jobBoardNav={JOB_BOARD_NAV} />
           <Link href="/" className="shrink-0 flex items-center py-0.5">
             <Image
-              src={devnexaLogoTransparent}
-              alt="Devnexa"
-              height={56}
-              className="h-10 sm:h-12 w-auto object-contain origin-left contrast-125 drop-shadow-xs"
+              src="/karyvio-light.png"
+              alt="Karyvio"
+              width={160}
+              height={48}
+              className="h-9 sm:h-11 w-auto object-contain origin-left block dark:hidden"
+              priority
+            />
+            <Image
+              src="/karyvio-dark.png"
+              alt="Karyvio"
+              width={160}
+              height={48}
+              className="h-9 sm:h-11 w-auto object-contain origin-left hidden dark:block"
               priority
             />
           </Link>
